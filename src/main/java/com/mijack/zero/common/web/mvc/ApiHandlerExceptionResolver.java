@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        // todo handler为什么是一个object？？
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ApiJsonView.VIEW_NAME);
         int code = HttpStatus.INTERNAL_SERVER_ERROR.value();
@@ -40,7 +41,7 @@ public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
             code = ((BaseBizException) ex).getCode();
             message = ex.getMessage();
         }
-        modelAndView.addObject(ApiJsonView.API_RESULT, ApiResult.fail(code,message));
+        modelAndView.addObject(ApiJsonView.API_RESULT, ApiResult.fail(code, message));
         return modelAndView;
     }
 }
