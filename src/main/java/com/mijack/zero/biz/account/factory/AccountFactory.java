@@ -13,19 +13,26 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.account.factory;
+
+import com.mijack.zero.biz.account.domain.Account;
+import com.mijack.zero.biz.account.domain.AccountType;
+import com.mijack.zero.biz.user.domain.User;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+@Component
+public class AccountFactory {
+    public Account create(Long id, User user, String accountName, AccountType accountType) {
+        Account account = new Account();
+        account.setId(id);
+        account.setAccountType(accountType);
+        account.setName(accountName);
+        account.setDeleted(false);
+        account.setUser(user);
+        return account;
     }
-
 }

@@ -13,19 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.account.factory;
+
+import com.mijack.zero.biz.account.domain.AccountType;
+import com.mijack.zero.biz.account.domain.AccountTypeEnum;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+@Component
+public class AccountTypeFactory {
+    public AccountType of(Long accountTypeCode) {
+        for (AccountType accountType : AccountTypeEnum.values()) {
+            if (accountType.getId() == accountTypeCode) {
+                return accountType;
+            }
+        }
+        return null;
     }
-
 }

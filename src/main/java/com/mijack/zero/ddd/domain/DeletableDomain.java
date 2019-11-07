@@ -13,19 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.ddd.domain;
 
 /**
+ * 存在删除状态的bean
+ *
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
+public interface DeletableDomain<Key> extends BaseDomain<Key> {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
+    /**
+     * 是否被删除
+     *
+     * @return
+     */
+    boolean isDeleted();
 
+    /**
+     * 设置bean的删除状态
+     *
+     * @param deleted
+     */
+    void setDeleted(boolean deleted);
 }

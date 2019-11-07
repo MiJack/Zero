@@ -13,19 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.account.command;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+public class AccountCreateCommand {
+    private long userId;
+    private String accountName;
+    private Long accountType;
 }

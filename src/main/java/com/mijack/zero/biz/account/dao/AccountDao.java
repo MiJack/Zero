@@ -13,19 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.account.dao;
+
+import java.util.List;
+
+import com.mijack.zero.biz.account.domain.Account;
+import com.mijack.zero.ddd.infrastructure.IDomainDao;
+import com.mijack.zero.biz.user.domain.User;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
-
+public interface AccountDao extends IDomainDao<Long, Account> {
+    /**
+     * 列举一个用户下的所有账号
+     *
+     * @param user
+     * @return
+     */
+    List<Account> listUserAccount(User user);
 }

@@ -13,19 +13,35 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.user.infrastructure.factory;
+
+import java.sql.Timestamp;
+
+import com.mijack.zero.biz.user.domain.User;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
+@Component
+public class UserFactory {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+    /**
+     * 创建用户
+     *
+     * @param id
+     * @param name
+     * @param email
+     * @return
+     */
+    public User createUser(Long id, String name, String email) {
+        User user = new User();
+        user.setId(id);
+        user.setEmail(email);
+        user.setName(name);
+        user.setDeleted(false);
+        user.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        return user;
     }
-
 }

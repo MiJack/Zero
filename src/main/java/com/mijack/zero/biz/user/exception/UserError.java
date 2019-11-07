@@ -13,19 +13,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.user.exception;
+
+import com.mijack.zero.common.exceptions.IError;
+import lombok.Getter;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
+public enum UserError implements IError {
+    /**
+     * 用户信息已注册
+     */
+    UserRegistered(-100, "用户信息已注册");
+    @Getter
+    private final int code;
+    @Getter
+    private final String message;
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+    UserError(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
 }
