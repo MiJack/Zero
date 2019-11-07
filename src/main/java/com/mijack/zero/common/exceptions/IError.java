@@ -16,31 +16,21 @@
 
 package com.mijack.zero.common.exceptions;
 
-import lombok.Getter;
-
 /**
  * @author Mi&Jack
  */
-public enum BizCode implements IError {
+public interface IError {
     /**
-     * 调用成功
+     * 异常代码
+     *
+     * @return
      */
-    SUCCESS(200, "调用成功"),
-    /**
-     * 参数异常
-     */
-    WRONG_PARAM(400, "参数异常"),
-    /**
-     * 系统异常
-     */
-    SYSTEM_ERROR(500, "系统异常");
-    @Getter
-    private int code;
-    @Getter
-    private String message;
+    int getCode();
 
-    BizCode(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+    /**
+     * 异常信息
+     *
+     * @return
+     */
+    String getMessage();
 }

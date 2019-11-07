@@ -14,33 +14,15 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.exceptions;
+package com.mijack.zero.graphql.web;
 
-import lombok.Getter;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 基于GraphQL的语句查询
+ *
  * @author Mi&Jack
  */
-public enum BizCode implements IError {
-    /**
-     * 调用成功
-     */
-    SUCCESS(200, "调用成功"),
-    /**
-     * 参数异常
-     */
-    WRONG_PARAM(400, "参数异常"),
-    /**
-     * 系统异常
-     */
-    SYSTEM_ERROR(500, "系统异常");
-    @Getter
-    private int code;
-    @Getter
-    private String message;
-
-    BizCode(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+@RestController
+public class GraphQueryController {
 }

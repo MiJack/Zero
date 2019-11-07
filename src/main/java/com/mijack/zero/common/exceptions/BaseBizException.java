@@ -46,7 +46,7 @@ public abstract class BaseBizException extends RuntimeException {
         this(BizCode.SYSTEM_ERROR);
     }
 
-    public BaseBizException(BizCode bizCode) {
+    public BaseBizException(IError bizCode) {
         this.code = bizCode.getCode();
         this.message = bizCode.getMessage();
     }

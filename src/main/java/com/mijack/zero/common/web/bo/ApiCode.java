@@ -14,33 +14,25 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.exceptions;
+package com.mijack.zero.common.web.bo;
 
 import lombok.Getter;
 
 /**
  * @author Mi&Jack
  */
-public enum BizCode implements IError {
+public enum ApiCode {
     /**
      * 调用成功
      */
-    SUCCESS(200, "调用成功"),
-    /**
-     * 参数异常
-     */
-    WRONG_PARAM(400, "参数异常"),
-    /**
-     * 系统异常
-     */
-    SYSTEM_ERROR(500, "系统异常");
+    SUCCESS(200, "调用成功");
     @Getter
-    private int code;
+    private final int code;
     @Getter
-    private String message;
+    private final String msg;
 
-    BizCode(int code, String message) {
+    ApiCode(int code, String msg) {
         this.code = code;
-        this.message = message;
+        this.msg = msg;
     }
 }
