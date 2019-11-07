@@ -14,38 +14,33 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.command;
+package com.mijack.zero.common.exceptions;
 
-import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Getter;
 
 /**
- * 用户创建的
- *
  * @author Mi&Jack
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@EqualsAndHashCode
-public class UserUpdateCommand {
+public enum BizCode implements IError {
     /**
-     * 用户id
+     * 调用成功
      */
-    @NotNull
-    private Long id;
+    SUCCESS(200, "调用成功"),
     /**
-     * 用户名
+     * 参数异常
      */
-    private String name;
+    WRONG_PARAM(400, "参数异常"),
     /**
-     * 用户邮箱
+     * 系统异常
      */
-    private String email;
+    SYSTEM_ERROR(500, "系统异常");
+    @Getter
+    private int code;
+    @Getter
+    private String message;
+
+    BizCode(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

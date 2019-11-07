@@ -23,6 +23,6 @@ public class WrongParamException extends BaseBizException {
     private static final long serialVersionUID = 1069430370433813252L;
 
     public WrongParamException() {
-        super(400,"参数异常");
+        super(BizCode.WRONG_PARAM);
     }
 }

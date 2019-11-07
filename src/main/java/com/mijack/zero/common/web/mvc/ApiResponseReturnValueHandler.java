@@ -18,18 +18,12 @@ package com.mijack.zero.common.web.mvc;
 
 import java.util.Collections;
 
-import javax.servlet.http.HttpServletResponse;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mijack.zero.common.web.bo.ApiResult;
+import com.mijack.zero.common.web.mvc.view.ApiJsonView;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -37,43 +31,38 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 /**
  * @author Mi&Jack
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApiResponseReturnValueHandler implements HandlerMethodReturnValueHandler {
-    private HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter(new ObjectMapper());
-
 
     /**
-     * 如果方法或者方法是在类有ResponseBody注解，支持
+     * 如果方法或者方法是在类有ApiResponse注解，支持
      *
      * @param returnType
      * @return
-     * @see RequestBody
-     * @see RestController
+     * @see ApiResponse
      */
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
-        return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), RequestBody.class) ||
-                returnType.hasMethodAnnotation(RequestBody.class));
+        return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ApiResponse.class) ||
+                returnType.hasMethodAnnotation(ApiResponse.class));
     }
 
     @Override
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest) throws Exception {
-
-        mavContainer.setRequestHandled(true);
-        ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
-        Object result;
-        if (returnValue == null) {
-            result = ApiResult.success(Collections.EMPTY_MAP);
-        } else {
-            result = ApiResult.success(returnValue);
-        }
-        messageConverter.write(result,
-                new MediaType(MediaType.APPLICATION_JSON, Collections.singletonMap("charset", "UTF-8")), outputMessage);
+                                  NativeWebRequest webRequest) {
+        ApiResult result = toApiResult(returnValue);
+        mavContainer.setViewName(ApiJsonView.VIEW_NAME);
+        mavContainer.addAttribute(ApiJsonView.API_RESULT, result);
     }
 
-    protected ServletServerHttpResponse createOutputMessage(NativeWebRequest webRequest) {
-        HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        return new ServletServerHttpResponse(response);
+    private ApiResult toApiResult(Object returnValue) {
+        if (returnValue == null) {
+            return ApiResult.success(Collections.EMPTY_MAP);
+        }
+        if (returnValue instanceof ApiResult) {
+            return (ApiResult) returnValue;
+        }
+        return ApiResult.success(returnValue);
     }
 
 }

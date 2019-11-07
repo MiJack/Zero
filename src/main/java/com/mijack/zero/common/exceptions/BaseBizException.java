@@ -43,12 +43,12 @@ public abstract class BaseBizException extends RuntimeException {
     private String message;
 
     public BaseBizException() {
-        // no implement
+        this(BizCode.SYSTEM_ERROR);
     }
 
-    public BaseBizException(IError error) {
-        this.code = error.getCode();
-        this.message = error.getMessage();
+    public BaseBizException(IError bizCode) {
+        this.code = bizCode.getCode();
+        this.message = bizCode.getMessage();
     }
 
     public static <T extends BaseBizException> T createException(Class<T> clazz) {

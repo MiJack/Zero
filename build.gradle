@@ -22,6 +22,21 @@
  * User Manual available at https://docs.gradle.org/5.5/userguide/tutorial_java_projects.html
  */
 
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.1.6.RELEASE')
+// tag::build[]
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+// end::build[]
+    }
+}
+
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
@@ -33,6 +48,10 @@ plugins {
     id 'org.springframework.boot' version '2.0.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.7.RELEASE'
 }
+
+apply plugin: 'com.palantir.docker'
+
+group = 'mijack'
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -84,4 +103,20 @@ dependencies {
 application {
     // Define the main class for the application
     mainClassName = 'com.mijack.zero.ZeroApplication'
+}
+
+bootJar {
+    baseName = 'gs-spring-boot-docker'
+    version =  '0.1.0'
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+docker {
+    name "${project.group}/${bootJar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }

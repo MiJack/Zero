@@ -18,6 +18,8 @@ package com.mijack.zero.common.web.bo;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.mijack.zero.common.exceptions.BizCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +49,7 @@ public class ApiResult<T> implements Serializable {
     /**
      * 返回结果
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     public static <T> ApiResult<T> build(T data, int code, String message) {
@@ -58,10 +61,18 @@ public class ApiResult<T> implements Serializable {
     }
 
     public static <T> ApiResult<T> success(T data) {
-        return build(data, ApiCode.SUCCESS);
+        return build(data, BizCode.SUCCESS);
     }
 
-    public static <T> ApiResult<T> build(T data, ApiCode code) {
-        return build(data, code.getCode(), code.getMsg());
+    public static <T> ApiResult<T> build(T data, BizCode code) {
+        return build(data, code.getCode(), code.getMessage());
+    }
+
+    public static ApiResult<Void> fail(int code, String message) {
+        return build(null, code, message);
+    }
+
+    public static ApiResult fail(BizCode bizCode) {
+        return fail(bizCode.getCode(), bizCode.getMessage());
     }
 }

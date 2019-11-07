@@ -19,6 +19,10 @@ package com.mijack.zero.common.web.mvc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.common.web.bo.ApiResult;
+import com.mijack.zero.common.web.mvc.view.ApiJsonView;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +32,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        return null;
+        // todo handler为什么是一个object？？
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName(ApiJsonView.VIEW_NAME);
+        int code = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        String message = HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
+        if (ex instanceof BaseBizException) {
+            code = ((BaseBizException) ex).getCode();
+            message = ex.getMessage();
+        }
+        modelAndView.addObject(ApiJsonView.API_RESULT, ApiResult.fail(code, message));
+        return modelAndView;
     }
 }

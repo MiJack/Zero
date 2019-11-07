@@ -15,4 +15,3 @@
  */
 
 rootProject.name = 'Zero'
-enableFeaturePreview('IMPROVED_POM_SUPPORT')

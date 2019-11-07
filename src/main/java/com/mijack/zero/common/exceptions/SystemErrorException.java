@@ -23,6 +23,6 @@ public class SystemErrorException extends BaseBizException {
     private static final long serialVersionUID = -2051021466108007497L;
 
     public SystemErrorException() {
-        super(500, "系统异常");
+        super(BizCode.SYSTEM_ERROR);
     }
 }

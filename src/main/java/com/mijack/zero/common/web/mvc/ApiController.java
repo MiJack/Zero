@@ -21,15 +21,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Mi&Jack
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@RestController
-@RequestMapping("/api")
+@Controller
+@ApiResponse
+@RequestMapping
 public @interface ApiController {
+
+    @AliasFor(value = "path", annotation = RequestMapping.class)
+    String[] path() default {"/api"};
 }

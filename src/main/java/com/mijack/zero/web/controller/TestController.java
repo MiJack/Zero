@@ -14,12 +14,27 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.infrastructure;
+package com.mijack.zero.web.controller;
+
+import com.mijack.zero.common.exceptions.SystemErrorException;
+import com.mijack.zero.common.web.bo.ApiResult;
+import com.mijack.zero.common.web.mvc.ApiController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * {@link IDomainDao}的查询条件
- *
  * @author Mi&Jack
  */
-public class QueryCriteria {
+@ApiController(path = "/api/test")
+public class TestController {
+
+    @RequestMapping("/hello")
+    public ApiResult<String> hello() {
+        return ApiResult.success("Hello world");
+    }
+
+    @RequestMapping("/error")
+    public void error() {
+        throw new SystemErrorException();
+    }
+
 }

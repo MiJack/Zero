@@ -14,8 +14,18 @@
  *    limitations under the License.
  */
 
+package com.mijack.zero.common.web.mvc;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * ddd通用模块，领域对象抽象
  * @author Mi&Jack
  */
-package com.mijack.zero.ddd;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface ApiResponse {
+}
