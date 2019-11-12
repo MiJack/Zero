@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
+import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.utils.CollectionHelper;
 
 /**
@@ -51,6 +52,26 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      */
     @NotNull
     List<Domain> findList(List<Key> keys);
+
+    /**
+     * 查找一个领域模型
+     *
+     * @param criteria 查询条件
+     * @return 如果未查询到，返回null
+     */
+    default Domain findOne(Criteria criteria) {
+        @NotNull List<Domain> list = findList(criteria);
+        return CollectionHelper.firstValue(list, null);
+    }
+
+    /**
+     * 给定待查询的领域对象的主键列表，查找领域模型
+     *
+     * @param criteria
+     * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
+     */
+    @NotNull
+    List<Domain> findList(Criteria criteria);
 
     /**
      * 添加一个领域对象

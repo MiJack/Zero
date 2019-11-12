@@ -21,25 +21,22 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.ZeroApplication;
 import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
+import com.mijack.zero.ddd.domain.IDomainKeyGenerator;
+import com.mijack.zero.ddd.domain.MemoryDomainDaoFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.Assert;
 
 /**
  * @author Mi&Jack
  */
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ZeroApplication.class)
-//@SpringJUnitConfig(TestConfig.class)
-
-@TestExecutionListeners({})
+@SpringBootTest
+@Import(ZeroApplication.class)
 public class UserServiceTest {
     @Resource
     UserService userService;
@@ -47,9 +44,14 @@ public class UserServiceTest {
     UserDao userDao;
     @Resource
     UserFactory userFactory;
+    private IDomainKeyGenerator<Long, User> domainKeyGenerator = map -> Long.valueOf(map.values().size() + 1);
 
     @Before
     public void beforeTest() {
+        userFactory = new UserFactory();
+        userDao = MemoryDomainDaoFactory.proxyForDao(UserDao.class, domainKeyGenerator);
+        userService = new UserService(userDao, userFactory);
+
         User user = userFactory.createUser(0L, "user", "email");
         userDao.add(user);
     }
@@ -62,12 +64,12 @@ public class UserServiceTest {
         Assert.state(!user.isDeleted());
     }
 
-    @Test
+    @Test(expected = UserRegisteredException.class)
     public void testRegisterUserFailedCase1() {
         User user = userService.registerUser("user", "test");
     }
 
-    @Test
+    @Test(expected = UserRegisteredException.class)
     public void testRegisterUserFailedCase2() {
         User user = userService.registerUser("test", "email");
     }

@@ -16,8 +16,7 @@
 
 package com.mijack.zero.biz.user.infrastructure.dao;
 
-import java.util.List;
-
+import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.biz.user.domain.User;
 import org.springframework.stereotype.Repository;
@@ -29,14 +28,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDao extends IDomainDao<Long, User> {
-    /**
-     * 列举用户
-     *
-     * @param offset
-     * @param limit
-     * @return
-     */
-    List<User> listUser(long offset, long limit);
 
     /**
      * 根据用户名查找对应的用户
@@ -44,7 +35,9 @@ public interface UserDao extends IDomainDao<Long, User> {
      * @param name 用户名
      * @return 如果未查询到，返回null
      */
-    User findOneByName(String name);
+    default User findOneByName(String name) {
+        return findOne(Criteria.eq("name", name));
+    }
 
     /**
      * 根据邮箱名查找对应的用户
@@ -52,5 +45,7 @@ public interface UserDao extends IDomainDao<Long, User> {
      * @param email 邮箱名
      * @return 如果未查询到，返回null
      */
-    User findOneByEmail(String email);
+    default User findOneByEmail(String email){
+        return findOne(Criteria.eq("email", email));
+    }
 }

@@ -19,8 +19,6 @@ package com.mijack.zero.biz.user.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
@@ -32,6 +30,7 @@ import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mijack.zero.common.Assert;
 
@@ -40,13 +39,13 @@ import com.mijack.zero.common.Assert;
  */
 @Service
 public class UserService {
-    @Resource
     UserDao userDao;
-    @Resource
     UserFactory userFactory;
 
-    public List<User> listUser(long offset, long limit) {
-        return userDao.listUser(offset, limit);
+    @Autowired
+    public UserService(UserDao userDao, UserFactory userFactory) {
+        this.userDao = userDao;
+        this.userFactory = userFactory;
     }
 
     public User getUser(long userId) {
