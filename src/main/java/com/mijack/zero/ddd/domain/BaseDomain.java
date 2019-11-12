@@ -13,19 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.ddd.domain;
+
+import java.io.Serializable;
 
 /**
+ * 领域对象的基类
+ *
+ * @param <Key> 领域对象的主键类型
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
+public interface BaseDomain<Key> extends Serializable {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
-
+    /**
+     * 领域对象的主键
+     *
+     * @return
+     */
+    Key getId();
 }

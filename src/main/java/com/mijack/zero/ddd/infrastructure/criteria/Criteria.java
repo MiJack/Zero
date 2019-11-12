@@ -13,19 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.ddd.infrastructure.criteria;
+
+import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+public interface Criteria {
+    static Criteria eq(String field, Object value) {
+        return new EqCriteria(field, value);
     }
 
+    @Data
+    class EqCriteria implements Criteria {
+        private final String field;
+        private final Object value;
+
+        public EqCriteria(String field, Object value) {
+            this.field = field;
+            this.value = value;
+        }
+    }
 }

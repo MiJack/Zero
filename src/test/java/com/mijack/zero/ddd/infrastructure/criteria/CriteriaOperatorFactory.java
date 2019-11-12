@@ -13,19 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.ddd.infrastructure.criteria;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+public class CriteriaOperatorFactory {
+    public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
+        if (criteria == null) {
+            return NullCriteriaOperator.INSTANCE;
+        }
+        if (criteria instanceof Criteria.EqCriteria) {
+            return EqCriteriaOperator.create((Criteria.EqCriteria) criteria);
+        }
+        return null;
     }
-
 }

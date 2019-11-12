@@ -13,19 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.ddd.infrastructure.criteria;
+
+import org.springframework.cglib.beans.BeanMap;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
+public class NullCriteriaOperator implements CriteriaOperator{
+    /**
+     * 单例模式
+     */
+    public static final CriteriaOperator INSTANCE = new NullCriteriaOperator();
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+    @Override
+    public boolean validateBean(BeanMap beanMap) {
+        return false;
     }
-
 }

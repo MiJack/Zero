@@ -13,19 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.biz.user.exception;
+
+import com.mijack.zero.common.exceptions.BaseBizException;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-public class ZeroApplication {
+public class UserRegisteredException extends BaseBizException {
+    private static final long serialVersionUID = 858769791869245561L;
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+    public UserRegisteredException() {
+        super(UserError.UserRegistered);
+    }
+
+    public UserRegisteredException(String message) {
+        super(UserError.UserRegistered.getCode(), message);
     }
 
 }
