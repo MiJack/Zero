@@ -62,12 +62,12 @@ public class UserService {
     }
 
     public User updateUserInfo(Long id, String name, String email) {
-        // todo 移至领域内部实现
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
         User user = userDao.findOne(id);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
+        // todo 移至领域内部实现
         if (StringUtils.isNotBlank(email)) {
             user.setEmail(email);
         }
