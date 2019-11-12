@@ -16,6 +16,10 @@
 
 package com.mijack.zero.ddd.infrastructure.criteria;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -26,6 +30,24 @@ public interface Criteria {
         return new EqCriteria(field, value);
     }
 
+    default Criteria and(Criteria... criterias) {
+        if (this instanceof AndCriteria) {
+            ((AndCriteria) this).appendCriterias(criterias);
+            return this;
+        } else {
+            return new AndCriteria(this, criterias);
+        }
+    }
+
+    default Criteria or(Criteria... criterias) {
+        if (this instanceof OrCriteria) {
+            ((OrCriteria) this).appendCriterias(criterias);
+            return this;
+        } else {
+            return new OrCriteria(this, criterias);
+        }
+    }
+
     @Data
     class EqCriteria implements Criteria {
         private final String field;
@@ -34,6 +56,34 @@ public interface Criteria {
         public EqCriteria(String field, Object value) {
             this.field = field;
             this.value = value;
+        }
+    }
+
+    @Data
+    class AndCriteria implements Criteria {
+        private final List<Criteria> criteria = new ArrayList<>();
+
+        public AndCriteria(Criteria criteria, Criteria... criterias) {
+            this.criteria.add(criteria);
+            appendCriterias(criterias);
+        }
+
+        public void appendCriterias(Criteria... criterias) {
+            this.criteria.addAll(Arrays.asList(criterias));
+        }
+    }
+
+    @Data
+    class OrCriteria implements Criteria {
+        private final List<Criteria> criteria = new ArrayList<>();
+
+        public OrCriteria(Criteria criteria, Criteria... criterias) {
+            this.criteria.add(criteria);
+            appendCriterias(criterias);
+        }
+
+        public void appendCriterias(Criteria... criterias) {
+            this.criteria.addAll(Arrays.asList(criterias));
         }
     }
 }
