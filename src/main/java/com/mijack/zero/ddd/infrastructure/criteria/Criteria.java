@@ -26,25 +26,38 @@ import lombok.Data;
  * @author Mi&Jack
  */
 public interface Criteria {
+    /**
+     * @param field
+     * @param value
+     * @return
+     */
     static Criteria eq(String field, Object value) {
         return new EqCriteria(field, value);
     }
 
-    default Criteria and(Criteria... criterias) {
+    /**
+     * @param criterion
+     * @return
+     */
+    default Criteria and(Criteria... criterion) {
         if (this instanceof AndCriteria) {
-            ((AndCriteria) this).appendCriterias(criterias);
+            ((AndCriteria) this).appendCriterion(criterion);
             return this;
         } else {
-            return new AndCriteria(this, criterias);
+            return new AndCriteria(this, criterion);
         }
     }
 
-    default Criteria or(Criteria... criterias) {
+    /**
+     * @param criterion
+     * @return
+     */
+    default Criteria or(Criteria... criterion) {
         if (this instanceof OrCriteria) {
-            ((OrCriteria) this).appendCriterias(criterias);
+            ((OrCriteria) this).appendCriterion(criterion);
             return this;
         } else {
-            return new OrCriteria(this, criterias);
+            return new OrCriteria(this, criterion);
         }
     }
 
@@ -63,13 +76,13 @@ public interface Criteria {
     class AndCriteria implements Criteria {
         private final List<Criteria> criteria = new ArrayList<>();
 
-        public AndCriteria(Criteria criteria, Criteria... criterias) {
+        public AndCriteria(Criteria criteria, Criteria... criterion) {
             this.criteria.add(criteria);
-            appendCriterias(criterias);
+            appendCriterion(criterion);
         }
 
-        public void appendCriterias(Criteria... criterias) {
-            this.criteria.addAll(Arrays.asList(criterias));
+        public void appendCriterion(Criteria... criterion) {
+            this.criteria.addAll(Arrays.asList(criterion));
         }
     }
 
@@ -77,13 +90,13 @@ public interface Criteria {
     class OrCriteria implements Criteria {
         private final List<Criteria> criteria = new ArrayList<>();
 
-        public OrCriteria(Criteria criteria, Criteria... criterias) {
+        public OrCriteria(Criteria criteria, Criteria... criterion) {
             this.criteria.add(criteria);
-            appendCriterias(criterias);
+            appendCriterion(criterion);
         }
 
-        public void appendCriterias(Criteria... criterias) {
-            this.criteria.addAll(Arrays.asList(criterias));
+        public void appendCriterion(Criteria... criterion) {
+            this.criteria.addAll(Arrays.asList(criterion));
         }
     }
 }

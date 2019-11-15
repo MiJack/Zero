@@ -58,12 +58,12 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
     }
 
     @Override
-    public @NotNull List<Domain> findList(List<Key> keys) {
+    public @NotNull List<Domain> list(List<Key> keys) {
         return keys.stream().filter(Objects::nonNull).map(key -> domainMap.get(key)).filter(this::isValid).collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull List<Domain> findList(Criteria criteria) {
+    public @NotNull List<Domain> queryList(Criteria criteria) {
         List<Domain> list = Lists.newArrayList();
         for (Domain domain : domainMap.values()) {
             if (isValid(domain)) {

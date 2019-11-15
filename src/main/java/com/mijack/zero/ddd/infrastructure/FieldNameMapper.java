@@ -13,20 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.mijack.zero.ddd.infrastructure;
+
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-@EnableDomainRepository(basePackages = {"com.mijack.zero.biz.user.infrastructure.dao"})
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
-
+public interface FieldNameMapper {
 }

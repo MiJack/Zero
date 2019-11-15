@@ -89,6 +89,7 @@ dependencies {
     // mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1"
+//    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.1.2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -110,8 +111,8 @@ application {
 }
 
 bootJar {
-    baseName = 'gs-spring-boot-docker'
-    version = '0.1.0'
+    archiveBaseName = 'gs-spring-boot-docker'
+    archiveVersion = '0.1.0'
 }
 
 task unpack(type: Copy) {

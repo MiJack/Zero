@@ -16,17 +16,20 @@
 
 package com.mijack.zero.biz.user.infrastructure.dao;
 
+import com.mijack.zero.ddd.infrastructure.FieldNameMapper;
+import com.mijack.zero.ddd.infrastructure.Table;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.biz.user.domain.User;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 用户存储管理
  *
  * @author Mi&Jack
  */
-@Repository
+@Mapper
+@Table(name = "zero_user",fieldNameMapper = FieldNameMapper.class)
 public interface UserDao extends IDomainDao<Long, User> {
 
     /**
@@ -36,7 +39,7 @@ public interface UserDao extends IDomainDao<Long, User> {
      * @return 如果未查询到，返回null
      */
     default User findOneByName(String name) {
-        return findOne(Criteria.eq("name", name));
+        return queryOne(Criteria.eq("name", name));
     }
 
     /**
@@ -46,6 +49,6 @@ public interface UserDao extends IDomainDao<Long, User> {
      * @return 如果未查询到，返回null
      */
     default User findOneByEmail(String email){
-        return findOne(Criteria.eq("email", email));
+        return queryOne(Criteria.eq("email", email));
     }
 }

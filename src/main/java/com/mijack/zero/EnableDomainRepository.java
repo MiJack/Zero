@@ -13,20 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 package com.mijack.zero;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
-@EnableDomainRepository(basePackages = {"com.mijack.zero.biz.user.infrastructure.dao"})
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
-
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+//@Import(DomainRepositoryBeanDefinitionRegistrar.class)
+public @interface EnableDomainRepository {
+    String[] basePackages() default {};
 }

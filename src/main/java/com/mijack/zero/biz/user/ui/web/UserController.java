@@ -36,8 +36,12 @@ import org.springframework.web.bind.annotation.PutMapping;
  */
 @ApiController
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/user/")
     public User createUser(CreateUserCommand createUserCommand) {

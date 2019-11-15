@@ -17,8 +17,6 @@
 package com.mijack.zero.biz.user.service;
 
 
-import java.util.List;
-
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;

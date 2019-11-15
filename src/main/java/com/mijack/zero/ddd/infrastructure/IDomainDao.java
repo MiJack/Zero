@@ -40,7 +40,7 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return 如果未查询到，返回null
      */
     default Domain findOne(Key key) {
-        @NotNull List<Domain> list = findList(Collections.singletonList(key));
+        @NotNull List<Domain> list = list(Collections.singletonList(key));
         return CollectionHelper.firstValue(list, null);
     }
 
@@ -51,7 +51,7 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
-    List<Domain> findList(List<Key> keys);
+    List<Domain> list(List<Key> keys);
 
     /**
      * 查找一个领域模型
@@ -59,8 +59,8 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @param criteria 查询条件
      * @return 如果未查询到，返回null
      */
-    default Domain findOne(Criteria criteria) {
-        @NotNull List<Domain> list = findList(criteria);
+    default Domain queryOne(Criteria criteria) {
+        @NotNull List<Domain> list = queryList(criteria);
         return CollectionHelper.firstValue(list, null);
     }
 
@@ -71,7 +71,7 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
-    List<Domain> findList(Criteria criteria);
+    List<Domain> queryList(Criteria criteria);
 
     /**
      * 添加一个领域对象

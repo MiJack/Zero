@@ -19,6 +19,8 @@ package com.mijack.zero.biz.user.domain;
 import java.sql.Timestamp;
 
 import com.mijack.zero.ddd.domain.DeletableDomain;
+import com.mijack.zero.ddd.infrastructure.FieldNameMapper;
+import com.mijack.zero.ddd.infrastructure.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
