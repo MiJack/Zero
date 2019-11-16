@@ -56,6 +56,10 @@ public class User implements DeletableDomain<Long> {
      */
     private Timestamp createTime;
     /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
+    /**
      * 是否删除
      */
     private boolean deleted;
