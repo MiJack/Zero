@@ -33,13 +33,15 @@ import org.apache.ibatis.session.Configuration;
  * @author Mi&Jack
  */
 public class ListDomainSqlSource implements SqlSource {
+    private String sqlPrefix;
     private Configuration configuration;
     private final String tableName;
     private final Class domainClazz;
     private final Method method;
     CompositeCriteriaSqlFormatter sqlFormatter = new CompositeCriteriaSqlFormatter();
 
-    public ListDomainSqlSource(Configuration configuration, String tableName, Class domainClazz, Method method) {
+    public ListDomainSqlSource(String sqlPrefix, Configuration configuration, String tableName, Class domainClazz, Method method) {
+        this.sqlPrefix = sqlPrefix;
         this.configuration = configuration;
         this.tableName = tableName;
         this.domainClazz = domainClazz;
@@ -48,7 +50,7 @@ public class ListDomainSqlSource implements SqlSource {
 
     @Override
     public BoundSql getBoundSql(Object parameterObject) {
-        String sql = "select * from " + tableName;
+        String sql = sqlPrefix.replace("#{table}", tableName);
         if (!(parameterObject instanceof Criteria)) {
             return null;
         }

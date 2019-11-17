@@ -63,6 +63,11 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
     }
 
     @Override
+    public Long countBy(Criteria criteria) {
+        return Long.valueOf(queryList(criteria).size());
+    }
+
+    @Override
     public @NotNull List<Domain> queryList(Criteria criteria) {
         List<Domain> list = Lists.newArrayList();
         for (Domain domain : domainMap.values()) {

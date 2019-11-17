@@ -30,6 +30,8 @@ import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mijack.zero.common.Assert;
@@ -39,6 +41,7 @@ import com.mijack.zero.common.Assert;
  */
 @Service
 public class UserService {
+    public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     UserDao userDao;
     UserFactory userFactory;
 
@@ -57,6 +60,7 @@ public class UserService {
         Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
         Long id = userDao.allocateKey();
+        logger.info("allocateKey = {}", id);
         User user = userFactory.createUser(id, name, email);
         userDao.add(user);
         return user;

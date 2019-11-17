@@ -27,5 +27,5 @@ import lombok.Data;
 public class ParameterHolder {
     private String name;
     private Object value;
-    private Class type;
+    private Class<?> type;
 }

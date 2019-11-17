@@ -52,4 +52,5 @@ public interface UserDao extends IDomainDao<Long, User> {
     default User findOneByEmail(String email){
         return queryOne(Criteria.eq("email", email));
     }
+
 }
