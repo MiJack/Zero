@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.dao;
+package com.mijack.zero.common.mybatis;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.mijack.zero.ParameterHolder;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +49,10 @@ public class CompositeCriteriaSqlFormatter {
 
         map.put(Criteria.AndCriteria.class, new JoinCriteriaFormatter("AND"));
         map.put(Criteria.OrCriteria.class, new JoinCriteriaFormatter("OR"));
+
+        ExpressionCriteriaFormatter expressionCriteriaFormatter = new ExpressionCriteriaFormatter();
+        map.put(Criteria.FalseCriteria.class, expressionCriteriaFormatter);
+        map.put(Criteria.TrueCriteria.class, expressionCriteriaFormatter);
     }
 
     public String toSql(Criteria criteria) {
@@ -92,7 +96,9 @@ public class CompositeCriteriaSqlFormatter {
 
         @Override
         public List<ParameterHolder> getParameters(Criteria.FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
-            return Lists.newArrayList(new ParameterHolder(criteria.getField(), criteria.getValue()));
+            Object value = criteria.getValue();
+            Class<?> clazz = value != null ? value.getClass() : null;
+            return Lists.newArrayList(new ParameterHolder(criteria.getField(), value, clazz));
         }
     }
 
@@ -115,4 +121,15 @@ public class CompositeCriteriaSqlFormatter {
         }
     }
 
+    private class ExpressionCriteriaFormatter<T extends Criteria.ExpressionCriteria<T>> implements CriteriaFormatter<T> {
+        @Override
+        public String formatSql(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+            return criteria.getExpression();
+        }
+
+        @Override
+        public List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+            return Collections.emptyList();
+        }
+    }
 }

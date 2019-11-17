@@ -14,13 +14,12 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero;
+package com.mijack.zero.common.mybatis;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.mijack.zero.dao.CompositeCriteriaSqlFormatter;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -28,6 +27,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.scripting.LanguageDriver;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
@@ -41,7 +41,7 @@ public class DomainDaoLanguageDriver implements LanguageDriver {
     @Override
     public ParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
         if (!(parameterObject instanceof Criteria)) {
-            return null;
+            return new DefaultParameterHandler(mappedStatement, parameterObject, boundSql);
         }
         return new ParameterHandler() {
             @Override

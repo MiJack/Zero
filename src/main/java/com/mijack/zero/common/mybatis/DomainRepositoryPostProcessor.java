@@ -15,29 +15,22 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero;
+package com.mijack.zero.common.mybatis;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.nio.channels.spi.SelectorProvider;
 import java.util.List;
 
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
-import com.mijack.zero.ddd.infrastructure.Table;
-import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
-import org.apache.ibatis.annotations.Lang;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.builder.annotation.ProviderSqlSource;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.LanguageDriver;
-import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.slf4j.Logger;
@@ -71,12 +64,13 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
                 Table table = (Table) mapperInterface.getAnnotation(Table.class);
                 String tableName = table.name();
                 Class domainClazz = (Class) ((ParameterizedType) mapperInterface.getGenericInterfaces()[0]).getActualTypeArguments()[1];
+                Class domainKeyClazz = (Class) ((ParameterizedType) domainClazz.getGenericInterfaces()[0]).getActualTypeArguments()[0];
                 String daoClazzName = mapperInterface.getName();
                 List<Method> methods = Lists.newArrayList();
                 loadMethod(mapperInterface, methods);
                 for (Method method : methods) {
                     logger.info("method = {}", method);
-                    addMappedStatement(mapperFactoryBean, method, tableName, domainClazz, daoClazzName);
+                    addMappedStatement(mapperFactoryBean, method, tableName, domainClazz, domainKeyClazz, daoClazzName);
                 }
 
                 logger.info("class = {}", beanClass);
@@ -85,7 +79,7 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
         return null;
     }
 
-    private void addMappedStatement(MapperFactoryBean mapperFactoryBean, Method method, String tableName, Class domainClazz, String daoClazzName) {
+    private void addMappedStatement(MapperFactoryBean mapperFactoryBean, Method method, String tableName, Class domainClazz, Class domainKeyClazz, String daoClazzName) {
         String id = daoClazzName + "." + method.getName();
         Configuration configuration = mapperFactoryBean.getSqlSession().getConfiguration();
         LanguageDriver languageDriver = loadLanguageDriver(method, configuration);
@@ -96,8 +90,23 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
         }
         MappedStatement.Builder builder = new MappedStatement.Builder(configuration, id, sqlSource, sqlType);
         builder.lang(languageDriver);
-        builder.resultMaps(buildResultMap(configuration, domainClazz));
+        if (METHOD_ALLOCATE_KEY.equals(method.getName())) {
+            builder.resultMaps(buildAllocateKeyResultMap(configuration, domainClazz, domainKeyClazz));
+        } else {
+            builder.resultMaps(buildResultMap(configuration, domainClazz));
+        }
         configuration.addMappedStatement(builder.build());
+    }
+
+    private List<ResultMap> buildAllocateKeyResultMap(Configuration configuration, Class domainClazz, Class domainKeyClazz) {
+        List<ResultMap> resultMaps = Lists.newArrayList();
+//        List<ResultMapping> resultMappings = Lists.newArrayList();
+//        ResultMapping resultMapping = new ResultMapping.Builder(configuration, "id", "id", domainKeyClazz).build();
+//        resultMappings.add(resultMapping);
+//        ResultMap resultMap = new ResultMap.Builder(configuration, "id", domainKeyClazz, resultMappings).build();
+//        resultMaps.add(resultMap);
+//
+        return resultMaps;
     }
 
     private LanguageDriver loadLanguageDriver(Method method, Configuration configuration) {
@@ -135,50 +144,50 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
 
     private SqlSource buildSqlSource(Class domainClazz, Configuration configuration, String tableName, Method method) {
         String methodName = method.getName();
-        if (add.equals(methodName)) {
+        if (METHOD_ADD.equals(methodName)) {
 
         }
-        if (update.equals(methodName)) {
+        if (METHOD_UPDATE.equals(methodName)) {
         }
-        if (delete.equals(methodName)) {
+        if (METHOD_DELETE.equals(methodName)) {
             if (domainClazz.isAssignableFrom(DeletableDomain.class)) {
             } else {
 
             }
         }
-        if (queryList.equals(methodName)) {
-            return new DomainDaoProviderSqlSource(configuration, tableName, domainClazz, method);
+        if (METHOD_QUERY_LIST.equals(methodName)) {
+            return new ListDomainSqlSource(configuration, tableName, domainClazz, method);
         }
-        if (allocateKey.equals(methodName)) {
+        if (METHOD_ALLOCATE_KEY.equals(methodName)) {
+            return new AllocateKeySqlSource(configuration, tableName, domainClazz, method);
         }
         return null;
 
     }
 
-    public static final String add = "add";
-    public static final String update = "update";
-    public static final String delete = "delete";
-    public static final String queryList = "queryList";
-    public static final String allocateKey = "allocateKey";
+    public static final String METHOD_ADD = "add";
+    public static final String METHOD_UPDATE = "update";
+    public static final String METHOD_DELETE = "delete";
+    public static final String METHOD_QUERY_LIST = "queryList";
+    public static final String METHOD_ALLOCATE_KEY = "allocateKey";
 
     private SqlCommandType buildSqlType(Class domainClazz, Method method) {
         //  com.mijack.zero.biz.user.infrastructure.dao.UserDao.add
         String name = method.getName();
-        if (add.equals(name)) {
+        if (METHOD_ADD.equals(name)) {
             return SqlCommandType.INSERT;
         }
-        if (update.equals(name)) {
+        if (METHOD_UPDATE.equals(name)) {
             return SqlCommandType.UPDATE;
         }
-        if (delete.equals(name)) {
+        if (METHOD_DELETE.equals(name)) {
             return (domainClazz.isAssignableFrom(DeletableDomain.class)) ? SqlCommandType.UPDATE : SqlCommandType.DELETE;
         }
-        if (queryList.equals(name)) {
+        if (METHOD_QUERY_LIST.equals(name)) {
             return SqlCommandType.SELECT;
         }
-        if (allocateKey.equals(name)) {
-            // todo 确认实现
-            return SqlCommandType.SELECT;
+        if (METHOD_ALLOCATE_KEY.equals(name)) {
+            return SqlCommandType.INSERT;
         }
 
         return null;

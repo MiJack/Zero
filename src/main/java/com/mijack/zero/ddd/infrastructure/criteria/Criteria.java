@@ -27,6 +27,8 @@ import lombok.EqualsAndHashCode;
  * @author Mi&Jack
  */
 public interface Criteria {
+
+
     /**
      * field = value
      *
@@ -109,6 +111,18 @@ public interface Criteria {
             OrCriteria orCriteria = new OrCriteria(this);
             orCriteria.appendCriterion(criterion);
             return orCriteria;
+        }
+    }
+
+    Criteria TRUE = new TrueCriteria();
+    Criteria FALSE = new FalseCriteria();
+
+    @Data
+    class ExpressionCriteria<T extends ExpressionCriteria<T>> implements Criteria {
+        private final String expression;
+
+        public ExpressionCriteria(String expression) {
+            this.expression = expression;
         }
     }
 
@@ -215,6 +229,18 @@ public interface Criteria {
     class OrCriteria extends JoinCriteria<OrCriteria> {
         public OrCriteria(Criteria... criterion) {
             super(criterion);
+        }
+    }
+
+    class FalseCriteria extends ExpressionCriteria {
+        public FalseCriteria() {
+            super("1 = 0");
+        }
+    }
+
+    class TrueCriteria extends ExpressionCriteria {
+        public TrueCriteria() {
+            super("1 = 1");
         }
     }
 }

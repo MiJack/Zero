@@ -14,15 +14,18 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.infrastructure;
+package com.mijack.zero.common.mybatis;
 
-import org.apache.ibatis.mapping.MappedStatement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
-public class SqlSelectProvider {
-    public String dynamicSQL(MappedStatement ms) {
-        return null;
-    }
+@Data
+@AllArgsConstructor
+public class ParameterHolder {
+    private String name;
+    private Object value;
+    private Class type;
 }

@@ -16,8 +16,7 @@
 
 package com.mijack.zero.biz.user.infrastructure.dao;
 
-import com.mijack.zero.ddd.infrastructure.FieldNameMapper;
-import com.mijack.zero.ddd.infrastructure.Table;
+import com.mijack.zero.common.mybatis.Table;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.biz.user.domain.User;

@@ -17,18 +17,16 @@
 
 package com.mijack.zero.ddd.infrastructure;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.mijack.zero.DomainDaoLanguageDriver;
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.utils.CollectionHelper;
-import org.apache.ibatis.annotations.Lang;
-import org.apache.ibatis.annotations.SelectProvider;
 
 /**
  * @param <Key>    领域对象的主键类型
@@ -54,8 +52,38 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
-    @SelectProvider(type = SqlSelectProvider.class, method = "dynamicSQL")
     List<Domain> list(List<Key> keys);
+
+    /**
+     * 统计表里未删除的记录数
+     *
+     * @return
+     */
+    default Long count() {
+        if (isDeletableDomain()) {
+            return countBy(Criteria.eq("deleted", 0));
+        }
+        return countBy(Criteria.TRUE);
+    }
+
+    /**
+     * 判断当前对象是否为DeletableDomain
+     *
+     * @return
+     * @see DeletableDomain
+     */
+    default boolean isDeletableDomain() {
+        Class domainClazz = (Class) ((ParameterizedType) getClass().getGenericInterfaces()[0]).getActualTypeArguments()[1];
+        return domainClazz.isAssignableFrom(DeletableDomain.class);
+    }
+
+    /**
+     * 给定待查询的领域对象的查询条件，返回对应的个数
+     *
+     * @param criteria
+     * @return
+     */
+    Long countBy(Criteria criteria);
 
     /**
      * 查找一个领域模型
@@ -69,13 +97,12 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
     }
 
     /**
-     * 给定待查询的领域对象的主键列表，查找领域模型
+     * 给定待查询的领域对象的查询条件，查找领域模型
      *
      * @param criteria
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
-    @Lang(DomainDaoLanguageDriver.class)
     List<Domain> queryList(Criteria criteria);
 
     /**
@@ -138,4 +165,13 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return
      */
     Key allocateKey();
+
+    /**
+     * 列举出所有对象
+     *
+     * @return
+     */
+    default List<Domain> listAll() {
+        return queryList(Criteria.TRUE);
+    }
 }

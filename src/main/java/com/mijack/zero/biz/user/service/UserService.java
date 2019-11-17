@@ -23,6 +23,8 @@ import com.mijack.zero.common.exceptions.WrongParamException;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
+import java.util.List;
+
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
@@ -55,7 +57,9 @@ public class UserService {
         Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
         Long id = userDao.allocateKey();
-        return userFactory.createUser(id, name, email);
+        User user = userFactory.createUser(id, name, email);
+        userDao.add(user);
+        return user;
     }
 
     public User updateUserInfo(Long id, String name, String email) {
@@ -73,5 +77,9 @@ public class UserService {
         }
         Assert.state(userDao.update(user) > 0, () -> createException(SystemErrorException.class, "更新数据异常"));
         return user;
+    }
+
+    public List<User> listUser() {
+        return userDao.listAll();
     }
 }

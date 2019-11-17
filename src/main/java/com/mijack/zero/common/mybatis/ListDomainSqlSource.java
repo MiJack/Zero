@@ -14,14 +14,12 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero;
+package com.mijack.zero.common.mybatis;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.mijack.zero.dao.CompositeCriteriaSqlFormatter;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.StaticSqlSource;
@@ -34,14 +32,14 @@ import org.apache.ibatis.session.Configuration;
 /**
  * @author Mi&Jack
  */
-public class DomainDaoProviderSqlSource implements SqlSource {
+public class ListDomainSqlSource implements SqlSource {
     private Configuration configuration;
     private final String tableName;
     private final Class domainClazz;
     private final Method method;
     CompositeCriteriaSqlFormatter sqlFormatter = new CompositeCriteriaSqlFormatter();
 
-    public DomainDaoProviderSqlSource(Configuration configuration, String tableName, Class domainClazz, Method method) {
+    public ListDomainSqlSource(Configuration configuration, String tableName, Class domainClazz, Method method) {
         this.configuration = configuration;
         this.tableName = tableName;
         this.domainClazz = domainClazz;

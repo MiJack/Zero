@@ -15,7 +15,10 @@
  */
 package com.mijack.zero;
 
+import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -24,12 +27,15 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @author Mi&Jack
  */
 @SpringBootApplication
-@EnableDomainRepository(basePackages = {"com.mijack.zero.biz.user.infrastructure.dao"})
 public class ZeroApplication {
+    public static final Logger logger = LoggerFactory.getLogger(ZeroApplication.class);
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(ZeroApplication.class, args);
-        context.getBean(UserService.class).registerUser("jack", "jack@email.com");
+        UserService userService = context.getBean(UserService.class);
+        User user = userService.registerUser("mijack", "mijack@email.com");
+        logger.info("user: {}", user);
+        userService.listUser().forEach(u -> logger.info("{}", u));
     }
 
 }
