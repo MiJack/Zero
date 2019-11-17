@@ -22,6 +22,7 @@ import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.biz.user.domain.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * 用户存储管理
@@ -29,7 +30,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Mi&Jack
  */
 @Mapper
-@Table(name = "zero_user",fieldNameMapper = FieldNameMapper.class)
+@Repository
+@Table(name = "Zero_User")
 public interface UserDao extends IDomainDao<Long, User> {
 
     /**

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Mi&Jack
@@ -124,6 +125,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class EqCriteria extends FieldCriteria<EqCriteria> {
 
@@ -132,6 +134,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class NotEqCriteria extends FieldCriteria<NotEqCriteria> {
         public NotEqCriteria(String field, Object value) {
@@ -139,6 +142,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class LikeCriteria extends FieldCriteria<LikeCriteria> {
         public LikeCriteria(String field, Object value) {
@@ -146,6 +150,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class NotLikeCriteria extends FieldCriteria<NotLikeCriteria> {
         public NotLikeCriteria(String field, Object value) {
@@ -153,6 +158,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class GtCriteria extends FieldCriteria<GtCriteria> {
 
@@ -161,6 +167,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class GeCriteria extends FieldCriteria<GeCriteria> {
 
@@ -169,6 +176,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class LtCriteria extends FieldCriteria<LtCriteria> {
 
@@ -177,6 +185,7 @@ public interface Criteria {
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @Data
     class LeCriteria extends FieldCriteria<LeCriteria> {
         public LeCriteria(String field, Object value) {

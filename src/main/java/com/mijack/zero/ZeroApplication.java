@@ -15,8 +15,10 @@
  */
 package com.mijack.zero;
 
+import com.mijack.zero.biz.user.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Mi&Jack
@@ -26,7 +28,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ZeroApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(ZeroApplication.class, args);
+        context.getBean(UserService.class).registerUser("jack", "jack@email.com");
     }
 
 }

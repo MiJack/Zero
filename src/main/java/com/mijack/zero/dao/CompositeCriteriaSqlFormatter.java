@@ -16,11 +16,13 @@
 
 package com.mijack.zero.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.mijack.zero.ParameterHolder;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +59,7 @@ public class CompositeCriteriaSqlFormatter {
     }
 
 
-    public List<Object> getParameters(Criteria criteria) {
+    public List<ParameterHolder> getParameters(Criteria criteria) {
         return map.get(criteria.getClass()).getParameters(criteria, this);
     }
 
@@ -78,7 +80,7 @@ public class CompositeCriteriaSqlFormatter {
          * @param compositeFormatter
          * @return
          */
-        List<Object> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter);
+        List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter);
     }
 
     private class FieldCriteriaFormatter implements CriteriaFormatter<Criteria.FieldCriteria> {
@@ -89,8 +91,8 @@ public class CompositeCriteriaSqlFormatter {
         }
 
         @Override
-        public List<Object> getParameters(Criteria.FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
-            return Lists.newArrayList(criteria.getValue());
+        public List<ParameterHolder> getParameters(Criteria.FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+            return Lists.newArrayList(new ParameterHolder(criteria.getField(), criteria.getValue()));
         }
     }
 
@@ -107,8 +109,9 @@ public class CompositeCriteriaSqlFormatter {
         }
 
         @Override
-        public List<Object> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
-            return criteria.getCriteria().stream().map(compositeFormatter::getParameters).collect(Collectors.toList());
+        public List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+            return criteria.getCriteria().stream().map(compositeFormatter::getParameters)
+                    .flatMap(Collection::stream).collect(Collectors.toList());
         }
     }
 

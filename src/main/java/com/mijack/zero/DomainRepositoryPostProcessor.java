@@ -17,16 +17,27 @@
 
 package com.mijack.zero;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.nio.channels.spi.SelectorProvider;
+import java.util.List;
 
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.ddd.infrastructure.Table;
+import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
+import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.builder.annotation.ProviderSqlSource;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.scripting.LanguageDriver;
+import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.slf4j.Logger;
@@ -34,6 +45,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Mi&Jack
@@ -52,12 +65,19 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
             if (beanClass.equals(MapperFactoryBean.class)) {
                 MapperFactoryBean mapperFactoryBean = (MapperFactoryBean) bean;
                 Class mapperInterface = mapperFactoryBean.getMapperInterface();
-                if (!mapperInterface.isAssignableFrom(IDomainDao.class)) {
+                if (!IDomainDao.class.isAssignableFrom(mapperInterface)) {
                     return null;
                 }
+                Table table = (Table) mapperInterface.getAnnotation(Table.class);
+                String tableName = table.name();
                 Class domainClazz = (Class) ((ParameterizedType) mapperInterface.getGenericInterfaces()[0]).getActualTypeArguments()[1];
-                String prefix = mapperInterface.getName();
-                addMethod(mapperInterface, domainClazz, mapperFactoryBean, prefix);
+                String daoClazzName = mapperInterface.getName();
+                List<Method> methods = Lists.newArrayList();
+                loadMethod(mapperInterface, methods);
+                for (Method method : methods) {
+                    logger.info("method = {}", method);
+                    addMappedStatement(mapperFactoryBean, method, tableName, domainClazz, daoClazzName);
+                }
 
                 logger.info("class = {}", beanClass);
             }
@@ -65,62 +85,80 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
         return null;
     }
 
-    private void addMethod(Class currentInterface, Class domainClazz, MapperFactoryBean mapperFactoryBean, String prefix) {
+    private void addMappedStatement(MapperFactoryBean mapperFactoryBean, Method method, String tableName, Class domainClazz, String daoClazzName) {
+        String id = daoClazzName + "." + method.getName();
+        Configuration configuration = mapperFactoryBean.getSqlSession().getConfiguration();
+        LanguageDriver languageDriver = loadLanguageDriver(method, configuration);
+        SqlSource sqlSource = buildSqlSource(domainClazz, configuration, tableName, method);
+        SqlCommandType sqlType = buildSqlType(domainClazz, method);
+        if (sqlSource == null || sqlType == null) {
+            return;
+        }
+        MappedStatement.Builder builder = new MappedStatement.Builder(configuration, id, sqlSource, sqlType);
+        builder.lang(languageDriver);
+        builder.resultMaps(buildResultMap(configuration, domainClazz));
+        configuration.addMappedStatement(builder.build());
+    }
+
+    private LanguageDriver loadLanguageDriver(Method method, Configuration configuration) {
+        logger.info("loadLanguageDriver info: method = {}", method);
+        return configuration.getLanguageDriver(DomainDaoLanguageDriver.class);
+    }
+
+    private List<ResultMap> buildResultMap(Configuration configuration, Class domainClazz) {
+        List<ResultMap> resultMaps = Lists.newArrayList();
+        List<ResultMapping> resultMappings = Lists.newArrayList();
+        for (Field field : domainClazz.getDeclaredFields()) {
+            String property = field.getName();
+            String column = field.getName();
+            ResultMapping resultMapping = new ResultMapping.Builder(configuration, property, column, field.getType()).build();
+            resultMappings.add(resultMapping);
+        }
+        ResultMap resultMap = new ResultMap.Builder(configuration, domainClazz.getName(), domainClazz, resultMappings).build();
+        resultMaps.add(resultMap);
+        return resultMaps;
+    }
+
+    private void loadMethod(Class currentInterface, List<Method> methods) {
         for (Method method : currentInterface.getDeclaredMethods()) {
             if (method.isDefault()) {
                 continue;
             }
-            logger.info("method: {}", method);
-            Configuration configuration = mapperFactoryBean.getSqlSession().getConfiguration();
-            String id = prefix + "." + method.getName();
-
-            if (!configuration.getMappedStatementNames().contains(id)) {
-                logger.warn("mappedStatement missing : id = {} ", id);
-
-                addMappedStatement(configuration, domainClazz, id, method);
-            }
+            methods.add(method);
         }
         if (currentInterface.getInterfaces() != null) {
             for (Class superInterface : currentInterface.getInterfaces()) {
-                addMethod(superInterface, domainClazz, mapperFactoryBean, prefix);
+                loadMethod(superInterface, methods);
             }
         }
     }
 
-    private void addMappedStatement(Configuration configuration, Class domainClazz, String id, Method method) {
-        configuration.addMappedStatement(buildMappedStatement(configuration, domainClazz, id, method));
-    }
+    private SqlSource buildSqlSource(Class domainClazz, Configuration configuration, String tableName, Method method) {
+        String methodName = method.getName();
+        if (add.equals(methodName)) {
 
-    private SqlSource buildSqlSource(Class domainClazz, Method method) {
-        Table table = (Table) domainClazz.getAnnotation(Table.class);
-        String name = table.name();
-        if (add.equals(name)) {
         }
-        if (update.equals(name)) {
+        if (update.equals(methodName)) {
         }
-        if (delete.equals(name)) {
+        if (delete.equals(methodName)) {
             if (domainClazz.isAssignableFrom(DeletableDomain.class)) {
             } else {
 
             }
         }
-        if (findList.equals(name)) {
+        if (queryList.equals(methodName)) {
+            return new DomainDaoProviderSqlSource(configuration, tableName, domainClazz, method);
         }
-        if (allocateKey.equals(name)) {
+        if (allocateKey.equals(methodName)) {
         }
-        throw new UnsupportedOperationException();
+        return null;
 
-    }
-
-    private MappedStatement buildMappedStatement(Configuration configuration, Class domainClazz, String id, Method method) {
-        MappedStatement.Builder builder = new MappedStatement.Builder(configuration, id, buildSqlSource(domainClazz, method), buildSqlType(domainClazz, method));
-        return builder.build();
     }
 
     public static final String add = "add";
     public static final String update = "update";
     public static final String delete = "delete";
-    public static final String findList = "findList";
+    public static final String queryList = "queryList";
     public static final String allocateKey = "allocateKey";
 
     private SqlCommandType buildSqlType(Class domainClazz, Method method) {
@@ -135,7 +173,7 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
         if (delete.equals(name)) {
             return (domainClazz.isAssignableFrom(DeletableDomain.class)) ? SqlCommandType.UPDATE : SqlCommandType.DELETE;
         }
-        if (findList.equals(name)) {
+        if (queryList.equals(name)) {
             return SqlCommandType.SELECT;
         }
         if (allocateKey.equals(name)) {
@@ -143,7 +181,7 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
             return SqlCommandType.SELECT;
         }
 
-        throw new UnsupportedOperationException();
+        return null;
     }
 
 

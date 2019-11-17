@@ -16,16 +16,18 @@
 
 package com.mijack.zero.ddd.infrastructure;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
  * @author Mi&Jack
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Table {
-    String name();
+
+@Target({METHOD, TYPE})
+@Retention(RUNTIME)
+public @interface DomainDaoProvider {
 }

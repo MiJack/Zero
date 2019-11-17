@@ -22,10 +22,13 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.mijack.zero.DomainDaoLanguageDriver;
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.utils.CollectionHelper;
+import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.SelectProvider;
 
 /**
  * @param <Key>    领域对象的主键类型
@@ -51,6 +54,7 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
+    @SelectProvider(type = SqlSelectProvider.class, method = "dynamicSQL")
     List<Domain> list(List<Key> keys);
 
     /**
@@ -71,6 +75,7 @@ public interface IDomainDao<Key, Domain extends BaseDomain<Key>> {
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
+    @Lang(DomainDaoLanguageDriver.class)
     List<Domain> queryList(Criteria criteria);
 
     /**

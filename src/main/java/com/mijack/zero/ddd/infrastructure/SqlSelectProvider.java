@@ -16,16 +16,13 @@
 
 package com.mijack.zero.ddd.infrastructure;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.apache.ibatis.mapping.MappedStatement;
 
 /**
  * @author Mi&Jack
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Table {
-    String name();
+public class SqlSelectProvider {
+    public String dynamicSQL(MappedStatement ms) {
+        return null;
+    }
 }
