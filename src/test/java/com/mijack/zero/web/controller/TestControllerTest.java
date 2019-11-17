@@ -18,6 +18,7 @@ package com.mijack.zero.web.controller;
 
 import com.mijack.zero.common.exceptions.BizCode;
 import com.mijack.zero.common.web.bo.ApiResult;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import static org.junit.Assert.*;
  * @author Mi&Jack
  */
 @RunWith(SpringRunner.class)
+@Ignore
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestControllerTest {
 

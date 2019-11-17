@@ -28,6 +28,9 @@ import com.mijack.zero.ddd.infrastructure.MemoryDomainDao;
 public class MemoryDomainDaoFactory {
     public static <KEY, DOMAIN extends BaseDomain<KEY>, DOMAIN_DAO extends IDomainDao<KEY, DOMAIN>>
     DOMAIN_DAO proxyForDao(Class<DOMAIN_DAO> daoInterface, IDomainKeyGenerator<KEY, DOMAIN> domainKeyGenerator) {
-        return (DOMAIN_DAO) Proxy.newProxyInstance(daoInterface.getClassLoader(), new Class[]{daoInterface}, new MemoryDomainDao<>(daoInterface,domainKeyGenerator, new CriteriaFilter()));
+        @SuppressWarnings("unchecked")
+        DOMAIN_DAO domainDao = (DOMAIN_DAO) Proxy.newProxyInstance(daoInterface.getClassLoader(), new Class[]{daoInterface},
+                new MemoryDomainDao<>(daoInterface, domainKeyGenerator, new CriteriaFilter()));
+        return domainDao;
     }
 }

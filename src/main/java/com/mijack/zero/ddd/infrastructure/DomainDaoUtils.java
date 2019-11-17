@@ -41,19 +41,16 @@ public interface DomainDaoUtils {
      */
     @SuppressWarnings("unchecked")
     @NotNull
-    static <D extends BaseDomain<?>> Class<D> getDomainClass(Class<? super IDomainDao<?, D>> daoClazz) {
+    static <D extends BaseDomain<?>> Class<D> getDomainClass(Class<? extends IDomainDao<?, D>> daoClazz) {
         Type[] genericInterfaces = daoClazz.getGenericInterfaces();
         if (genericInterfaces != null && genericInterfaces.length > 0) {
             Type genericInterface = genericInterfaces[0];
             ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
             Type actualTypeArgument = parameterizedType.getActualTypeArguments()[1];
-            if (actualTypeArgument instanceof Class) {
-                Class<?> clazz = (Class<?>) actualTypeArgument;
-                if (clazz.isAssignableFrom(BaseDomain.class)) {
-                    @SuppressWarnings("unchecked")
-                    Class<D> result = (Class<D>) clazz;
-                    return result;
-                }
+            if (actualTypeArgument instanceof Class<?> && isDomain((Class<?>) actualTypeArgument)) {
+                @SuppressWarnings("unchecked")
+                Class<D> result = (Class<D>) actualTypeArgument;
+                return result;
             }
         }
         throw new UnsupportedOperationException();
@@ -67,7 +64,18 @@ public interface DomainDaoUtils {
      * @see DeletableDomain
      */
     static boolean isDeletableDomain(Class<?> clazz) {
-        return clazz.isAssignableFrom(DeletableDomain.class);
+        return DeletableDomain.class.isAssignableFrom(clazz);
+    }
+
+    /**
+     * 判断对象是否为BaseDomain
+     *
+     * @param clazz 待判断的类型
+     * @return 是/否
+     * @see BaseDomain
+     */
+    static boolean isDomain(Class<?> clazz) {
+        return BaseDomain.class.isAssignableFrom(clazz);
     }
 
     /**

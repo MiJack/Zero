@@ -36,6 +36,7 @@ public interface CollectionHelper {
      * @param <T>   泛型
      * @return list
      */
+    @SafeVarargs
     static <T> List<T> toList(T... items) {
         if (items == null) {
             return Collections.emptyList();

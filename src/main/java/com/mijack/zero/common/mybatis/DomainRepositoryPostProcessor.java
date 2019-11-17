@@ -21,6 +21,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.ddd.domain.BaseDomain;
@@ -67,7 +69,7 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
                     mapperInterface;
             Table table = daoInterface.getAnnotation(Table.class);
             String tableName = table.name();
-            Class<? extends BaseDomain<?>> domainClazz = DomainDaoUtils.getDomainClass(daoInterface);
+            Class<? extends BaseDomain<?>> domainClazz = getDomainClass(daoInterface);
             if (domainClazz == null) {
                 return null;
             }
@@ -188,5 +190,12 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
     public static void main(String[] args) {
         Class<User> domainClass = DomainDaoUtils.getDomainClass(UserDao.class);
         logger.info("domainClass = {}", domainClass);
+    }
+
+    static <T extends BaseDomain<?>> Class<? extends BaseDomain<?>> getDomainClass(Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface) {
+        @SuppressWarnings("unchecked")
+        @NotNull Class<T> domainClass =
+                DomainDaoUtils.getDomainClass(((Class<? extends IDomainDao<?, T>>) (daoInterface)));
+        return domainClass;
     }
 }

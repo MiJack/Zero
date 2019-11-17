@@ -73,8 +73,7 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @see DeletableDomain
      */
     default boolean isDeletableDomain() {
-        @SuppressWarnings("unchecked")
-        Class<D> domainClazz = DomainDaoUtils.getDomainClass((Class<? super IDomainDao<?, D>>) getClass());
+        Class<D> domainClazz = getDomainClass();
         return domainClazz.isAssignableFrom(DeletableDomain.class);
     }
 
@@ -167,7 +166,7 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     default K allocateKey() {
         @SuppressWarnings("unchecked")
-        Class<D> domainClazz = DomainDaoUtils.<D>getDomainClass((Class<? super IDomainDao<?, D>>) getClass());
+        Class<D> domainClazz = getDomainClass();
         D domain = BeanUtils.instantiateClass(domainClazz);
         if (add(domain) == 1) {
             return domain.getId();
@@ -181,13 +180,24 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @return 申请的对象
      */
     default D allocate() {
-        @SuppressWarnings("unchecked")
-        Class<D> domainClazz = (Class<D>) DomainDaoUtils.getDomainClass((Class<? super IDomainDao<K, D>>) getClass());
+        Class<D> domainClazz = getDomainClass();
         D domain = BeanUtils.instantiateClass(domainClazz);
         if (add(domain) == 1) {
             return domain;
         }
         return null;
+    }
+
+    /**
+     * 获取Domain的Class对象
+     *
+     * @return Domain的Class对象
+     */
+    @NotNull
+    default Class<D> getDomainClass() {
+        @SuppressWarnings("unchecked")
+        Class<? extends IDomainDao<K, D>> clazz = (Class<? extends IDomainDao<K, D>>) getClass();
+        return DomainDaoUtils.getDomainClass(clazz);
     }
 
     /**
