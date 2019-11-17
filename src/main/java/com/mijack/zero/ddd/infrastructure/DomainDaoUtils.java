@@ -33,14 +33,15 @@ public interface DomainDaoUtils {
      * 获取IDomainDao的Domain Class
      *
      * @param daoClazz dao类
+     * @param <D>      Domain Class
      * @return IDomainDao的Domain Class
+     * @throws UnsupportedOperationException daoClazz 不是IDomainDao类
      * @see BaseDomain
      * @see IDomainDao
-     * @param <D>
-     * @throws UnsupportedOperationException
      */
+    @SuppressWarnings("unchecked")
     @NotNull
-    static <D extends BaseDomain<?>> Class<D> getDomainClass(Class<? extends IDomainDao<?, D>> daoClazz) throws UnsupportedOperationException {
+    static <D extends BaseDomain<?>> Class<D> getDomainClass(Class<? super IDomainDao<?, D>> daoClazz) {
         Type[] genericInterfaces = daoClazz.getGenericInterfaces();
         if (genericInterfaces != null && genericInterfaces.length > 0) {
             Type genericInterface = genericInterfaces[0];

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mijack.zero.utils.CollectionHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -216,7 +217,7 @@ public interface Criteria {
         }
 
         public void appendCriterion(Criteria... criterion) {
-            this.criteria.addAll(Arrays.asList(criterion));
+            this.criteria.addAll(CollectionHelper.toList(criterion));
         }
     }
 

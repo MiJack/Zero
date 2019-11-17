@@ -16,6 +16,8 @@
 
 package com.mijack.zero.common.mybatis;
 
+import static com.mijack.zero.ddd.infrastructure.criteria.Criteria.*;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
+import com.mijack.zero.ddd.infrastructure.criteria.Criteria.JoinCriteria;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -33,76 +36,83 @@ import com.google.common.collect.Lists;
  */
 @Component
 public class CompositeCriteriaSqlFormatter {
-    Map<Class<? extends Criteria>, CriteriaFormatter> map = new HashMap<>();
+    Map<Class<? extends Criteria>, CriteriaFormatter<? extends Criteria>> map = new HashMap<>();
 
     public CompositeCriteriaSqlFormatter() {
         FieldCriteriaFormatter fieldCriteriaFormatter = new FieldCriteriaFormatter();
-        map.put(Criteria.EqCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.NotEqCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.LeCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.LtCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.GeCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.GtCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.LikeCriteria.class, fieldCriteriaFormatter);
-        map.put(Criteria.NotLikeCriteria.class, fieldCriteriaFormatter);
+        map.put(EqCriteria.class, fieldCriteriaFormatter);
+        map.put(NotEqCriteria.class, fieldCriteriaFormatter);
+        map.put(LeCriteria.class, fieldCriteriaFormatter);
+        map.put(LtCriteria.class, fieldCriteriaFormatter);
+        map.put(GeCriteria.class, fieldCriteriaFormatter);
+        map.put(GtCriteria.class, fieldCriteriaFormatter);
+        map.put(LikeCriteria.class, fieldCriteriaFormatter);
+        map.put(NotLikeCriteria.class, fieldCriteriaFormatter);
 
-
-        map.put(Criteria.AndCriteria.class, new JoinCriteriaFormatter("AND"));
-        map.put(Criteria.OrCriteria.class, new JoinCriteriaFormatter("OR"));
+        JoinCriteriaFormatter<AndCriteria> and = new JoinCriteriaFormatter<>("AND");
+        map.put(AndCriteria.class, and);
+        JoinCriteriaFormatter<OrCriteria> or = new JoinCriteriaFormatter<>("OR");
+        map.put(OrCriteria.class, or);
 
         ExpressionCriteriaFormatter expressionCriteriaFormatter = new ExpressionCriteriaFormatter();
-        map.put(Criteria.FalseCriteria.class, expressionCriteriaFormatter);
-        map.put(Criteria.TrueCriteria.class, expressionCriteriaFormatter);
+        map.put(FalseCriteria.class, expressionCriteriaFormatter);
+        map.put(TrueCriteria.class, expressionCriteriaFormatter);
     }
 
-    public String toSql(Criteria criteria) {
-        if (criteria == null || map.get(criteria.getClass()) == null) {
+    public <C extends Criteria> String toSql(C criteria) {
+        @SuppressWarnings("unchecked")
+        CriteriaFormatter<C> criteriaFormatter = (CriteriaFormatter<C>) map.get(criteria.getClass());
+        if (criteriaFormatter == null) {
             return null;
         }
-        return map.get(criteria.getClass()).formatSql(criteria, this);
+        return criteriaFormatter.formatSql(criteria, this);
     }
 
 
-    public List<ParameterHolder> getParameters(Criteria criteria) {
-        return map.get(criteria.getClass()).getParameters(criteria, this);
+    public <C extends Criteria> List<ParameterHolder> getParameters(C criteria) {
+        @SuppressWarnings("unchecked")
+        CriteriaFormatter<C> criteriaFormatter = (CriteriaFormatter<C>) map.get(criteria.getClass());
+        if (criteriaFormatter == null) {
+            return Collections.emptyList();
+        }
+        return criteriaFormatter.getParameters(criteria, this);
     }
 
     interface CriteriaFormatter<T extends Criteria> {
         /**
-         * todo
+         * 将Criteria格式化sql
          *
-         * @param criteria
-         * @param compositeFormatter
-         * @return
+         * @param criteria           查询条件
+         * @param compositeFormatter 组合的CriteriaFormatter
+         * @return 格式以后的sql
          */
         String formatSql(T criteria, CompositeCriteriaSqlFormatter compositeFormatter);
 
         /**
-         * todo
+         * 获取Criteria中所有的参数
          *
-         * @param criteria
-         * @param compositeFormatter
-         * @return
+         * @param criteria           查询条件
+         * @param compositeFormatter 组合的CriteriaFormatter
+         * @return Criteria中所有的参数
          */
         List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter);
     }
 
-    private class FieldCriteriaFormatter implements CriteriaFormatter<Criteria.FieldCriteria> {
-
+    private static class FieldCriteriaFormatter implements CriteriaFormatter<FieldCriteria<?>> {
         @Override
-        public String formatSql(Criteria.FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public String formatSql(FieldCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return criteria.getField() + " " + criteria.getOperation() + " ?";
         }
 
         @Override
-        public List<ParameterHolder> getParameters(Criteria.FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public List<ParameterHolder> getParameters(FieldCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             Object value = criteria.getValue();
             Class<?> clazz = value != null ? value.getClass() : null;
             return Lists.newArrayList(new ParameterHolder(criteria.getField(), value, clazz));
         }
     }
 
-    private class JoinCriteriaFormatter<T extends Criteria.JoinCriteria<T>> implements CriteriaFormatter<T> {
+    private static class JoinCriteriaFormatter<T extends JoinCriteria<T>> implements CriteriaFormatter<T> {
         private String join;
 
         public JoinCriteriaFormatter(String join) {
@@ -121,14 +131,14 @@ public class CompositeCriteriaSqlFormatter {
         }
     }
 
-    private class ExpressionCriteriaFormatter<T extends Criteria.ExpressionCriteria<T>> implements CriteriaFormatter<T> {
+    private static class ExpressionCriteriaFormatter implements CriteriaFormatter<ExpressionCriteria<?>> {
         @Override
-        public String formatSql(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public String formatSql(ExpressionCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return criteria.getExpression();
         }
 
         @Override
-        public List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public List<ParameterHolder> getParameters(ExpressionCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return Collections.emptyList();
         }
     }

@@ -41,7 +41,7 @@ public class ArchitectureTest {
         // 检查领域是否依赖基础领域对象
         JavaClasses importedClasses = new ClassFileImporter().importPackages("com.mijack.zero.biz.user.domain");
         ArchRule baseDomainRule = classes().should().implement(BaseDomain.class);
-        // todo delete字段移至do层
+        //  delete字段移至do层
         ArchRule fieldRule = fields().that().areNotFinal().and().areNotStatic()
                 .and().doNotHaveName("deleted")
                 .should().notHaveRawType(new DescribedPredicate<JavaClass>("领域对象的非静态非final字段不应该为Primitive类型（delete字段除外）") {

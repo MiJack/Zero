@@ -43,7 +43,7 @@ public class TestControllerTest {
 
     @Test
     public void testHello() {
-        ApiResult<String> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/hello", ApiResult.class);
+        ApiResult<?> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/hello", ApiResult.class);
         assertNotNull(apiResult);
         assertEquals(apiResult.getCode(), BizCode.SUCCESS.getCode());
         assertEquals(apiResult.getMessage(), BizCode.SUCCESS.getMessage());
@@ -52,7 +52,7 @@ public class TestControllerTest {
 
     @Test
     public void testError() {
-        ApiResult<String> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/error", ApiResult.class);
+        ApiResult<?> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/error", ApiResult.class);
         assertNotNull(apiResult);
         assertEquals(apiResult.getCode(), BizCode.SYSTEM_ERROR.getCode());
         assertEquals(apiResult.getMessage(), BizCode.SYSTEM_ERROR.getMessage());

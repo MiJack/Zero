@@ -19,7 +19,9 @@ package com.mijack.zero.common.web.mvc;
 import javax.servlet.http.HttpServletRequest;
 
 import com.mijack.zero.common.exceptions.ControllerException;
+import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.web.bo.QueryPage;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -41,8 +43,11 @@ public class PageHandlerMethodArgumentResolver implements HandlerMethodArgumentR
     }
 
     @Override
-    public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+    public Object resolveArgument(@NotNull MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) {
         HttpServletRequest servletRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
+        if (servletRequest == null) {
+            throw new SystemErrorException();
+        }
         String offsetKey = OFFSET_KEY;
         String limitKey = LIMIT_KEY;
         String offset = servletRequest.getParameter(offsetKey);

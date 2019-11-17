@@ -26,7 +26,11 @@ public enum UserError implements IError {
     /**
      * 用户信息已注册
      */
-    UserRegistered(-100, "用户信息已注册");
+    USER_REGISTERED(-100, "用户信息已注册"),
+    /**
+     * 用户未找到
+     */
+    USER_NOT_FOUND(-200, "用户未找到");
     @Getter
     private final int code;
     @Getter

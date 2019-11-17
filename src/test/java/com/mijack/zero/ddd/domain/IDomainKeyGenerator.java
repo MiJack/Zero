@@ -22,6 +22,6 @@ import java.util.Map;
 /**
  * @author Mi&Jack
  */
-public interface IDomainKeyGenerator<Key, Domain extends BaseDomain<Key>> {
-    Key allocateKey(Map<Key, Domain> domainMap);
+public interface IDomainKeyGenerator<K, D extends BaseDomain<K>> {
+    K allocateKey(Map<K, D> domainMap);
 }

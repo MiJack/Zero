@@ -17,11 +17,9 @@
 package com.mijack.zero.common.mybatis;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.builder.StaticSqlSource;
@@ -41,13 +39,11 @@ public class AddDomainSqlSource implements SqlSource {
     private final Configuration configuration;
     private final String tableName;
     private final Class<?> domainClazz;
-    private final Method method;
 
-    public AddDomainSqlSource(Configuration configuration, String tableName, Class<?> domainClazz, Method method) {
+    public AddDomainSqlSource(Configuration configuration, String tableName, Class<?> domainClazz) {
         this.configuration = configuration;
         this.tableName = tableName;
         this.domainClazz = domainClazz;
-        this.method = method;
     }
 
     @Override
@@ -62,20 +58,14 @@ public class AddDomainSqlSource implements SqlSource {
                 }
                 holders.add(new ParameterHolder(field.getName(), parameterObject != null ? field.get(parameterObject) : null, field.getType()));
             }
-            holders = holders.stream().filter(new Predicate<ParameterHolder>() {
-                @Override
-                public boolean test(ParameterHolder parameterHolder) {
-                    return false;
-                }
-            }).collect(Collectors.toList());
+            holders = holders.stream().filter(parameterHolder -> false).collect(Collectors.toList());
 
 
             String sql = holders.isEmpty() ? " INSERT INTO " + tableName + "() values()" : buildSql(holders);
             logger.info("sql = {}", sql);
             StaticSqlSource staticSqlSource = new StaticSqlSource(configuration, sql, Collections.emptyList());
-            BoundSql boundSql = staticSqlSource.getBoundSql(parameterObject);
 
-            return boundSql;
+            return staticSqlSource.getBoundSql(parameterObject);
         } catch (Exception e) {
             throw new DaoException(e);
         }

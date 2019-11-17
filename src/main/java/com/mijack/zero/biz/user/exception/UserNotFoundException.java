@@ -23,4 +23,13 @@ import com.mijack.zero.common.exceptions.BaseBizException;
  */
 public class UserNotFoundException extends BaseBizException {
     private static final long serialVersionUID = 254229908455591311L;
+
+    public UserNotFoundException() {
+        super(UserError.USER_NOT_FOUND);
+    }
+
+    public UserNotFoundException(String message) {
+        super(UserError.USER_NOT_FOUND.getCode(), message);
+    }
+
 }

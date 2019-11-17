@@ -17,6 +17,8 @@
 package com.mijack.zero.biz.user.service;
 
 
+import java.util.Objects;
+
 import javax.annotation.Resource;
 
 import com.mijack.zero.ZeroApplication;
@@ -26,11 +28,13 @@ import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import com.mijack.zero.ddd.domain.IDomainKeyGenerator;
 import com.mijack.zero.ddd.domain.MemoryDomainDaoFactory;
+
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.util.Assert;
 
 /**
  * @author Mi&Jack
@@ -59,19 +63,19 @@ public class UserServiceTest {
     @Test
     public void testRegisterUser() {
         User user = userService.registerUser("test", "test");
-        Assert.state(user.getEmail() == "test");
-        Assert.state(user.getName() == "test");
-        Assert.state(!user.isDeleted());
+        assertTrue("参数错误", Objects.equals(user.getEmail(), "test"));
+        assertTrue("参数错误", Objects.equals(user.getName(), "test"));
+        assertTrue("参数错误", !user.isDeleted());
     }
 
     @Test(expected = UserRegisteredException.class)
     public void testRegisterUserFailedCase1() {
-        User user = userService.registerUser("user", "test");
+        userService.registerUser("user", "test");
     }
 
     @Test(expected = UserRegisteredException.class)
     public void testRegisterUserFailedCase2() {
-        User user = userService.registerUser("test", "email");
+        userService.registerUser("test", "email");
     }
 
     @Test

@@ -63,10 +63,10 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
                 return null;
             }
             @SuppressWarnings("unchecked")
-            Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface = (Class<? extends IDomainDao<?, ?>>) mapperInterface;
+            Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface = (Class<? extends IDomainDao<?, ? extends BaseDomain<?>>>)
+                    mapperInterface;
             Table table = daoInterface.getAnnotation(Table.class);
             String tableName = table.name();
-            @SuppressWarnings("unchecked")
             Class<? extends BaseDomain<?>> domainClazz = DomainDaoUtils.getDomainClass(daoInterface);
             if (domainClazz == null) {
                 return null;
@@ -143,20 +143,20 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
     private SqlSource buildSqlSource(Class<? extends BaseDomain<?>> domainClazz, Configuration configuration, String tableName, Method method) {
         String methodName = method.getName();
         if (METHOD_ADD.equals(methodName)) {
-            return new AddDomainSqlSource(configuration, tableName, domainClazz, method);
+            return new AddDomainSqlSource(configuration, tableName, domainClazz);
         }
         if (METHOD_UPDATE.equals(methodName)) {
             return new UpdateDomainSqlSource(configuration, tableName, domainClazz, method);
         }
         if (METHOD_DELETE.equals(methodName)) {
             if (DomainDaoUtils.isDeletableDomain(domainClazz)) {
-                return new ListDomainSqlSource("update #{table}  set deleted = 1  ", configuration, tableName, domainClazz, method);
+                return new ListDomainSqlSource("update #{table}  set deleted = 1  ", configuration, tableName);
             } else {
-                return new ListDomainSqlSource("delete from #{table} ", configuration, tableName, domainClazz, method);
+                return new ListDomainSqlSource("delete from #{table} ", configuration, tableName);
             }
         }
         if (METHOD_QUERY_LIST.equals(methodName)) {
-            return new ListDomainSqlSource("select * from #{table} ", configuration, tableName, domainClazz, method);
+            return new ListDomainSqlSource("select * from #{table} ", configuration, tableName);
         }
         return null;
 

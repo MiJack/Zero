@@ -58,9 +58,10 @@ public class DomainDaoLanguageDriver implements LanguageDriver {
                 for (int i = 0; i < parameters.size(); i++) {
                     ParameterHolder parameter = parameters.get(i);
                     Object parameterValue = parameter.getValue();
-                    Class aClass = parameterValue.getClass();
-                    TypeHandler typeHandler = typeHandlerRegistry.getTypeHandler(aClass);
-                    typeHandler.setParameter(ps, i+1, parameterValue, boundSql.getParameterMappings().get(i).getJdbcType());
+                    @SuppressWarnings("unchecked")
+                    Class<? super Object> parameterValueClazz = (Class<? super Object>) parameterValue.getClass();
+                    TypeHandler<? super Object> typeHandler = typeHandlerRegistry.getTypeHandler(parameterValueClazz);
+                    typeHandler.setParameter(ps, i + 1, parameterValue, boundSql.getParameterMappings().get(i).getJdbcType());
                 }
             }
         };

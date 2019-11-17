@@ -79,11 +79,11 @@ public interface Assert {
     /**
      * 创建IllegalArgumentException的默认方法
      *
-     * @param msg
-     * @return
+     * @param message 异常信息
+     * @return 生成的Exception
      */
-    static IllegalArgumentException createIllegalArgumentException(String msg) {
-        return new IllegalArgumentException(msg);
+    static IllegalArgumentException createIllegalArgumentException(String message) {
+        return new IllegalArgumentException(message);
     }
 
 }

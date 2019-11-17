@@ -23,14 +23,14 @@ public interface IError {
     /**
      * 异常代码
      *
-     * @return
+     * @return 异常代码
      */
     int getCode();
 
     /**
      * 异常信息
      *
-     * @return
+     * @return 异常信息
      */
     String getMessage();
 }

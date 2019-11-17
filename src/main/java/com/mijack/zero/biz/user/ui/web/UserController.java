@@ -45,14 +45,12 @@ public class UserController {
 
     @PostMapping("/user/")
     public User createUser(CreateUserCommand createUserCommand) {
-        User user = userService.registerUser(createUserCommand.getName(), createUserCommand.getEmail());
-        return user;
+        return userService.registerUser(createUserCommand.getName(), createUserCommand.getEmail());
     }
 
     @PutMapping("/user")
     public User updateUserInfo(UpdateUserCommand updateUserCommand) {
-        User user = userService.updateUserInfo(updateUserCommand.getId(), updateUserCommand.getName(), updateUserCommand.getEmail());
-        return user;
+        return userService.updateUserInfo(updateUserCommand.getId(), updateUserCommand.getName(), updateUserCommand.getEmail());
     }
 
     @GetMapping("/user/{id}")

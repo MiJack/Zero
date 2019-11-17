@@ -36,7 +36,7 @@ public abstract class BaseBizException extends RuntimeException {
     /**
      * 异常代码
      */
-    private int code;
+    private final int code;
     /**
      * 异常信息
      */
@@ -52,8 +52,7 @@ public abstract class BaseBizException extends RuntimeException {
     }
 
     public static <T extends BaseBizException> T createException(Class<T> clazz) {
-        T baseBizException = BeanUtils.instantiateClass(clazz);
-        return baseBizException;
+        return BeanUtils.instantiateClass(clazz);
     }
 
     public static <T extends BaseBizException> T createException(Class<T> clazz, String message) {

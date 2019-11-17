@@ -30,10 +30,10 @@ public class UserFactory {
     /**
      * 创建用户
      *
-     * @param id
-     * @param name
-     * @param email
-     * @return
+     * @param id    用户id
+     * @param name  用户名
+     * @param email 用户邮箱
+     * @return 创建的用户
      */
     public User createUser(Long id, String name, String email) {
         User user = new User();

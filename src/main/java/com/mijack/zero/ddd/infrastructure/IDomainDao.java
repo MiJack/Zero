@@ -29,7 +29,7 @@ import com.mijack.zero.utils.CollectionHelper;
 import org.springframework.beans.BeanUtils;
 
 /**
- * @param <K>    领域对象的主键类型
+ * @param <K> 领域对象的主键类型
  * @param <D> 领域对象
  * @author Mi&Jack
  */
@@ -74,7 +74,7 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     default boolean isDeletableDomain() {
         @SuppressWarnings("unchecked")
-        Class<D> domainClazz = DomainDaoUtils.getDomainClass((Class<? extends IDomainDao<?, D>>) getClass());
+        Class<D> domainClazz = DomainDaoUtils.getDomainClass((Class<? super IDomainDao<?, D>>) getClass());
         return domainClazz.isAssignableFrom(DeletableDomain.class);
     }
 
@@ -167,7 +167,7 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     default K allocateKey() {
         @SuppressWarnings("unchecked")
-        Class<D> domainClazz = DomainDaoUtils.getDomainClass((Class<? extends IDomainDao<K, D>>) getClass());
+        Class<D> domainClazz = DomainDaoUtils.<D>getDomainClass((Class<? super IDomainDao<?, D>>) getClass());
         D domain = BeanUtils.instantiateClass(domainClazz);
         if (add(domain) == 1) {
             return domain.getId();
@@ -182,7 +182,7 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     default D allocate() {
         @SuppressWarnings("unchecked")
-        Class<D> domainClazz = DomainDaoUtils.getDomainClass((Class<? extends IDomainDao<K, D>>) getClass());
+        Class<D> domainClazz = (Class<D>) DomainDaoUtils.getDomainClass((Class<? super IDomainDao<K, D>>) getClass());
         D domain = BeanUtils.instantiateClass(domainClazz);
         if (add(domain) == 1) {
             return domain;
