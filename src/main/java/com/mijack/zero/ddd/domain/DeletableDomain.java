@@ -21,19 +21,19 @@ package com.mijack.zero.ddd.domain;
  *
  * @author Mi&Jack
  */
-public interface DeletableDomain<Key> extends BaseDomain<Key> {
+public interface DeletableDomain<K> extends BaseDomain<K> {
 
     /**
      * 是否被删除
      *
-     * @return
+     * @return 是否被删除
      */
     boolean isDeleted();
 
     /**
      * 设置bean的删除状态
      *
-     * @param deleted
+     * @param deleted bean的删除状态
      */
     void setDeleted(boolean deleted);
 }

@@ -14,21 +14,18 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.infrastructure.criteria;
+package com.mijack.zero.common.mybatis;
 
-import org.springframework.cglib.beans.BeanMap;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
-public class NullCriteriaOperator implements CriteriaOperator{
-    /**
-     * 单例模式
-     */
-    public static final CriteriaOperator INSTANCE = new NullCriteriaOperator();
-
-    @Override
-    public boolean validateBean(BeanMap beanMap) {
-        return false;
-    }
+@Data
+@AllArgsConstructor
+public class ParameterHolder {
+    private String name;
+    private Object value;
+    private Class<?> type;
 }

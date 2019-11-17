@@ -20,18 +20,12 @@ import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @author Mi&Jack
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class UpdateUserCommand implements Serializable {
     private static final long serialVersionUID = -4941608878036224093L;
     private Long id;

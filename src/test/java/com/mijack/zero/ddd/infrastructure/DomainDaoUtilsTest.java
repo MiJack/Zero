@@ -14,34 +14,32 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.factory;
+package com.mijack.zero.ddd.infrastructure;
 
-import java.sql.Timestamp;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.mijack.zero.biz.user.domain.User;
-import org.springframework.stereotype.Component;
+import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
+import org.junit.Test;
 
 /**
  * @author Mi&Jack
  */
-@Component
-public class UserFactory {
+public class DomainDaoUtilsTest {
 
-    /**
-     * 创建用户
-     *
-     * @param id    用户id
-     * @param name  用户名
-     * @param email 用户邮箱
-     * @return 创建的用户
-     */
-    public User createUser(Long id, String name, String email) {
-        User user = new User();
-        user.setId(id);
-        user.setEmail(email);
-        user.setName(name);
-        user.setDeleted(false);
-        user.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        return user;
+    @Test
+    public void getDomainClass() {
+        assertEquals(DomainDaoUtils.getDomainClass(UserDao.class), User.class);
+    }
+
+    @Test
+    public void isDeletableDomain() {
+        assertTrue(DomainDaoUtils.isDeletableDomain(User.class));
+    }
+
+    @Test
+    public void getDomainKeyClazz() {
+        assertEquals(DomainDaoUtils.getDomainKeyClazz(User.class), Long.class);
     }
 }

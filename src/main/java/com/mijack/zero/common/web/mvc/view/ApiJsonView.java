@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mijack.zero.common.exceptions.BizCode;
 import com.mijack.zero.common.web.bo.ApiResult;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -40,8 +41,8 @@ import org.springframework.web.servlet.view.AbstractView;
 public class ApiJsonView extends AbstractView implements InitializingBean {
     public static final String VIEW_NAME = "zero.api-json";
     public static final String API_RESULT = "zero.api-result";
-    private static final ApiResult DEFAULT_API_RESULT = ApiResult.fail(BizCode.SYSTEM_ERROR);
-    private HttpMessageConverter messageConverter ;
+    private static final ApiResult<String> DEFAULT_API_RESULT = ApiResult.fail(BizCode.SYSTEM_ERROR);
+    private HttpMessageConverter<Object> messageConverter ;
     public static final MediaType MEDIA_TYPE = new MediaType(MediaType.APPLICATION_JSON, Collections.singletonMap("charset", "UTF-8"));
 
     @Override
@@ -50,7 +51,7 @@ public class ApiJsonView extends AbstractView implements InitializingBean {
     }
 
     @Override
-    protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void renderMergedOutputModel(@NotNull Map<String, Object> model, @NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws Exception {
         Object o = model.get(API_RESULT);
         ServletServerHttpResponse serverHttpResponse = new ServletServerHttpResponse(response);
         if (!(o instanceof ApiResult)) {
@@ -60,7 +61,7 @@ public class ApiJsonView extends AbstractView implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         ObjectMapper objectMapper = new ObjectMapper();
         messageConverter = new MappingJackson2HttpMessageConverter(objectMapper);
     }

@@ -17,19 +17,21 @@
 package com.mijack.zero.biz.user.service;
 
 
-import java.util.List;
-
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
+import java.util.List;
+
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mijack.zero.common.Assert;
@@ -39,6 +41,7 @@ import com.mijack.zero.common.Assert;
  */
 @Service
 public class UserService {
+    public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     UserDao userDao;
     UserFactory userFactory;
 
@@ -57,7 +60,10 @@ public class UserService {
         Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
         Long id = userDao.allocateKey();
-        return userFactory.createUser(id, name, email);
+        logger.info("allocateKey = {}", id);
+        User user = userFactory.createUser(id, name, email);
+        userDao.add(user);
+        return user;
     }
 
     public User updateUserInfo(Long id, String name, String email) {
@@ -75,5 +81,9 @@ public class UserService {
         }
         Assert.state(userDao.update(user) > 0, () -> createException(SystemErrorException.class, "更新数据异常"));
         return user;
+    }
+
+    public List<User> listUser() {
+        return userDao.listAll();
     }
 }

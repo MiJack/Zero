@@ -1,6 +1,6 @@
 /*
  *    Copyright 2019 Mi&Jack
- *
+ *    
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
@@ -14,25 +14,15 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.web.bo;
-
-import lombok.Getter;
+package com.mijack.zero.common.mybatis;
 
 /**
  * @author Mi&Jack
  */
-public enum ApiCode {
-    /**
-     * 调用成功
-     */
-    SUCCESS(200, "调用成功");
-    @Getter
-    private final int code;
-    @Getter
-    private final String msg;
+public class DaoException extends RuntimeException {
+    private static final long serialVersionUID = 6539260994939508128L;
 
-    ApiCode(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
+    public DaoException(Exception e) {
+        initCause(e);
     }
 }

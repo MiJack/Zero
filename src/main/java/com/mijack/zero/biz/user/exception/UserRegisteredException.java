@@ -25,11 +25,11 @@ public class UserRegisteredException extends BaseBizException {
     private static final long serialVersionUID = 858769791869245561L;
 
     public UserRegisteredException() {
-        super(UserError.UserRegistered);
+        super(UserError.USER_REGISTERED);
     }
 
     public UserRegisteredException(String message) {
-        super(UserError.UserRegistered.getCode(), message);
+        super(UserError.USER_REGISTERED.getCode(), message);
     }
 
 }

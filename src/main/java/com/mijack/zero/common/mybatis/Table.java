@@ -14,23 +14,18 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.exceptions;
+package com.mijack.zero.common.mybatis;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Mi&Jack
  */
-public interface IError {
-    /**
-     * 异常代码
-     *
-     * @return 异常代码
-     */
-    int getCode();
-
-    /**
-     * 异常信息
-     *
-     * @return 异常信息
-     */
-    String getMessage();
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Table {
+    String name();
 }

@@ -33,6 +33,7 @@ import com.mijack.zero.ddd.domain.DeletableDomain;
 import com.mijack.zero.ddd.domain.IDomainKeyGenerator;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.criteria.CriteriaFilter;
+import org.apache.commons.beanutils.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,6 @@ import com.google.common.collect.Maps;
  * @author Mi&Jack
  */
 public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao extends IDomainDao<Key, Domain>> implements IDomainDao<Key, Domain>, InvocationHandler {
-    public static final Logger logger = LoggerFactory.getLogger(MemoryDomainDao.class);
     private Map<Key, Domain> domainMap = Maps.newHashMap();
     private Class<DomainDao> daoInterface;
     private IDomainKeyGenerator<Key, Domain> domainKeyGenerator;
@@ -58,12 +58,17 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
     }
 
     @Override
-    public @NotNull List<Domain> findList(List<Key> keys) {
+    public @NotNull List<Domain> list(List<Key> keys) {
         return keys.stream().filter(Objects::nonNull).map(key -> domainMap.get(key)).filter(this::isValid).collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull List<Domain> findList(Criteria criteria) {
+    public Long countBy(Criteria criteria) {
+        return (long) queryList(criteria).size();
+    }
+
+    @Override
+    public @NotNull List<Domain> queryList(Criteria criteria) {
         List<Domain> list = Lists.newArrayList();
         for (Domain domain : domainMap.values()) {
             if (isValid(domain)) {
@@ -127,7 +132,12 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
         if (method.getDeclaringClass() == Object.class) {
             return method.invoke(this, args);
         }
-        // 如果这个方法定义在代理接口上
+        if (method.getDeclaringClass().isAssignableFrom(MemoryDomainDao.class)) {
+            Method memoryMethod = MethodUtils.getAccessibleMethod(getClass(), method);
+            if (memoryMethod != null) {
+                return memoryMethod.invoke(this, args);
+            }
+        }      // 如果这个方法定义在代理接口上
         if (method.getDeclaringClass().isAssignableFrom(daoInterface)) {
             if (method.isDefault()) {
                 return invokeDefaultMethod(method, daoInterface, proxy, args);
@@ -146,5 +156,10 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
                 .unreflectSpecial(method, declaringClass)
                 .bindTo(object)
                 .invokeWithArguments(args);
+    }
+
+    @Override
+    public @NotNull Class<Domain> getDomainClass() {
+        return DomainDaoUtils.getDomainClass(daoInterface);
     }
 }

@@ -16,11 +16,16 @@
 
 package com.mijack.zero.common.exceptions;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * web层的异常
  *
  * @author Mi&Jack
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class ControllerException extends RuntimeException {
     private static final long serialVersionUID = 1300702019559492578L;
     /**

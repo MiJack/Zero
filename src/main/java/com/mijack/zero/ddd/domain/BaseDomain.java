@@ -29,7 +29,7 @@ public interface BaseDomain<Key> extends Serializable {
     /**
      * 领域对象的主键
      *
-     * @return
+     * @return 领域对象的主键
      */
     Key getId();
 }

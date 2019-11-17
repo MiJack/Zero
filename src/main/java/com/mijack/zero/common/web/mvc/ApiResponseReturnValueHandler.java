@@ -16,10 +16,14 @@
 
 package com.mijack.zero.common.web.mvc;
 
-import java.util.Collections;
+import static com.mijack.zero.common.web.bo.ApiResult.*;
 
+import java.io.Serializable;
+
+import com.mijack.zero.common.exceptions.BizCode;
 import com.mijack.zero.common.web.bo.ApiResult;
 import com.mijack.zero.common.web.mvc.view.ApiJsonView;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -27,6 +31,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import com.google.common.collect.Maps;
 
 /**
  * @author Mi&Jack
@@ -37,8 +43,8 @@ public class ApiResponseReturnValueHandler implements HandlerMethodReturnValueHa
     /**
      * 如果方法或者方法是在类有ApiResponse注解，支持
      *
-     * @param returnType
-     * @return
+     * @param returnType 返回类型
+     * @return 是否支持
      * @see ApiResponse
      */
     @Override
@@ -48,21 +54,26 @@ public class ApiResponseReturnValueHandler implements HandlerMethodReturnValueHa
     }
 
     @Override
-    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest) {
-        ApiResult result = toApiResult(returnValue);
+    public void handleReturnValue(Object returnValue, @NotNull MethodParameter returnType, ModelAndViewContainer mavContainer,
+                                  @NotNull NativeWebRequest webRequest) {
+        ApiResult<?> result = toApiResult(returnValue);
         mavContainer.setViewName(ApiJsonView.VIEW_NAME);
         mavContainer.addAttribute(ApiJsonView.API_RESULT, result);
     }
 
-    private ApiResult toApiResult(Object returnValue) {
+    private ApiResult<?> toApiResult(Object returnValue) {
         if (returnValue == null) {
-            return ApiResult.success(Collections.EMPTY_MAP);
+            return success(Maps.newHashMap());
         }
         if (returnValue instanceof ApiResult) {
-            return (ApiResult) returnValue;
+            return (ApiResult<?>) returnValue;
+        } else {
+            if (returnValue instanceof Serializable) {
+                return success((Serializable) returnValue);
+            } else {
+                return fail(BizCode.SERIALIZABLE_FAIL);
+            }
         }
-        return ApiResult.success(returnValue);
     }
 
 }

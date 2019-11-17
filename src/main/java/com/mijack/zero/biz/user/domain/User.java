@@ -21,9 +21,7 @@ import java.sql.Timestamp;
 import com.mijack.zero.ddd.domain.DeletableDomain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * 用户信息抽象
@@ -31,10 +29,8 @@ import lombok.ToString;
  * @author Mi&Jack
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@AllArgsConstructor
 public class User implements DeletableDomain<Long> {
     private static final long serialVersionUID = 8983720612047767458L;
     /**
@@ -53,6 +49,10 @@ public class User implements DeletableDomain<Long> {
      * 创建时间
      */
     private Timestamp createTime;
+    /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
     /**
      * 是否删除
      */

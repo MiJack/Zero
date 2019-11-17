@@ -33,7 +33,11 @@ public enum BizCode implements IError {
     /**
      * 系统异常
      */
-    SYSTEM_ERROR(500, "系统异常");
+    SYSTEM_ERROR(500, "系统异常"),
+    /**
+     * 序列化失败
+     */
+    SERIALIZABLE_FAIL(500,"序列化失败");
     @Getter
     private int code;
     @Getter

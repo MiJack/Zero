@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.common.web.bo.ApiResult;
 import com.mijack.zero.common.web.mvc.view.ApiJsonView;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,8 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
     @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        // todo handler为什么是一个object？？
+    public ModelAndView resolveException(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object handler, @NotNull Exception ex) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ApiJsonView.VIEW_NAME);
         int code = HttpStatus.INTERNAL_SERVER_ERROR.value();

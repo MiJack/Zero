@@ -32,23 +32,24 @@ public interface CollectionHelper {
      * 将不定的参数转化成list
      * <note> 如果keys为空，返回{@link Collections#emptyList()}</note>
      *
-     * @param keys
-     * @param <Key>
-     * @return
+     * @param items 列表
+     * @param <T>   泛型
+     * @return list
      */
-    static <Key> List<Key> toList(Key... keys) {
-        if (keys == null) {
+    @SafeVarargs
+    static <T> List<T> toList(T... items) {
+        if (items == null) {
             return Collections.emptyList();
         }
-        return Arrays.asList(keys);
+        return Arrays.asList(items);
     }
 
     /**
      * 返回集合的大小
      *
-     * @param collection
-     * @param <T>
-     * @return
+     * @param collection 列表
+     * @param <T>        泛型
+     * @return 集合的大小
      */
     static <T> int size(Collection<T> collection) {
         return collection == null ? 0 : collection.size();
@@ -57,10 +58,10 @@ public interface CollectionHelper {
     /**
      * 返回列表中第一个值，如果列表不足一个，返回默认值，
      *
-     * @param list
-     * @param defaultValue
-     * @param <T>
-     * @return
+     * @param list         列表
+     * @param defaultValue 默认值
+     * @param <T>          泛型
+     * @return 列表中第一个值
      */
     static <T> T firstValue(List<T> list, T defaultValue) {
         return size(list) != 0 ? list.get(0) : defaultValue;

@@ -16,6 +16,8 @@
 
 package com.mijack.zero.ddd.infrastructure.criteria;
 
+import java.util.Objects;
+
 import org.springframework.cglib.beans.BeanMap;
 
 /**
@@ -23,4 +25,36 @@ import org.springframework.cglib.beans.BeanMap;
  */
 public interface CriteriaOperator {
     boolean validateBean(BeanMap beanMap);
+
+    static EqCriteriaOperator create(Criteria.EqCriteria eqCriteria) {
+        return new EqCriteriaOperator(eqCriteria);
+    }
+
+    class NullCriteriaOperator implements CriteriaOperator{
+        /**
+         * 单例模式
+         */
+        public static final CriteriaOperator INSTANCE = new NullCriteriaOperator();
+
+        @Override
+        public boolean validateBean(BeanMap beanMap) {
+            return false;
+        }
+    }
+
+    class EqCriteriaOperator implements CriteriaOperator {
+        private Criteria.EqCriteria eqCriteria;
+
+        public EqCriteriaOperator(Criteria.EqCriteria eqCriteria) {
+            this.eqCriteria = eqCriteria;
+        }
+
+        @Override
+        public boolean validateBean(BeanMap beanMap) {
+            String field = eqCriteria.getField();
+            Object targetValue = eqCriteria.getValue();
+            Object value = beanMap.get(field);
+            return Objects.equals(targetValue, value);
+        }
+    }
 }

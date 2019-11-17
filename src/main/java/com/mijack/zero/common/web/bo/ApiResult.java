@@ -36,7 +36,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class ApiResult<T> implements Serializable {
+public class ApiResult<T extends Serializable> implements Serializable {
     private static final long serialVersionUID = -8953859682856579697L;
     /**
      * 响应码，200为正常
@@ -52,7 +52,7 @@ public class ApiResult<T> implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    public static <T> ApiResult<T> build(T data, int code, String message) {
+    public static <T extends Serializable> ApiResult<T> build(T data, int code, String message) {
         ApiResult<T> result = new ApiResult<>();
         result.setCode(code);
         result.setData(data);
@@ -60,19 +60,19 @@ public class ApiResult<T> implements Serializable {
         return result;
     }
 
-    public static <T> ApiResult<T> success(T data) {
+    public static <T extends Serializable> ApiResult<T> success(T data) {
         return build(data, BizCode.SUCCESS);
     }
 
-    public static <T> ApiResult<T> build(T data, BizCode code) {
+    public static <T extends Serializable> ApiResult<T> build(T data, BizCode code) {
         return build(data, code.getCode(), code.getMessage());
     }
 
-    public static ApiResult<Void> fail(int code, String message) {
-        return build(null, code, message);
+    public static ApiResult<String> fail(int code, String message) {
+        return build("", code, message);
     }
 
-    public static ApiResult fail(BizCode bizCode) {
+    public static ApiResult<String> fail(BizCode bizCode) {
         return fail(bizCode.getCode(), bizCode.getMessage());
     }
 }

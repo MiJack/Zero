@@ -22,11 +22,11 @@ package com.mijack.zero.ddd.infrastructure.criteria;
 public class CriteriaOperatorFactory {
     public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
         if (criteria == null) {
-            return NullCriteriaOperator.INSTANCE;
+            return CriteriaOperator.NullCriteriaOperator.INSTANCE;
         }
         if (criteria instanceof Criteria.EqCriteria) {
-            return EqCriteriaOperator.create((Criteria.EqCriteria) criteria);
+            return CriteriaOperator.create((Criteria.EqCriteria) criteria);
         }
-        return null;
+        return CriteriaOperator.NullCriteriaOperator.INSTANCE;
     }
 }
