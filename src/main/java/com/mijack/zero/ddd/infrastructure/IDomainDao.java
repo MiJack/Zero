@@ -165,10 +165,8 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @return 申请的新主键
      */
     default K allocateKey() {
-        @SuppressWarnings("unchecked")
-        Class<D> domainClazz = getDomainClass();
-        D domain = BeanUtils.instantiateClass(domainClazz);
-        if (add(domain) == 1) {
+        D domain = allocate();
+        if (domain != null) {
             return domain.getId();
         }
         return null;
@@ -195,9 +193,7 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     @NotNull
     default Class<D> getDomainClass() {
-        @SuppressWarnings("unchecked")
-        Class<? extends IDomainDao<K, D>> clazz = (Class<? extends IDomainDao<K, D>>) getClass();
-        return DomainDaoUtils.getDomainClass(clazz);
+        return DomainDaoUtils.getDomainClass(getClass());
     }
 
     /**

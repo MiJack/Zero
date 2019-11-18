@@ -17,6 +17,8 @@
 
 package com.mijack.zero.common.mybatis;
 
+import static com.mijack.zero.ddd.infrastructure.DomainDaoUtils.getDomainClass;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -188,14 +190,14 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
     }
 
     public static void main(String[] args) {
-        Class<User> domainClass = DomainDaoUtils.getDomainClass(UserDao.class);
+        Class<User> domainClass = getDomainClass(UserDao.class);
         logger.info("domainClass = {}", domainClass);
     }
 
-    static <T extends BaseDomain<?>> Class<? extends BaseDomain<?>> getDomainClass(Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface) {
-        @SuppressWarnings("unchecked")
-        @NotNull Class<T> domainClass =
-                DomainDaoUtils.getDomainClass(((Class<? extends IDomainDao<?, T>>) (daoInterface)));
-        return domainClass;
-    }
+//    static <T extends BaseDomain<?>> Class<? extends BaseDomain<?>> getDomainClass(Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface) {
+//        @SuppressWarnings("unchecked")
+//        @NotNull Class<T> domainClass =
+//                DomainDaoUtils.getDomainClass(daoInterface);
+//        return domainClass;
+//    }
 }
