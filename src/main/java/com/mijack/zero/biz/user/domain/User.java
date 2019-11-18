@@ -56,6 +56,15 @@ public class User implements DeletableDomain<Long> {
     /**
      * 是否删除
      */
-    private boolean deleted;
+    private Boolean deleted;
 
+    @Override
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    @Override
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

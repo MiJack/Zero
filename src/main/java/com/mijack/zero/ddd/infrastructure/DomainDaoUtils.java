@@ -16,13 +16,14 @@
 
 package com.mijack.zero.ddd.infrastructure;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import static com.mijack.zero.common.constant.ReflectConstant.TYPE_RESOLVER;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
+import com.fasterxml.classmate.ResolvedType;
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
+
 
 /**
  * @author Mi&Jack
@@ -40,20 +41,14 @@ public interface DomainDaoUtils {
      * @see IDomainDao
      */
     @SuppressWarnings("unchecked")
-    @NotNull
-    static <D extends BaseDomain<?>> Class<D> getDomainClass(Class<? extends IDomainDao<?, D>> daoClazz) {
-        Type[] genericInterfaces = daoClazz.getGenericInterfaces();
-        if (genericInterfaces != null && genericInterfaces.length > 0) {
-            Type genericInterface = genericInterfaces[0];
-            ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-            Type actualTypeArgument = parameterizedType.getActualTypeArguments()[1];
-            if (actualTypeArgument instanceof Class<?> && isDomain((Class<?>) actualTypeArgument)) {
-                @SuppressWarnings("unchecked")
-                Class<D> result = (Class<D>) actualTypeArgument;
-                return result;
-            }
+    static <D extends BaseDomain<?>> Class<D> getDomainClass(Class<?> daoClazz) {
+        ResolvedType resolve = TYPE_RESOLVER.resolve(daoClazz);
+        if (resolve.isInstanceOf(IDomainDao.class)) {
+            List<ResolvedType> resolvedTypes = resolve.typeParametersFor(IDomainDao.class);
+            ResolvedType domainType = resolvedTypes.get(1);
+            return (Class<D>) domainType.getErasedType();
         }
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     /**
@@ -82,20 +77,15 @@ public interface DomainDaoUtils {
      * 获取Domain类主键类型的Class对象
      *
      * @param domainClazz Domain类
-     * @param <D>         Domain类
      * @return Domain类主键类型的Class对象
      */
-    static <K, D extends BaseDomain<K>> Class<K> getDomainKeyClazz(Class<D> domainClazz) {
-        Type[] genericInterfaces = domainClazz.getGenericInterfaces();
-        if (genericInterfaces != null && genericInterfaces.length > 0) {
-            Type genericInterface = genericInterfaces[0];
-            ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-            Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
-            if (actualTypeArgument instanceof Class) {
-                @SuppressWarnings("unchecked")
-                Class<K> result = (Class<K>) actualTypeArgument;
-                return result;
-            }
+    static <K> Class<K> getDomainKeyClazz(Class<?> domainClazz) {
+        if (isDomain(domainClazz)) {
+            ResolvedType resolve = TYPE_RESOLVER.resolve(domainClazz);
+            List<ResolvedType> resolvedTypes = resolve.typeParametersFor(BaseDomain.class);
+            @SuppressWarnings("unchecked")
+            Class<K> domainType = (Class<K>) resolvedTypes.get(0).getErasedType();
+            return domainType;
         }
         return null;
     }

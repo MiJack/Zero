@@ -18,14 +18,21 @@ package com.mijack.zero.common.mybatis;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.validation.constraints.NotNull;
 
 import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.defaults.DefaultSqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +41,13 @@ import com.google.common.collect.Lists;
 /**
  * @author Mi&Jack
  */
-public class AddDomainSqlSource implements SqlSource {
+public class AddDomainSqlSource<T> implements SqlSource {
     public static final Logger logger = LoggerFactory.getLogger(AddDomainSqlSource.class);
     private final Configuration configuration;
     private final String tableName;
-    private final Class<?> domainClazz;
+    private final Class<T> domainClazz;
 
-    public AddDomainSqlSource(Configuration configuration, String tableName, Class<?> domainClazz) {
+    public AddDomainSqlSource(Configuration configuration, String tableName, Class<T> domainClazz) {
         this.configuration = configuration;
         this.tableName = tableName;
         this.domainClazz = domainClazz;
@@ -49,19 +56,21 @@ public class AddDomainSqlSource implements SqlSource {
     @Override
     public BoundSql getBoundSql(Object parameterObject) {
         try {
-
-            Field[] declaredFields = domainClazz.getDeclaredFields();
-            List<ParameterHolder> holders = Lists.newArrayList();
-            for (Field field : declaredFields) {
-                if (Modifier.isStatic(field.getModifiers())) {
-                    continue;
-                }
-                holders.add(new ParameterHolder(field.getName(), parameterObject != null ? field.get(parameterObject) : null, field.getType()));
+            // parameterObject => List<? extends BaseDomain>
+            @SuppressWarnings("unchecked")
+            List<T> list = (List<T>) ((DefaultSqlSession.StrictMap<?>) parameterObject).get("list");
+            if (list == null || list.isEmpty()) {
+                throw new IllegalArgumentException("parameterObject is empty");
             }
-            holders = holders.stream().filter(parameterHolder -> false).collect(Collectors.toList());
+            Field[] declaredFields = domainClazz.getDeclaredFields();
+            List<List<ParameterHolder>> holders = new ArrayList<>();
+            for (T t : list) {
+                List<ParameterHolder> holder = transformHolder(t, declaredFields);
+                holders.add(holder);
+            }
 
 
-            String sql = holders.isEmpty() ? " INSERT INTO " + tableName + "() values()" : buildSql(holders);
+            String sql = buildSql(holders);
             logger.info("sql = {}", sql);
             StaticSqlSource staticSqlSource = new StaticSqlSource(configuration, sql, Collections.emptyList());
 
@@ -71,18 +80,33 @@ public class AddDomainSqlSource implements SqlSource {
         }
     }
 
-    private String buildSql(List<ParameterHolder> holders) {
+    private List<ParameterHolder> transformHolder(@NotNull T t, Field[] declaredFields) throws IllegalAccessException {
+        List<ParameterHolder> holders = Lists.newArrayList();
+        for (Field field : declaredFields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            field.setAccessible(true);
+            holders.add(new ParameterHolder(field.getName(), field.get(t), field.getType()));
+        }
+        return holders;
+    }
+
+    private String buildSql(List<List<ParameterHolder>> holders) {
+        List<String> columnNames = holders.stream().flatMap(Collection::stream).filter(h -> Objects.nonNull(h.getValue())).map(ParameterHolder::getName).distinct()
+                .collect(Collectors.toList());
         StringBuilder sb = new StringBuilder();
         sb.append(" INSERT INTO ");
         sb.append(tableName);
         sb.append(" (");
-        sb.append(holders.stream().map(ParameterHolder::getName).collect(Collectors.joining(" , ")));
+        sb.append(String.join(" , ", columnNames));
         sb.append(")");
         sb.append(" values ");
-
-        sb.append(" (");
-        sb.append(holders.stream().map(s -> "?").collect(Collectors.joining(" , ")));
-        sb.append(")");
+        int count = holders.size();
+        int columnCount = columnNames.size();
+        String valueForOne = IntStream.range(0, columnCount).mapToObj(s -> "?").collect(Collectors.joining(" , ", " ( ", " ) "));
+        String values = IntStream.range(0, count).mapToObj(s -> valueForOne).collect(Collectors.joining(" , " ));
+        sb.append(values);
         return sb.toString();
     }
 }

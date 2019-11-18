@@ -43,7 +43,7 @@ public interface CriteriaOperator {
     }
 
     class EqCriteriaOperator implements CriteriaOperator {
-        private Criteria.EqCriteria eqCriteria;
+        private final Criteria.EqCriteria eqCriteria;
 
         public EqCriteriaOperator(Criteria.EqCriteria eqCriteria) {
             this.eqCriteria = eqCriteria;

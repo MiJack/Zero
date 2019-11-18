@@ -17,11 +17,12 @@
 
 package com.mijack.zero.common.mybatis;
 
+import static com.mijack.zero.ddd.infrastructure.DomainDaoUtils.getDomainClass;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
@@ -145,7 +146,9 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
     private SqlSource buildSqlSource(Class<? extends BaseDomain<?>> domainClazz, Configuration configuration, String tableName, Method method) {
         String methodName = method.getName();
         if (METHOD_ADD.equals(methodName)) {
-            return new AddDomainSqlSource(configuration, tableName, domainClazz);
+            @SuppressWarnings("unchecked")
+            AddDomainSqlSource<?> addDomainSqlSource = new AddDomainSqlSource(configuration, tableName, domainClazz);
+            return addDomainSqlSource;
         }
         if (METHOD_UPDATE.equals(methodName)) {
             return new UpdateDomainSqlSource(configuration, tableName, domainClazz, method);
@@ -188,14 +191,14 @@ public class DomainRepositoryPostProcessor implements BeanPostProcessor {
     }
 
     public static void main(String[] args) {
-        Class<User> domainClass = DomainDaoUtils.getDomainClass(UserDao.class);
+        Class<User> domainClass = getDomainClass(UserDao.class);
         logger.info("domainClass = {}", domainClass);
     }
 
-    static <T extends BaseDomain<?>> Class<? extends BaseDomain<?>> getDomainClass(Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface) {
-        @SuppressWarnings("unchecked")
-        @NotNull Class<T> domainClass =
-                DomainDaoUtils.getDomainClass(((Class<? extends IDomainDao<?, T>>) (daoInterface)));
-        return domainClass;
-    }
+//    static <T extends BaseDomain<?>> Class<? extends BaseDomain<?>> getDomainClass(Class<? extends IDomainDao<?, ? extends BaseDomain<?>>> daoInterface) {
+//        @SuppressWarnings("unchecked")
+//        @NotNull Class<T> domainClass =
+//                DomainDaoUtils.getDomainClass(daoInterface);
+//        return domainClass;
+//    }
 }

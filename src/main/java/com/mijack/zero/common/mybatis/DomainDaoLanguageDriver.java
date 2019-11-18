@@ -36,7 +36,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  * @author Mi&Jack
  */
 public class DomainDaoLanguageDriver implements LanguageDriver {
-    CompositeCriteriaSqlFormatter sqlFormatter = new CompositeCriteriaSqlFormatter();
+    final CompositeCriteriaSqlFormatter sqlFormatter = new CompositeCriteriaSqlFormatter();
 
     @Override
     public ParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {

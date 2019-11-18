@@ -34,8 +34,6 @@ import com.mijack.zero.ddd.domain.IDomainKeyGenerator;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.criteria.CriteriaFilter;
 import org.apache.commons.beanutils.MethodUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -46,10 +44,10 @@ import com.google.common.collect.Maps;
  * @author Mi&Jack
  */
 public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao extends IDomainDao<Key, Domain>> implements IDomainDao<Key, Domain>, InvocationHandler {
-    private Map<Key, Domain> domainMap = Maps.newHashMap();
-    private Class<DomainDao> daoInterface;
-    private IDomainKeyGenerator<Key, Domain> domainKeyGenerator;
-    private CriteriaFilter criteriaFilter;
+    private final Map<Key, Domain> domainMap = Maps.newHashMap();
+    private final Class<DomainDao> daoInterface;
+    private final IDomainKeyGenerator<Key, Domain> domainKeyGenerator;
+    private final CriteriaFilter criteriaFilter;
 
     public MemoryDomainDao(Class<DomainDao> daoInterface, IDomainKeyGenerator<Key, Domain> domainKeyGenerator, CriteriaFilter criteriaFilter) {
         this.daoInterface = daoInterface;
@@ -59,7 +57,7 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
 
     @Override
     public @NotNull List<Domain> list(List<Key> keys) {
-        return keys.stream().filter(Objects::nonNull).map(key -> domainMap.get(key)).filter(this::isValid).collect(Collectors.toList());
+        return keys.stream().filter(Objects::nonNull).map(domainMap::get).filter(this::isValid).collect(Collectors.toList());
     }
 
     @Override
@@ -85,7 +83,9 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
             return false;
         }
         if (domain instanceof DeletableDomain) {
-            return !((DeletableDomain) domain).isDeleted();
+            @SuppressWarnings("unchecked")
+            DeletableDomain<Key> deletableDomain = (DeletableDomain<Key>) domain;
+            return !(deletableDomain).isDeleted();
         }
         return true;
     }
@@ -110,11 +110,14 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
 
     @Override
     public long delete(List<Key> keys) {
-        return keys.stream().filter(key -> domainMap.containsKey(key))
+        return keys.stream().filter(domainMap::containsKey)
                 .map(key -> {
                     Domain domain = domainMap.get(key);
                     if (domain instanceof DeletableDomain) {
-                        ((DeletableDomain) domain).setDeleted(true);
+
+                        @SuppressWarnings("unchecked")
+                        DeletableDomain<Key> deletableDomain = (DeletableDomain<Key>) domain;
+                        deletableDomain.setDeleted(true);
                     } else {
                         domainMap.remove(key);
                     }

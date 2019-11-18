@@ -17,8 +17,6 @@
 package com.mijack.zero.biz.user.service;
 
 
-import java.util.Objects;
-
 import javax.annotation.Resource;
 
 import com.mijack.zero.ZeroApplication;
@@ -29,7 +27,8 @@ import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import com.mijack.zero.ddd.domain.IDomainKeyGenerator;
 import com.mijack.zero.ddd.domain.MemoryDomainDaoFactory;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +47,7 @@ public class UserServiceTest {
     UserDao userDao;
     @Resource
     UserFactory userFactory;
-    private IDomainKeyGenerator<Long, User> domainKeyGenerator = map -> Long.valueOf(map.values().size() + 1);
+    private final IDomainKeyGenerator<Long, User> domainKeyGenerator = map -> (long) (map.values().size() + 1);
 
     @Before
     public void beforeTest() {
@@ -63,9 +62,9 @@ public class UserServiceTest {
     @Test
     public void testRegisterUser() {
         User user = userService.registerUser("test", "test");
-        assertTrue("参数错误", Objects.equals(user.getEmail(), "test"));
-        assertTrue("参数错误", Objects.equals(user.getName(), "test"));
-        assertTrue("参数错误", !user.isDeleted());
+        assertEquals("参数错误", "test", user.getEmail());
+        assertEquals("参数错误", "test", user.getName());
+        assertFalse("参数错误", user.isDeleted());
     }
 
     @Test(expected = UserRegisteredException.class)
@@ -80,5 +79,6 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateUserInfo() {
+        userService.updateUserInfo(0L, "", "");
     }
 }

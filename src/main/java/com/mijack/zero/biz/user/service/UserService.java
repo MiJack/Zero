@@ -42,8 +42,8 @@ import com.mijack.zero.common.Assert;
 @Service
 public class UserService {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    UserDao userDao;
-    UserFactory userFactory;
+    final UserDao userDao;
+    final  UserFactory userFactory;
 
     @Autowired
     public UserService(UserDao userDao, UserFactory userFactory) {

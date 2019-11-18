@@ -17,7 +17,6 @@
 package com.mijack.zero.ddd.infrastructure.criteria;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.mijack.zero.utils.CollectionHelper;
@@ -33,8 +32,8 @@ public interface Criteria {
     /**
      * field = value
      *
-     * @param field
-     * @param value
+     * @param field 字段
+     * @param value 字段值
      * @return
      */
     static Criteria eq(String field, Object value) {
@@ -44,8 +43,8 @@ public interface Criteria {
     /**
      * field > value
      *
-     * @param field
-     * @param value
+     * @param field 字段
+     * @param value 字段值
      * @return
      */
     static Criteria gt(String field, Object value) {
@@ -55,8 +54,8 @@ public interface Criteria {
     /**
      * field >= value
      *
-     * @param field
-     * @param value
+     * @param field 字段
+     * @param value 字段值
      * @return
      */
     static Criteria ge(String field, Object value) {
@@ -66,8 +65,8 @@ public interface Criteria {
     /**
      * field < value
      *
-     * @param field
-     * @param value
+     * @param field 字段
+     * @param value 字段值
      * @return
      */
     static Criteria lt(String field, Object value) {
@@ -77,8 +76,8 @@ public interface Criteria {
     /**
      * field <= value
      *
-     * @param field
-     * @param value
+     * @param field 字段
+     * @param value 字段值
      * @return
      */
     static Criteria le(String field, Object value) {
@@ -86,7 +85,9 @@ public interface Criteria {
     }
 
     /**
-     * @param criterion
+     * criterion and criterion
+     *
+     * @param criterion 条件谓词
      * @return
      */
     default Criteria and(Criteria... criterion) {
@@ -101,7 +102,9 @@ public interface Criteria {
     }
 
     /**
-     * @param criterion
+     * criterion or criterion
+     *
+     * @param criterion 条件谓词
      * @return
      */
     default Criteria or(Criteria... criterion) {
@@ -233,13 +236,13 @@ public interface Criteria {
         }
     }
 
-    class FalseCriteria extends ExpressionCriteria {
+    class FalseCriteria extends ExpressionCriteria<FalseCriteria> {
         public FalseCriteria() {
             super("1 = 0");
         }
     }
 
-    class TrueCriteria extends ExpressionCriteria {
+    class TrueCriteria extends ExpressionCriteria<TrueCriteria> {
         public TrueCriteria() {
             super("1 = 1");
         }

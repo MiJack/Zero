@@ -14,37 +14,16 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.exceptions;
+package com.mijack.zero.common.constant;
 
-import lombok.Getter;
+import com.fasterxml.classmate.TypeResolver;
 
 /**
  * @author Mi&Jack
  */
-public enum BizCode implements IError {
-    /**
-     * 调用成功
-     */
-    SUCCESS(200, "调用成功"),
-    /**
-     * 参数异常
-     */
-    WRONG_PARAM(400, "参数异常"),
-    /**
-     * 系统异常
-     */
-    SYSTEM_ERROR(500, "系统异常"),
-    /**
-     * 序列化失败
-     */
-    SERIALIZABLE_FAIL(500,"序列化失败");
-    @Getter
-    private final int code;
-    @Getter
-    private final String message;
-
-    BizCode(int code, String message) {
-        this.code = code;
-        this.message = message;
+public class ReflectConstant {
+    private ReflectConstant() {
     }
+
+    public static final TypeResolver TYPE_RESOLVER = new TypeResolver();
 }

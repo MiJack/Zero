@@ -86,6 +86,7 @@ dependencies {
     compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
     compileOnly 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    compile 'com.fasterxml:classmate:1.5.0'
     // mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1"
