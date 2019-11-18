@@ -16,7 +16,6 @@
 
 package com.mijack.zero.common.mybatis;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +32,10 @@ import org.apache.ibatis.session.Configuration;
  * @author Mi&Jack
  */
 public class ListDomainSqlSource implements SqlSource {
-    private String sqlPrefix;
-    private Configuration configuration;
+    private final String sqlPrefix;
+    private final Configuration configuration;
     private final String tableName;
-    CompositeCriteriaSqlFormatter sqlFormatter = new CompositeCriteriaSqlFormatter();
+    final CompositeCriteriaSqlFormatter sqlFormatter = new CompositeCriteriaSqlFormatter();
 
     public ListDomainSqlSource(String sqlPrefix, Configuration configuration, String tableName) {
         this.sqlPrefix = sqlPrefix;

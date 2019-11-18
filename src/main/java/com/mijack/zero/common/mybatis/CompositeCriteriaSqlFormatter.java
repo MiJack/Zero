@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
-import com.mijack.zero.ddd.infrastructure.criteria.Criteria.JoinCriteria;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -36,7 +35,7 @@ import com.google.common.collect.Lists;
  */
 @Component
 public class CompositeCriteriaSqlFormatter {
-    Map<Class<? extends Criteria>, CriteriaFormatter<? extends Criteria>> map = new HashMap<>();
+    final Map<Class<? extends Criteria>, CriteriaFormatter<? extends Criteria>> map = new HashMap<>();
 
     public CompositeCriteriaSqlFormatter() {
         FieldCriteriaFormatter fieldCriteriaFormatter = new FieldCriteriaFormatter();
@@ -113,7 +112,7 @@ public class CompositeCriteriaSqlFormatter {
     }
 
     private static class JoinCriteriaFormatter<T extends JoinCriteria<T>> implements CriteriaFormatter<T> {
-        private String join;
+        private final String join;
 
         public JoinCriteriaFormatter(String join) {
             this.join = join;

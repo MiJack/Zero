@@ -39,9 +39,9 @@ public enum BizCode implements IError {
      */
     SERIALIZABLE_FAIL(500,"序列化失败");
     @Getter
-    private int code;
+    private final int code;
     @Getter
-    private String message;
+    private final String message;
 
     BizCode(int code, String message) {
         this.code = code;
