@@ -82,14 +82,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-beanutils:commons-beanutils:1.9.3'
     // graphql
-    compile 'com.graphql-java:graphql-java-tools:5.2.4'
-    compile 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+    implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
     compileOnly 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
-    compile 'com.fasterxml:classmate:1.5.0'
+    implementation 'com.fasterxml:classmate:1.5.0'
     // mysql-connector-java
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
-    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1"
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
+    implementation 'org.springframework:spring-jdbc'
     // 架构验证
     testCompile 'com.tngtech.archunit:archunit-junit4:0.12.0'
 

@@ -56,13 +56,14 @@ public class CompositeCriteriaSqlFormatter {
         ExpressionCriteriaFormatter expressionCriteriaFormatter = new ExpressionCriteriaFormatter();
         map.put(FalseCriteria.class, expressionCriteriaFormatter);
         map.put(TrueCriteria.class, expressionCriteriaFormatter);
+        map.put(InCriteria.class, new InCriteriaFormatter());
     }
 
     public <C extends Criteria> String toSql(C criteria) {
         @SuppressWarnings("unchecked")
         CriteriaFormatter<C> criteriaFormatter = (CriteriaFormatter<C>) map.get(criteria.getClass());
         if (criteriaFormatter == null) {
-            return null;
+            throw new UnsupportedOperationException("criteria " + criteria + " can't be transformed to sql");
         }
         return criteriaFormatter.formatSql(criteria, this);
     }
@@ -97,14 +98,14 @@ public class CompositeCriteriaSqlFormatter {
         List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter);
     }
 
-    private static class FieldCriteriaFormatter implements CriteriaFormatter<FieldCriteria<?>> {
+    private static class FieldCriteriaFormatter implements CriteriaFormatter<FieldCriteria> {
         @Override
-        public String formatSql(FieldCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public String formatSql(FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return criteria.getField() + " " + criteria.getOperation() + " ?";
         }
 
         @Override
-        public List<ParameterHolder> getParameters(FieldCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public List<ParameterHolder> getParameters(FieldCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             Object value = criteria.getValue();
             Class<?> clazz = value != null ? value.getClass() : null;
             return Lists.newArrayList(new ParameterHolder(criteria.getField(), value, clazz));
@@ -130,15 +131,28 @@ public class CompositeCriteriaSqlFormatter {
         }
     }
 
-    private static class ExpressionCriteriaFormatter implements CriteriaFormatter<ExpressionCriteria<?>> {
+    private static class ExpressionCriteriaFormatter implements CriteriaFormatter<ExpressionCriteria> {
         @Override
-        public String formatSql(ExpressionCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public String formatSql(ExpressionCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return criteria.getExpression();
         }
 
         @Override
-        public List<ParameterHolder> getParameters(ExpressionCriteria<?> criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public List<ParameterHolder> getParameters(ExpressionCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return Collections.emptyList();
+        }
+    }
+
+    private static class InCriteriaFormatter implements CriteriaFormatter<InCriteria> {
+
+        @Override
+        public String formatSql(InCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+            return criteria.getField() + " in ( ? )";
+        }
+
+        @Override
+        public List<ParameterHolder> getParameters(InCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+            return null;
         }
     }
 }

@@ -79,6 +79,6 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateUserInfo() {
-        userService.updateUserInfo(0L, "", "");
+        userService.updateUserInfo(0L, "user-0", "email-0");
     }
 }

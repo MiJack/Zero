@@ -20,13 +20,16 @@ import com.mijack.zero.biz.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Mi&Jack
  */
-@SpringBootApplication
+@ImportAutoConfiguration(JdbcTemplateAutoConfiguration.class)
+@SpringBootApplication(scanBasePackages = "com.mijack.zero")
 public class ZeroApplication {
     public static final Logger logger = LoggerFactory.getLogger(ZeroApplication.class);
 

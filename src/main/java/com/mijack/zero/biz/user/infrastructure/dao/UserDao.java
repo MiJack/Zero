@@ -20,7 +20,6 @@ import com.mijack.zero.common.mybatis.Table;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.biz.user.domain.User;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Mi&Jack
  */
-@Mapper
 @Repository
 @Table(name = "Zero_User")
 public interface UserDao extends IDomainDao<Long, User> {
