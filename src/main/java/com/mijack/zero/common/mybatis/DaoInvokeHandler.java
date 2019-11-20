@@ -22,13 +22,20 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigInteger;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -37,21 +44,30 @@ import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.infrastructure.DomainDaoUtils;
 import com.mijack.zero.ddd.infrastructure.IDomainDao;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
+import com.mijack.zero.utils.CollectionHelper;
 import lombok.Getter;
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.google.common.collect.Lists;
 
 /**
  * @author Mi&Jack
  */
-public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends IDomainDao<KEY, DOMAIN>> implements InvocationHandler, IDomainDao<KEY, DOMAIN> {
+public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends IDomainDao<KEY, DOMAIN>>
+        implements InvocationHandler, IDomainDao<KEY, DOMAIN> {
+    public static final Logger logger = LoggerFactory.getLogger(DaoInvokeHandler.class);
+    private static final String GENERATED_KEY = "GENERATED_KEY";
     @Getter
     private final Class<DAO> daoInterface;
     private final JdbcTemplate jdbcTemplate;
-    CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = new CompositeCriteriaSqlFormatter();
+    private final CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = new CompositeCriteriaSqlFormatter();
 
     public DaoInvokeHandler(Class<DAO> daoInterface, JdbcTemplate jdbcTemplate) {
         this.daoInterface = daoInterface;
@@ -97,6 +113,42 @@ public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends I
     }
 
     private DOMAIN mapRow(ResultSet rs, int rowNum) {
+        @NotNull Class<DOMAIN> domainClass = getDomainClass();
+        DOMAIN domain = BeanUtils.instantiateClass(domainClass);
+        Field[] declaredFields = domainClass.getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            field.setAccessible(true);
+            compositeValue(domain, field, rs);
+        }
+        return domain;
+    }
+
+    private void compositeValue(DOMAIN domain, Field field, ResultSet rs) {
+        try {
+            if (field.getType().isAssignableFrom(Integer.class)) {
+                field.set(domain, rs.getInt(field.getName()));
+                return;
+            } else if (field.getType().isAssignableFrom(Long.class)) {
+                field.set(domain, rs.getLong(field.getName()));
+                return;
+            } else if (field.getType().isAssignableFrom(String.class)) {
+                field.set(domain, rs.getString(field.getName()));
+                return;
+            } else if (field.getType().isAssignableFrom(Boolean.class)) {
+                field.set(domain, rs.getBoolean(field.getName()));
+                return;
+            } else if (field.getType().isAssignableFrom(Timestamp.class)) {
+                field.set(domain, rs.getTimestamp(field.getName()));
+                return;
+            }
+
+        } catch (IllegalAccessException | SQLException e) {
+            throw new DaoException(e);
+        }
+        logger.error("compositeValue error: field = {}", field);
         throw new UnsupportedOperationException();
     }
 
@@ -117,24 +169,91 @@ public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends I
      */
     @Override
     public long add(List<DOMAIN> domains) {
+        List<DOMAIN> realAdd = Lists.newArrayList();
+        List<DOMAIN> realUpdate = Lists.newArrayList();
+        for (DOMAIN domain : domains) {
+            if (domain.getId() == null) {
+                realAdd.add(domain);
+            } else {
+                realUpdate.add(domain);
+            }
+        }
+        return doSqlAddOp(realAdd) + updateList(realUpdate);
+    }
+
+    private long updateList(List<DOMAIN> realUpdate) {
+        if (CollectionUtils.isEmpty(realUpdate)) {
+            return 0L;
+        }
+        return realUpdate.stream().map(this::update).reduce(Long::sum).orElse(0L);
+    }
+
+    private long doSqlAddOp(List<DOMAIN> domains) {
+        if (CollectionUtils.isEmpty(domains)) {
+            return 0L;
+        }
         try {
             @NotNull Class<DOMAIN> domainClass = getDomainClass();
             Field[] declaredFields = domainClass.getDeclaredFields();
             List<List<ParameterHolder>> holders = new ArrayList<>();
             for (DOMAIN t : domains) {
-                List<ParameterHolder> holder = null;
-                holder = transformHolder(t, declaredFields);
-                holders.add(holder);
+                List<ParameterHolder> holder = transformHolder(t, declaredFields);
+                if (holder != null) {
+                    holders.add(holder);
+                }
             }
-            String sql = buildSql(holders);
-            return jdbcTemplate.update(sql,getArgsForList(holders));
+            String sql = buildInsertSql(holders);
+            final Object[] argsForList = getArgsForList(holders);
+            jdbcTemplate.update(sql, argsForList);
+            GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+            int update = jdbcTemplate.update(con -> {
+                PreparedStatement prepStmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                List<ParameterHolder> holderList = holders.stream().flatMap(Collection::stream).collect(Collectors.toList());
+                for (int i = 0; i < holderList.size(); i++) {
+                    ParameterHolder parameterHolder = holderList.get(i);
+                    Class<?> type = parameterHolder.getType();
+                    if (type.isAssignableFrom(Integer.class)) {
+                        prepStmt.setInt(i, (Integer) parameterHolder.getValue());
+                    } else if (type.isAssignableFrom(Timestamp.class)) {
+                        prepStmt.setTimestamp(i, (Timestamp) parameterHolder.getValue());
+                    } else if (type.isAssignableFrom(Boolean.class)) {
+                        prepStmt.setBoolean(i, (Boolean) parameterHolder.getValue());
+                    } else if (type.isAssignableFrom(String.class)) {
+                        prepStmt.setString(i, String.valueOf(parameterHolder.getValue()));
+                    } else {
+                        logger.error("createPreparedStatement error: type = {}", type);
+                        throw new UnsupportedOperationException();
+                    }
+                }
+                return prepStmt;
+            }, generatedKeyHolder);
+            List<Map<String, Object>> keyList = generatedKeyHolder.getKeyList();
+            CollectionHelper.composeList(keyList, domains, (keyMap, domain) -> domain.setId(toKey(keyMap, domainClass)));
+            return update;
         } catch (IllegalAccessException e) {
             throw new DaoException(e);
         }
     }
 
+    private KEY toKey(Map<String, Object> stringObjectMap, Class<DOMAIN> domainClass) {
+        Class<KEY> keyClazz = DomainDaoUtils.getDomainKeyClazz(domainClass);
+        if (keyClazz != null && keyClazz.isAssignableFrom(Long.class)) {
+            // GENERATED_KEY
+            if (stringObjectMap.containsKey(GENERATED_KEY)) {
+                Object o = stringObjectMap.get(GENERATED_KEY);
+                if (o instanceof BigInteger) {
+                    Long value = ((BigInteger) o).longValue();
+                    @SuppressWarnings("unchecked")
+                    KEY key = (KEY) value;
+                    return key;
+                }
+            }
+        }
+        throw new RuntimeException();
+    }
+
     private Object[] getArgsForList(List<List<ParameterHolder>> holders) {
-        throw new UnsupportedOperationException();
+        return holders.stream().flatMap(Collection::stream).map(ParameterHolder::getValue).toArray();
     }
 
     private List<ParameterHolder> transformHolder(@NotNull DOMAIN t, Field[] declaredFields) throws IllegalAccessException {
@@ -144,12 +263,15 @@ public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends I
                 continue;
             }
             field.setAccessible(true);
-            holders.add(new ParameterHolder(field.getName(), field.get(t), field.getType()));
+            Object value = field.get(t);
+            if (value != null) {
+                holders.add(new ParameterHolder(field.getName(), value, field.getType()));
+            }
         }
         return holders;
     }
 
-    private String buildSql(List<List<ParameterHolder>> holders) {
+    private String buildInsertSql(List<List<ParameterHolder>> holders) {
         List<String> columnNames = holders.stream().flatMap(Collection::stream).filter(h -> Objects.nonNull(h.getValue())).map(ParameterHolder::getName).distinct()
                 .collect(Collectors.toList());
         StringBuilder sb = new StringBuilder();
@@ -173,29 +295,80 @@ public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends I
      * //WHERE condition;
      *
      * @param domainHolder
-     * @param criteria
-     * @return
+     * @param criteria     更新的田间
+     * @return 更新的记录数
      */
     @Override
     public long update(DOMAIN domainHolder, Criteria criteria) {
         String condition = compositeCriteriaSqlFormatter.toSql(criteria);
-        List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
-        String sql = "update " + loadTable() + " set " + formatSetSql(parameters) + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
-        return jdbcTemplate.update(sql, getArgs(parameters));
+        Object[] argsFromDomainHolder = getArgsFromDomainHolder(domainHolder);
+        List<Object> argsList = Lists.newArrayList();
+        argsList.addAll(Lists.newArrayList(argsFromDomainHolder));
 
+
+        List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
+        Object[] args = getArgs(parameters);
+        argsList.addAll(Lists.newArrayList(args));
+
+        String sql = "update " + loadTable() + " set " + formatSetSql(domainHolder) + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
+        return jdbcTemplate.update(sql, argsList.toArray());
+
+    }
+
+
+    private Object[] getArgsFromDomainHolder(DOMAIN domainHolder) {
+
+        List<Object> holders = Lists.newArrayList();
+        Field[] declaredFields = getDomainClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            if (field.getName().equals("id")) {
+                continue;
+            }
+            field.setAccessible(true);
+            try {
+                Object o = field.get(domainHolder);
+                if (o != null) {
+                    holders.add(o);
+                }
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException();
+            }
+        }
+        return holders.toArray();
     }
 
     private Object[] getArgs(List<ParameterHolder> parameters) {
-        throw new UnsupportedOperationException();
+        return parameters.stream().map(ParameterHolder::getValue).toArray();
     }
 
-    private String formatSetSql(List<ParameterHolder> parameters) {
-        throw new UnsupportedOperationException();
+    private String formatSetSql(DOMAIN domainHolder) {
+        List<Field> holders = Lists.newArrayList();
+        Field[] declaredFields = getDomainClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            if (field.getName().equals("id")) {
+                continue;
+            }
+            field.setAccessible(true);
+            try {
+                Object o = field.get(domainHolder);
+                if (o != null) {
+                    holders.add(field);
+                }
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException();
+            }
+        }
+        return holders.stream().map(f -> f.getName() + " = ? ").collect(Collectors.joining(" , "));
     }
 
     @Override
     public long delete(Criteria criteria) {
-
         String condition = compositeCriteriaSqlFormatter.toSql(criteria);
         String sql = "delete from " + loadTable() + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
         List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);

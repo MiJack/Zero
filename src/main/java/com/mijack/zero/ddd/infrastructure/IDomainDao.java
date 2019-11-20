@@ -139,7 +139,10 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @return 如果添加成功，返回1，反之返回0
      */
     default long update(D domain) {
-        return update(domain,Criteria.eq("id",domain.getId()));
+        if (domain.getId() == null) {
+            return 0;
+        }
+        return update(domain, Criteria.eq("id", domain.getId()));
     }
 
     /**

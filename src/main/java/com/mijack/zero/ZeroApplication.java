@@ -15,6 +15,8 @@
  */
 package com.mijack.zero;
 
+import java.util.UUID;
+
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.service.UserService;
 import org.slf4j.Logger;
@@ -36,7 +38,7 @@ public class ZeroApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(ZeroApplication.class, args);
         UserService userService = context.getBean(UserService.class);
-        User user = userService.registerUser("mijack", "mijack@email.com");
+        User user = userService.registerUser("mijack" + UUID.randomUUID().toString(), "mijack@email.com" + UUID.randomUUID().toString());
         logger.info("user: {}", user);
         userService.listUser().forEach(u -> logger.info("{}", u));
     }

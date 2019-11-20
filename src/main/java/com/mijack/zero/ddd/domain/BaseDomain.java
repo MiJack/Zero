@@ -27,9 +27,16 @@ import java.io.Serializable;
 public interface BaseDomain<Key> extends Serializable {
 
     /**
-     * 领域对象的主键
+     * 获取领域对象的主键
      *
      * @return 领域对象的主键
      */
     Key getId();
+
+    /**
+     * 设置领域对象的主键
+     *
+     * @param id 领域对象的主键
+     */
+    void setId(Key id);
 }
