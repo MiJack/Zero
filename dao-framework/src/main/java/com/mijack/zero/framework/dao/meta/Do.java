@@ -1,6 +1,6 @@
 /*
  *    Copyright 2019 Mi&Jack
- *
+ *    
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
@@ -14,6 +14,10 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.meta;
 
+/**
+ * @author Mi&Jack
+ */
+public interface Do {
+}

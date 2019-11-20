@@ -14,6 +14,10 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.idao;
 
+/**
+ * @author Mi&Jack
+ */
+public interface IDao extends IQueryDao, IInsertDao, IDeleteDao, IUpdateDao {
+}

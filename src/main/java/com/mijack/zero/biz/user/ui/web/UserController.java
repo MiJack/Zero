@@ -18,6 +18,8 @@ package com.mijack.zero.biz.user.ui.web;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
+import java.util.List;
+
 import com.mijack.zero.biz.user.command.CreateUserCommand;
 import com.mijack.zero.biz.user.command.UpdateUserCommand;
 import com.mijack.zero.biz.user.domain.User;
@@ -46,6 +48,11 @@ public class UserController {
     @PostMapping("/user/")
     public User createUser(CreateUserCommand createUserCommand) {
         return userService.registerUser(createUserCommand.getName(), createUserCommand.getEmail());
+    }
+
+    @GetMapping("/users")
+    public List<User> listUser() {
+        return userService.listUser();
     }
 
     @PutMapping("/user")

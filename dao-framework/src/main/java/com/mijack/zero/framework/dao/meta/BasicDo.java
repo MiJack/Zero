@@ -14,6 +14,10 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.meta;
 
+/**
+ * @author Mi&Jack
+ */
+public interface BasicDo<ID> extends IdDo<ID>, DeletableDo {
+}

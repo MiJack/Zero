@@ -14,6 +14,13 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.meta;
 
+/**
+ * @author Mi&Jack
+ */
+public interface IdDo<ID> extends Do {
+    ID getId();
+
+    void setId(ID id);
+}

@@ -14,6 +14,22 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.biz.user.dao;
 
+import com.mijack.zero.framework.dao.meta.DeletableDo;
+import com.mijack.zero.framework.dao.meta.IdDo;
+import lombok.Data;
+
+/**
+ * @author Mi&Jack
+ */
+@Data
+public class UserDao implements IdDo<Long>, DeletableDo {
+    private Long id;
+    private Boolean deleted;
+
+    @Override
+    public Boolean isDeleted() {
+        return deleted;
+    }
+}
