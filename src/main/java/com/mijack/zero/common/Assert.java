@@ -16,7 +16,11 @@
 
 package com.mijack.zero.common;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
+
+import com.mijack.zero.utils.CollectionHelper;
 
 
 /**
@@ -61,6 +65,27 @@ public interface Assert {
      */
     static void notNull(Object o, Supplier<? extends RuntimeException> supplier) {
         state(o != null, supplier);
+    }
+
+    /**
+     * 判断给定两个集合大小是否相同
+     *
+     * @param c1 待判断的集合 c1
+     * @param c2 待判断的集合 c2
+     */
+    static void sameSize(Collection<?> c1, Collection<?> c2) {
+        sameSize(c1, c2, () -> createIllegalArgumentException("object should be null"));
+    }
+
+    /**
+     * 判断给定两个集合大小是否相同
+     *
+     * @param c1       待判断的集合 c1
+     * @param c2       待判断的集合 c2
+     * @param supplier 待抛出的异常
+     */
+    static void sameSize(Collection<?> c1, Collection<?> c2, Supplier<? extends RuntimeException> supplier) {
+        state(CollectionHelper.size(c1) == CollectionHelper.size(c2), supplier);
     }
 
     /**

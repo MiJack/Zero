@@ -102,13 +102,6 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
     }
 
     @Override
-    public long update(List<Domain> domains) {
-        return domains.stream().filter(domain -> domainMap.containsKey(domain.getId()))
-                .filter(this::isValid)
-                .map(domain -> domainMap.put(domain.getId(), domain)).count();
-    }
-
-    @Override
     public long delete(List<Key> keys) {
         return keys.stream().filter(domainMap::containsKey)
                 .map(key -> {

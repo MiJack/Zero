@@ -14,29 +14,15 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.domain;
+package com.mijack.zero.common.mybatis;
 
-import java.io.Serializable;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
- * 领域对象的基类
- *
- * @param <Key> 领域对象的主键类型
  * @author Mi&Jack
  */
-public interface BaseDomain<Key> extends Serializable {
-
-    /**
-     * 获取领域对象的主键
-     *
-     * @return 领域对象的主键
-     */
-    Key getId();
-
-    /**
-     * 设置领域对象的主键
-     *
-     * @param id 领域对象的主键
-     */
-    void setId(Key id);
+@Configuration
+@Import(DaoScannerConfigurer.class)
+public class DaoConfig {
 }

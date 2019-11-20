@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.mijack.zero.common.mybatis.DaoInvokeHandler;
 import com.mijack.zero.ddd.domain.BaseDomain;
 import com.mijack.zero.ddd.domain.DeletableDomain;
 import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
@@ -34,6 +35,10 @@ import org.springframework.beans.BeanUtils;
  * @author Mi&Jack
  */
 public interface IDomainDao<K, D extends BaseDomain<K>> {
+    //----------------------
+    //       查询接口
+    //----------------------
+
     /**
      * 查找一个领域模型
      *
@@ -52,38 +57,10 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @return 如果未查询到，返回空集合{@link Collections#emptyList()}
      */
     @NotNull
-    List<D> list(List<K> keys);
-
-    /**
-     * 统计表里未删除的记录数
-     *
-     * @return 未删除的记录数
-     */
-    default Long count() {
-        if (isDeletableDomain()) {
-            return countBy(Criteria.eq("deleted", 0));
-        }
-        return countBy(Criteria.TRUE);
+    default List<D> list(List<K> keys) {
+        return queryList(Criteria.in("id", keys));
     }
 
-    /**
-     * 判断当前对象是否为DeletableDomain
-     *
-     * @return 对象是否删除
-     * @see DeletableDomain
-     */
-    default boolean isDeletableDomain() {
-        Class<D> domainClazz = getDomainClass();
-        return domainClazz.isAssignableFrom(DeletableDomain.class);
-    }
-
-    /**
-     * 给定待查询的领域对象的查询条件，返回对应的个数
-     *
-     * @param criteria 查询条件
-     * @return 满足查询条件的记录数
-     */
-    Long countBy(Criteria criteria);
 
     /**
      * 查找一个领域模型
@@ -104,6 +81,34 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     @NotNull
     List<D> queryList(Criteria criteria);
+    //----------------------
+    //       查询个数接口
+    //----------------------
+
+    /**
+     * 统计表里未删除的记录数
+     *
+     * @return 未删除的记录数
+     */
+    default Long count() {
+        if (isDeletableDomain()) {
+            return countBy(Criteria.eq("deleted", 0));
+        }
+        return countBy(Criteria.TRUE);
+    }
+
+
+    /**
+     * 给定待查询的领域对象的查询条件，返回对应的个数
+     *
+     * @param criteria 查询条件
+     * @return 满足查询条件的记录数
+     */
+    Long countBy(Criteria criteria);
+
+    //----------------------
+    //       添加接口
+    //----------------------
 
     /**
      * 添加一个领域对象
@@ -123,6 +128,10 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      */
     long add(List<D> domains);
 
+    //----------------------
+    //       更新接口
+    //----------------------
+
     /**
      * 更新一个领域对象
      *
@@ -130,16 +139,20 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @return 如果添加成功，返回1，反之返回0
      */
     default long update(D domain) {
-        return update(Collections.singletonList(domain));
+        if (domain.getId() == null) {
+            return 0;
+        }
+        return update(domain, Criteria.eq("id", domain.getId()));
     }
 
     /**
-     * 更新若干个领域对象
+     * 更新数据
      *
-     * @param domains 领域对象
-     * @return 如果添加成功，返回添加成功的个数，反之返回0
+     * @param domainHolder
+     * @param criteria
+     * @return
      */
-    long update(List<D> domains);
+    long update(D domainHolder, Criteria criteria);
 
     /**
      * 删除领域对象，如果是{@link DeletableDomain}，标记删除状态为true；反之物理删除
@@ -157,7 +170,11 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
      * @param keys 待删除的领域对象的主键列表
      * @return 如果删除成功，返回删除成功的个数，反之返回0
      */
-    long delete(List<K> keys);
+    default long delete(List<K> keys) {
+        return delete(Criteria.in("id", keys));
+    }
+
+    long delete(Criteria criteria);
 
     /**
      * 申请新的主键，用于新对象的创建
@@ -187,6 +204,28 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
     }
 
     /**
+     * 列举出所有对象
+     *
+     * @return 所有的对象
+     */
+    default List<D> listAll() {
+        return queryList(Criteria.TRUE);
+    }
+
+
+    /**
+     * 判断当前对象是否为DeletableDomain
+     *
+     * @return 对象是否删除
+     * @see DeletableDomain
+     */
+    default boolean isDeletableDomain() {
+        Class<D> domainClazz = getDomainClass();
+        return domainClazz.isAssignableFrom(DeletableDomain.class);
+    }
+
+
+    /**
      * 获取Domain的Class对象
      *
      * @return Domain的Class对象
@@ -194,14 +233,5 @@ public interface IDomainDao<K, D extends BaseDomain<K>> {
     @NotNull
     default Class<D> getDomainClass() {
         return DomainDaoUtils.getDomainClass(getClass());
-    }
-
-    /**
-     * 列举出所有对象
-     *
-     * @return 所有的对象
-     */
-    default List<D> listAll() {
-        return queryList(Criteria.TRUE);
     }
 }

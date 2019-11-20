@@ -22,6 +22,7 @@ import java.util.List;
 import com.mijack.zero.utils.CollectionHelper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 /**
  * @author Mi&Jack
@@ -85,6 +86,17 @@ public interface Criteria {
     }
 
     /**
+     * field in values
+     *
+     * @param field  字段
+     * @param values 字段值
+     * @return
+     */
+    static Criteria in(String field, List<?> values) {
+        return new InCriteria(field, values);
+    }
+
+    /**
      * criterion and criterion
      *
      * @param criterion 条件谓词
@@ -122,7 +134,7 @@ public interface Criteria {
     Criteria FALSE = new FalseCriteria();
 
     @Data
-    class ExpressionCriteria<T extends ExpressionCriteria<T>> implements Criteria {
+    class ExpressionCriteria implements Criteria {
         private final String expression;
 
         public ExpressionCriteria(String expression) {
@@ -131,7 +143,7 @@ public interface Criteria {
     }
 
     @Data
-    class FieldCriteria<T extends FieldCriteria<T>> implements Criteria {
+    class FieldCriteria implements Criteria {
         private final String field;
         private final Object value;
         private String operation;
@@ -145,7 +157,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class EqCriteria extends FieldCriteria<EqCriteria> {
+    class EqCriteria extends FieldCriteria {
 
         public EqCriteria(String field, Object value) {
             super(field, value, "=");
@@ -154,7 +166,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class NotEqCriteria extends FieldCriteria<NotEqCriteria> {
+    class NotEqCriteria extends FieldCriteria {
         public NotEqCriteria(String field, Object value) {
             super(field, value, "!=");
         }
@@ -162,7 +174,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class LikeCriteria extends FieldCriteria<LikeCriteria> {
+    class LikeCriteria extends FieldCriteria {
         public LikeCriteria(String field, Object value) {
             super(field, value, "LIKE");
         }
@@ -170,7 +182,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class NotLikeCriteria extends FieldCriteria<NotLikeCriteria> {
+    class NotLikeCriteria extends FieldCriteria {
         public NotLikeCriteria(String field, Object value) {
             super(field, value, "NOT LIKE");
         }
@@ -178,7 +190,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class GtCriteria extends FieldCriteria<GtCriteria> {
+    class GtCriteria extends FieldCriteria {
 
         public GtCriteria(String field, Object value) {
             super(field, value, ">");
@@ -187,7 +199,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class GeCriteria extends FieldCriteria<GeCriteria> {
+    class GeCriteria extends FieldCriteria {
 
         public GeCriteria(String field, Object value) {
             super(field, value, ">=");
@@ -196,7 +208,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class LtCriteria extends FieldCriteria<LtCriteria> {
+    class LtCriteria extends FieldCriteria {
 
         public LtCriteria(String field, Object value) {
             super(field, value, "<");
@@ -205,7 +217,7 @@ public interface Criteria {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    class LeCriteria extends FieldCriteria<LeCriteria> {
+    class LeCriteria extends FieldCriteria {
         public LeCriteria(String field, Object value) {
             super(field, value, "<=");
         }
@@ -236,15 +248,26 @@ public interface Criteria {
         }
     }
 
-    class FalseCriteria extends ExpressionCriteria<FalseCriteria> {
+    class FalseCriteria extends ExpressionCriteria {
         public FalseCriteria() {
             super("1 = 0");
         }
     }
 
-    class TrueCriteria extends ExpressionCriteria<TrueCriteria> {
+    class TrueCriteria extends ExpressionCriteria {
         public TrueCriteria() {
             super("1 = 1");
+        }
+    }
+
+    @Data
+    class InCriteria implements Criteria {
+        private final String field;
+        private final List<?> values;
+
+        public InCriteria(String field, List<?> values) {
+            this.field = field;
+            this.values = values;
         }
     }
 }
