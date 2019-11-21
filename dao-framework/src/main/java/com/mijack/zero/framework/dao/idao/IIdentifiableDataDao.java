@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.dao.meta.DataHolder;
-import com.mijack.zero.framework.dao.meta.DeletableDo;
-import com.mijack.zero.framework.dao.meta.IdentifiableData;
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.DeletableDo;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
 
 /**
  * 针对存储对象<code>D</code>的存储能力定义
@@ -100,10 +100,9 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> ext
      *
      * @param <ID> 主键类型
      * @param <D>  DB存储对象对应的java类型
-     * @param <DH> DB存储对象对应的java类型
      */
-    interface IUpdateDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DH extends DataHolder<D>>
-            extends IIdentifiableDataDao<ID, D>, IDao.IUpdateDao<D, DH> {
+    interface IUpdateDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>>
+            extends IIdentifiableDataDao<ID, D>, IDao.IUpdateDao<D> {
         /**
          * 更新相关数据
          *
@@ -111,7 +110,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> ext
          * @param ids 待更新的数据
          * @return 更新的数目
          */
-        default int update(DH dh, Collection<ID> ids) {
+        default int update(DataHolder<D> dh, Collection<ID> ids) {
             return update(dh, Criteria.in("id", ids));
         }
 
@@ -122,7 +121,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> ext
          * @param id 待更新的数据
          * @return 更新的数目
          */
-        default int update(DH dh, ID id) {
+        default int update(DataHolder<D> dh, ID id) {
             return update(dh, Collections.singleton(id));
         }
     }

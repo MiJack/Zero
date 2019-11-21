@@ -27,6 +27,7 @@ import lombok.Getter;
 /**
  * @author Mi&Jack
  */
+@Deprecated
 public interface Criteria {
 
 

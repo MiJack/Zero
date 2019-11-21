@@ -19,7 +19,7 @@ package com.mijack.zero.biz.user.domain;
 import java.sql.Timestamp;
 
 import com.mijack.zero.ddd.domain.DeletableDomain;
-import com.mijack.zero.framework.dao.meta.Data;
+import com.mijack.zero.framework.dao.idata.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
  * @author Mi&Jack
  */
 @Component
+@Deprecated
 public class CompositeCriteriaSqlFormatter {
     final Map<Class<? extends Criteria>, CriteriaFormatter<? extends Criteria>> map = new HashMap<>();
 

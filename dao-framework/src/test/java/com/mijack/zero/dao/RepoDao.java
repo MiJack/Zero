@@ -14,19 +14,12 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.dao;
+package com.mijack.zero.dao;
 
-import com.mijack.zero.framework.dao.idata.DeletableDo;
-import com.mijack.zero.framework.dao.idata.IdentifiableData;
-import lombok.Data;
+import com.mijack.zero.framework.dao.idao.BasicDao;
 
 /**
  * @author Mi&Jack
  */
-@Data
-public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>, DeletableDo<UserDO> {
-    /**
-     * 用户id
-     */
-    private Long id;
+public interface RepoDao extends BasicDao<Long, Repo> {
 }

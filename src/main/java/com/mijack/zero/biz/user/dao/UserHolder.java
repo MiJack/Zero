@@ -18,7 +18,7 @@ package com.mijack.zero.biz.user.dao;
 
 import java.sql.Timestamp;
 
-import com.mijack.zero.framework.dao.meta.DataHolder;
+import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**

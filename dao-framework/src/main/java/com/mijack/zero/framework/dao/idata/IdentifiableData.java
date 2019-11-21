@@ -14,13 +14,27 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.meta;
+package com.mijack.zero.framework.dao.idata;
 
 /**
- * 表结构支持非物理删除的DB存储对象
+ * 支持主键的DB存储对象
  *
- * @param <D> DB存储对象对应的java类型
+ * @param <ID> DB存储对象对应的java类型的主键类型
+ * @param <D>  DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface DeletableDo<D extends Data<D>> extends Data<D> {
+public interface IdentifiableData<ID, D extends Data<D>> extends Data<D> {
+    /**
+     * 获取主键
+     *
+     * @return 主键
+     */
+    ID getId();
+
+    /**
+     * 设置主键
+     *
+     * @param id 主键
+     */
+    void setId(ID id);
 }

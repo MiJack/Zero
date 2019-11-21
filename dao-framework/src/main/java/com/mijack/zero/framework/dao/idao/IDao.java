@@ -20,10 +20,10 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.dao.meta.DataHolder;
-import com.mijack.zero.framework.dao.meta.DeletableDo;
-import com.mijack.zero.framework.dao.meta.Data;
-import com.mijack.zero.framework.dao.meta.IdentifiableData;
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.DeletableDo;
+import com.mijack.zero.framework.dao.idata.Data;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
 
 /**
  * 针对存储对象<code>D</code>的存储能力定义
@@ -60,7 +60,7 @@ public interface IDao<D extends Data<D>> {
      *
      * @param <D> DB存储对象对应的java类型
      */
-    interface IInsertDao<D extends Data<D> & DataHolder<D>, DH extends DataHolder<D>> extends IDao<D> {
+    interface IInsertDao<D extends Data<D> & DataHolder<D>> extends IDao<D> {
 
         /**
          * 添加给定的数据。
@@ -83,7 +83,9 @@ public interface IDao<D extends Data<D>> {
          * @note 如果存在list存在一个对象
          * @see IdentifiableData
          */
-        int addDo(List<D> list);
+        default int addDo(List<D> list) {
+            return addData(list);
+        }
 
         /**
          * 添加给定的数据，DH中如果包含主键，不会生效
@@ -91,7 +93,7 @@ public interface IDao<D extends Data<D>> {
          * @param list 待添加的数据
          * @return 添加成功的数目
          */
-        int addData(List<DH> list);
+        int addData(List<? extends DataHolder<D>> list);
     }
 
     /**
@@ -107,16 +109,30 @@ public interface IDao<D extends Data<D>> {
          * @return 查询得到的结果，结果为空，返回{@code Collections#emptyList() }
          * @see Collections#emptyList()
          */
+        default D findOne(Criteria criteria) {
+            List<D> list = query(criteria);
+            if (list != null) {
+                return list.get(0);
+            }
+            return null;
+        }
+
+        /**
+         * 给定条件进行查询
+         *
+         * @param criteria 待查询数据的条件
+         * @return 查询得到的结果，结果为空，返回{@code Collections#emptyList() }
+         * @see Collections#emptyList()
+         */
         List<D> query(Criteria criteria);
     }
 
     /**
      * 更新能力的定义
      *
-     * @param <D>  DB存储对象对应的java类型
-     * @param <DH> DB存储对象对应的java类型
+     * @param <D> DB存储对象对应的java类型
      */
-    interface IUpdateDao<D extends Data<D> & DataHolder<D>, DH extends DataHolder<D>> extends IDao<D> {
+    interface IUpdateDao<D extends Data<D> & DataHolder<D>> extends IDao<D> {
         /**
          * 更新相关数据
          *
@@ -124,7 +140,7 @@ public interface IDao<D extends Data<D>> {
          * @param criteria 待删除的数据
          * @return 更新的数目
          */
-        int update(DH dh, Criteria criteria);
+        int update(DataHolder<D> dh, Criteria criteria);
     }
 
 }

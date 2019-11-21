@@ -102,6 +102,11 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
     }
 
     @Override
+    public long update(Domain domainHolder, Criteria criteria) {
+        return 0;
+    }
+
+    @Override
     public long delete(List<Key> keys) {
         return keys.stream().filter(domainMap::containsKey)
                 .map(key -> {
@@ -116,6 +121,11 @@ public class MemoryDomainDao<Key, Domain extends BaseDomain<Key>, DomainDao exte
                     }
                     return domain;
                 }).count();
+    }
+
+    @Override
+    public long delete(Criteria criteria) {
+        return 0;
     }
 
     @Override

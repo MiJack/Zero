@@ -16,8 +16,34 @@
 
 package com.mijack.zero.biz.user.dao;
 
+import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.dao.idao.BasicDao;
+import org.springframework.stereotype.Repository;
+
 /**
  * @author Mi&Jack
  */
-public interface IUserDao {
+@Repository
+public interface IUserDao extends BasicDao<Long, UserDO> {
+
+    /**
+     * 根据用户名查找对应的用户
+     *
+     * @param name 用户名
+     * @return 如果未查询到，返回null
+     */
+    default UserDO findOneByName(String name) {
+        return findOne(Criteria.eq("name", name));
+    }
+
+    /**
+     * 根据邮箱名查找对应的用户
+     *
+     * @param email 邮箱名
+     * @return 如果未查询到，返回null
+     */
+    default UserDO findOneByEmail(String email) {
+        return findOne(Criteria.eq("email", email));
+    }
+
 }

@@ -60,6 +60,7 @@ import com.google.common.collect.Lists;
 /**
  * @author Mi&Jack
  */
+@Deprecated
 public class DaoInvokeHandler<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends IDomainDao<KEY, DOMAIN>>
         implements InvocationHandler, IDomainDao<KEY, DOMAIN> {
     public static final Logger logger = LoggerFactory.getLogger(DaoInvokeHandler.class);

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.meta;
+package com.mijack.zero.framework.dao.idata;
 
 /**
  * DB存储对象

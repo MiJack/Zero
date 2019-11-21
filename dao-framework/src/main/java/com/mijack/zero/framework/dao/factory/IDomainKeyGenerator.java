@@ -14,16 +14,19 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.constant;
-
-import com.fasterxml.classmate.TypeResolver;
+package com.mijack.zero.framework.dao.factory;
 
 /**
  * @author Mi&Jack
  */
-public class ReflectConstant {
-    private ReflectConstant() {
-    }
 
-    public static final TypeResolver TYPE_RESOLVER = new TypeResolver();
+import java.util.Map;
+
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
+
+/**
+ * @author Mi&Jack
+ */
+public interface IDomainKeyGenerator<K, D extends IdentifiableData<K, D>> {
+    K allocateKey(Map<K, D> domainMap);
 }

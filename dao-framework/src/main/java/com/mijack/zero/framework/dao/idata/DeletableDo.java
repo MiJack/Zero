@@ -14,19 +14,13 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.dao;
-
-import com.mijack.zero.framework.dao.idata.DeletableDo;
-import com.mijack.zero.framework.dao.idata.IdentifiableData;
-import lombok.Data;
+package com.mijack.zero.framework.dao.idata;
 
 /**
+ * 表结构支持非物理删除的DB存储对象
+ *
+ * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-@Data
-public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>, DeletableDo<UserDO> {
-    /**
-     * 用户id
-     */
-    private Long id;
+public interface DeletableDo<D extends Data<D>> extends Data<D> {
 }

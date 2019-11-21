@@ -14,19 +14,40 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.dao;
+package com.mijack.zero.dao;
+
+import java.util.Objects;
 
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
-import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
-@Data
-public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>, DeletableDo<UserDO> {
-    /**
-     * 用户id
-     */
+public class Repo extends RepData implements IdentifiableData<Long, Repo>, DeletableDo<Repo> {
     private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Repo repo = (Repo) o;
+        return Objects.equals(id, repo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
+    }
 }

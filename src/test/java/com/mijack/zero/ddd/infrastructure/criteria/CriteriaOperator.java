@@ -18,7 +18,7 @@ package com.mijack.zero.ddd.infrastructure.criteria;
 
 import java.util.Objects;
 
-import org.springframework.cglib.beans.BeanMap;
+import org.apache.commons.beanutils.BeanMap;
 
 /**
  * @author Mi&Jack

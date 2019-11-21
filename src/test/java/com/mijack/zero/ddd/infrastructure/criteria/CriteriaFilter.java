@@ -16,7 +16,8 @@
 
 package com.mijack.zero.ddd.infrastructure.criteria;
 
-import org.springframework.cglib.beans.BeanMap;
+
+import org.apache.commons.beanutils.BeanMap;
 
 /**
  * @author Mi&Jack
@@ -26,7 +27,7 @@ public class CriteriaFilter {
         if (domain == null) {
             return false;
         }
-        BeanMap beanMap = BeanMap.create(domain);
+        BeanMap beanMap = new BeanMap(domain);
         CriteriaOperator c = CriteriaOperatorFactory.loadCriteriaOperator(criteria);
         return c.validateBean(beanMap);
     }
