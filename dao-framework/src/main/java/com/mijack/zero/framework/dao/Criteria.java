@@ -35,7 +35,7 @@ public interface Criteria {
      *
      * @param field 字段
      * @param value 字段值
-     * @return
+     * @return EqCriteria
      */
     static Criteria eq(String field, Object value) {
         return new EqCriteria(field, value);
@@ -46,7 +46,7 @@ public interface Criteria {
      *
      * @param field 字段
      * @param value 字段值
-     * @return
+     * @return GtCriteria
      */
     static Criteria gt(String field, Object value) {
         return new GtCriteria(field, value);
@@ -57,7 +57,7 @@ public interface Criteria {
      *
      * @param field 字段
      * @param value 字段值
-     * @return
+     * @return GeCriteria
      */
     static Criteria ge(String field, Object value) {
         return new GeCriteria(field, value);
@@ -68,7 +68,7 @@ public interface Criteria {
      *
      * @param field 字段
      * @param value 字段值
-     * @return
+     * @return LtCriteria
      */
     static Criteria lt(String field, Object value) {
         return new LtCriteria(field, value);
@@ -79,7 +79,7 @@ public interface Criteria {
      *
      * @param field 字段
      * @param value 字段值
-     * @return
+     * @return LeCriteria
      */
     static Criteria le(String field, Object value) {
         return new LeCriteria(field, value);
@@ -90,7 +90,7 @@ public interface Criteria {
      *
      * @param field  字段
      * @param values 字段值
-     * @return
+     * @return InCriteria
      */
     static Criteria in(String field, Collection<?> values) {
         return new InCriteria(field, values);
@@ -100,7 +100,7 @@ public interface Criteria {
      * criterion and criterion
      *
      * @param criterion 条件谓词
-     * @return
+     * @return AndCriteria
      */
     default Criteria and(Criteria... criterion) {
         if (this instanceof AndCriteria) {
@@ -117,7 +117,7 @@ public interface Criteria {
      * criterion or criterion
      *
      * @param criterion 条件谓词
-     * @return
+     * @return OrCriteria
      */
     default Criteria or(Criteria... criterion) {
         if (this instanceof OrCriteria) {
@@ -159,7 +159,7 @@ public interface Criteria {
     @Data
     class EqCriteria extends FieldCriteria {
 
-        public EqCriteria(String field, Object value) {
+        private EqCriteria(String field, Object value) {
             super(field, value, "=");
         }
     }
@@ -167,7 +167,7 @@ public interface Criteria {
     @EqualsAndHashCode(callSuper = true)
     @Data
     class NotEqCriteria extends FieldCriteria {
-        public NotEqCriteria(String field, Object value) {
+        private NotEqCriteria(String field, Object value) {
             super(field, value, "!=");
         }
     }
@@ -175,7 +175,7 @@ public interface Criteria {
     @EqualsAndHashCode(callSuper = true)
     @Data
     class LikeCriteria extends FieldCriteria {
-        public LikeCriteria(String field, Object value) {
+        private LikeCriteria(String field, Object value) {
             super(field, value, "LIKE");
         }
     }
@@ -183,7 +183,7 @@ public interface Criteria {
     @EqualsAndHashCode(callSuper = true)
     @Data
     class NotLikeCriteria extends FieldCriteria {
-        public NotLikeCriteria(String field, Object value) {
+        private NotLikeCriteria(String field, Object value) {
             super(field, value, "NOT LIKE");
         }
     }
@@ -192,7 +192,7 @@ public interface Criteria {
     @Data
     class GtCriteria extends FieldCriteria {
 
-        public GtCriteria(String field, Object value) {
+        private GtCriteria(String field, Object value) {
             super(field, value, ">");
         }
     }
@@ -201,7 +201,7 @@ public interface Criteria {
     @Data
     class GeCriteria extends FieldCriteria {
 
-        public GeCriteria(String field, Object value) {
+        private GeCriteria(String field, Object value) {
             super(field, value, ">=");
         }
     }
@@ -210,7 +210,7 @@ public interface Criteria {
     @Data
     class LtCriteria extends FieldCriteria {
 
-        public LtCriteria(String field, Object value) {
+        private LtCriteria(String field, Object value) {
             super(field, value, "<");
         }
     }
@@ -218,16 +218,16 @@ public interface Criteria {
     @EqualsAndHashCode(callSuper = true)
     @Data
     class LeCriteria extends FieldCriteria {
-        public LeCriteria(String field, Object value) {
+        private LeCriteria(String field, Object value) {
             super(field, value, "<=");
         }
     }
 
     @Data
-    class JoinCriteria<T extends JoinCriteria<T>> implements Criteria {
+    class JoinCriteria implements Criteria {
         private final List<Criteria> criteria = new ArrayList<>();
 
-        public JoinCriteria(Criteria... criterion) {
+        private JoinCriteria(Criteria... criterion) {
             appendCriterion(criterion);
         }
 
@@ -236,13 +236,13 @@ public interface Criteria {
         }
     }
 
-    class AndCriteria extends JoinCriteria<AndCriteria> {
-        public AndCriteria(Criteria... criterion) {
+    class AndCriteria extends JoinCriteria {
+        private AndCriteria(Criteria... criterion) {
             super(criterion);
         }
     }
 
-    class OrCriteria extends JoinCriteria<OrCriteria> {
+    class OrCriteria extends JoinCriteria {
         public OrCriteria(Criteria... criterion) {
             super(criterion);
         }

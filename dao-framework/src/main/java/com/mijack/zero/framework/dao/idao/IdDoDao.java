@@ -29,10 +29,10 @@ import com.mijack.zero.framework.dao.meta.IdDO;
  * 针对存储对象<code>IdDo</code>的存储能力定义
  *
  * @param <ID>   主键类型
- * @param <IdDo> DB存储对象对应的java类型
+ * @param <DO> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IdDoDao<ID, IdDo extends IdDO<ID, IdDo>> extends IDao<IdDo> {
+public interface IdDoDao<ID, DO extends IdDO<ID, DO>> extends IDao<DO> {
 
     /**
      * 删除能力的定义
@@ -102,11 +102,11 @@ public interface IdDoDao<ID, IdDo extends IdDO<ID, IdDo>> extends IDao<IdDo> {
      * @param <IdDo> DB存储对象对应的java类型
      * @param <DH>   DB存储对象对应的java类型
      */
-    interface IdUpdateDao<ID, IdDo extends IdDO<ID, IdDo> & DataHolder, DH extends DataHolder<IdDo>> extends IUpdateDao<IdDo, DH> {
+    interface IdUpdateDao<ID, IdDo extends IdDO<ID, IdDo> & DataHolder<IdDo>, DH extends DataHolder<IdDo>> extends IUpdateDao<IdDo, DH> {
         /**
          * 更新相关数据
          *
-         * @param dh 待更新的数据
+         * @param dh  待更新的数据
          * @param ids 待更新的数据
          * @return 更新的数目
          */
