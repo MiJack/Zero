@@ -14,10 +14,13 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.idao;
+package com.mijack.zero.framework.dao.meta;
 
 /**
+ * DB存储对象
+ *
+ * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IQueryDao {
+public interface BasicDO<D extends BasicDO<D>> {
 }

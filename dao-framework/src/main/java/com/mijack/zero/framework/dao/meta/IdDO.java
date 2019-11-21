@@ -1,6 +1,6 @@
 /*
  *    Copyright 2019 Mi&Jack
- *    
+ *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
@@ -17,7 +17,24 @@
 package com.mijack.zero.framework.dao.meta;
 
 /**
+ * 支持主键的DB存储对象
+ *
+ * @param <ID> DB存储对象对应的java类型的主键类型
+ * @param <D>  DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface Do {
+public interface IdDO<ID, D extends BasicDO<D>> extends BasicDO<D> {
+    /**
+     * 获取主键
+     *
+     * @return 主键
+     */
+    ID getId();
+
+    /**
+     * 设置主键
+     *
+     * @param id 主键
+     */
+    void setId(ID id);
 }

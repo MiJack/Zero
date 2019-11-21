@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.meta;
+package com.mijack.zero.biz.user.dao;
 
 /**
  * @author Mi&Jack
  */
-public interface BasicDo<ID> extends IdDo<ID>, DeletableDo {
+public interface IUserDao {
 }

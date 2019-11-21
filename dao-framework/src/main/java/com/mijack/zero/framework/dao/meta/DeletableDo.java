@@ -17,11 +17,10 @@
 package com.mijack.zero.framework.dao.meta;
 
 /**
+ * 表结构支持非物理删除的DB存储对象
+ *
+ * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface DeletableDo extends Do {
-
-    Boolean isDeleted();
-
-    void setDeleted(Boolean deleted);
+public interface DeletableDo<D extends BasicDO<D>> extends BasicDO<D> {
 }

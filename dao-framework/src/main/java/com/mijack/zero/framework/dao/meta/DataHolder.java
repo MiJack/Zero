@@ -14,10 +14,12 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.idao;
+package com.mijack.zero.framework.dao.meta;
 
 /**
+ * 用于表示存储对象中非主键和删除标记的字段
  * @author Mi&Jack
+ * @param <D> DB存储对象对应的java类型
  */
-public interface IUpdateDao {
+public interface DataHolder<D extends BasicDO> {
 }

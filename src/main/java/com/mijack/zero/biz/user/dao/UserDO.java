@@ -17,15 +17,21 @@
 package com.mijack.zero.biz.user.dao;
 
 import com.mijack.zero.framework.dao.meta.DeletableDo;
-import com.mijack.zero.framework.dao.meta.IdDo;
+import com.mijack.zero.framework.dao.meta.IdDO;
 import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
 @Data
-public class UserDao implements IdDo<Long>, DeletableDo {
+public class UserDO extends UserHolder implements IdDO<Long, UserDO>, DeletableDo<UserDO> {
+    /**
+     * 用户id
+     */
     private Long id;
+    /**
+     * 是否删除
+     */
     private Boolean deleted;
 
     @Override

@@ -14,10 +14,33 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.idao;
+package com.mijack.zero.biz.user.dao;
+
+import java.sql.Timestamp;
+
+import com.mijack.zero.framework.dao.meta.DataHolder;
+import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
-public interface IInsertDao {
+@Data
+public class UserHolder implements DataHolder<UserDO> {
+
+    /**
+     * 用户名
+     */
+    private String name;
+    /**
+     * 用户邮箱
+     */
+    private String email;
+    /**
+     * 创建时间
+     */
+    private Timestamp createTime;
+    /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
 }
