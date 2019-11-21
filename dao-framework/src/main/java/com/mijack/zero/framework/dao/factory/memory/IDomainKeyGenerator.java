@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.factory;
+package com.mijack.zero.framework.dao.factory.memory;
 
 /**
  * @author Mi&Jack

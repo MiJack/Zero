@@ -14,16 +14,21 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.idata;
+package com.mijack.zero.framework.dao.factory.memory;
+
+import com.mijack.zero.framework.dao.Criteria;
 
 /**
- * 表结构支持非物理删除的DB存储对象
- *
- * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface DeletableDo<D extends Data<D>> extends Data<D> {
-    boolean isDeleted();
-
-    void setDeleted(boolean deleted);
+public class CriteriaOperatorFactory {
+    public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
+        if (criteria == null) {
+            return CriteriaOperator.NullCriteriaOperator.INSTANCE;
+        }
+        if (criteria instanceof Criteria.EqCriteria) {
+            return CriteriaOperator.create((Criteria.EqCriteria) criteria);
+        }
+        return CriteriaOperator.NullCriteriaOperator.INSTANCE;
+    }
 }

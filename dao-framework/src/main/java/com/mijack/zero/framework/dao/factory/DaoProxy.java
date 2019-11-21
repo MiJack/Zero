@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.classmate.ResolvedType;
+import com.mijack.zero.framework.dao.factory.memory.MemoryBasicDao;
 import com.mijack.zero.framework.dao.idao.IDao;
 import com.mijack.zero.framework.dao.idata.Data;
 import com.mijack.zero.framework.dao.idata.DataHolder;
