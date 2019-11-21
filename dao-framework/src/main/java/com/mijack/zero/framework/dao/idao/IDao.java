@@ -22,8 +22,8 @@ import java.util.List;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.meta.DataHolder;
 import com.mijack.zero.framework.dao.meta.DeletableDo;
-import com.mijack.zero.framework.dao.meta.BasicDO;
-import com.mijack.zero.framework.dao.meta.IdDO;
+import com.mijack.zero.framework.dao.meta.Data;
+import com.mijack.zero.framework.dao.meta.IdentifiableData;
 
 /**
  * 针对存储对象<code>D</code>的存储能力定义
@@ -31,7 +31,7 @@ import com.mijack.zero.framework.dao.meta.IdDO;
  * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IDao<D extends BasicDO<D>> {
+public interface IDao<D extends Data<D>> {
     /**
      * DB存储对象对应的java类型
      *
@@ -44,7 +44,7 @@ public interface IDao<D extends BasicDO<D>> {
      *
      * @param <D> DB存储对象对应的java类型
      */
-    interface IDeleteDao<D extends BasicDO<D>> extends IDao<D> {
+    interface IDeleteDao<D extends Data<D>> extends IDao<D> {
         /**
          * 给定条件删除数据，如果D为类型DeletableDo，将删除位置为true，反正进行物理删除
          *
@@ -60,7 +60,7 @@ public interface IDao<D extends BasicDO<D>> {
      *
      * @param <D> DB存储对象对应的java类型
      */
-    interface IInsertDao<D extends BasicDO<D> & DataHolder<D>, DH extends DataHolder<D>> extends IDao<D> {
+    interface IInsertDao<D extends Data<D> & DataHolder<D>, DH extends DataHolder<D>> extends IDao<D> {
 
         /**
          * 添加给定的数据。
@@ -68,7 +68,7 @@ public interface IDao<D extends BasicDO<D>> {
          *
          * @param d 待添加的数据
          * @return 添加成功的数目
-         * @see IdDO
+         * @see IdentifiableData
          */
         default int addDo(D d) {
             return addDo(Collections.singletonList(d));
@@ -81,7 +81,7 @@ public interface IDao<D extends BasicDO<D>> {
          * @param list 待添加的数据
          * @return 添加成功的数目
          * @note 如果存在list存在一个对象
-         * @see IdDO
+         * @see IdentifiableData
          */
         int addDo(List<D> list);
 
@@ -99,7 +99,7 @@ public interface IDao<D extends BasicDO<D>> {
      *
      * @param <D> DB存储对象对应的java类型
      */
-    interface IQueryDao<D extends BasicDO<D>> extends IDao<D> {
+    interface IQueryDao<D extends Data<D>> extends IDao<D> {
         /**
          * 给定条件进行查询
          *
@@ -116,7 +116,7 @@ public interface IDao<D extends BasicDO<D>> {
      * @param <D>  DB存储对象对应的java类型
      * @param <DH> DB存储对象对应的java类型
      */
-    interface IUpdateDao<D extends BasicDO<D> & DataHolder<D>, DH extends DataHolder<D>> extends IDao<D> {
+    interface IUpdateDao<D extends Data<D> & DataHolder<D>, DH extends DataHolder<D>> extends IDao<D> {
         /**
          * 更新相关数据
          *

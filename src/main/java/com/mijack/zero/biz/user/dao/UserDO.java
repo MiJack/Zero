@@ -17,14 +17,14 @@
 package com.mijack.zero.biz.user.dao;
 
 import com.mijack.zero.framework.dao.meta.DeletableDo;
-import com.mijack.zero.framework.dao.meta.IdDO;
+import com.mijack.zero.framework.dao.meta.IdentifiableData;
 import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
 @Data
-public class UserDO extends UserHolder implements IdDO<Long, UserDO>, DeletableDo<UserDO> {
+public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>, DeletableDo<UserDO> {
     /**
      * 用户id
      */

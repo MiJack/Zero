@@ -22,5 +22,5 @@ package com.mijack.zero.framework.dao.meta;
  * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface DeletableDo<D extends BasicDO<D>> extends BasicDO<D> {
+public interface DeletableDo<D extends Data<D>> extends Data<D> {
 }

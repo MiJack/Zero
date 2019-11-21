@@ -23,24 +23,24 @@ import java.util.List;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.meta.DataHolder;
 import com.mijack.zero.framework.dao.meta.DeletableDo;
-import com.mijack.zero.framework.dao.meta.IdDO;
+import com.mijack.zero.framework.dao.meta.IdentifiableData;
 
 /**
- * 针对存储对象<code>IdDo</code>的存储能力定义
+ * 针对存储对象<code>D</code>的存储能力定义
  *
- * @param <ID>   主键类型
- * @param <DO> DB存储对象对应的java类型
+ * @param <ID> 主键类型
+ * @param <D>  DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IdDoDao<ID, DO extends IdDO<ID, DO>> extends IDao<DO> {
+public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> extends IDao<D> {
 
     /**
      * 删除能力的定义
      *
-     * @param <ID>   主键类型
-     * @param <IdDo> DB存储对象对应的java类型
+     * @param <ID> 主键类型
+     * @param <D>  DB存储对象对应的java类型
      */
-    interface IdDeleteDao<ID, IdDo extends IdDO<ID, IdDo>> extends IDeleteDao<IdDo> {
+    interface IDeleteDao<ID, D extends IdentifiableData<ID, D>> extends IIdentifiableDataDao<ID, D>, IDao.IDeleteDao<D> {
         /**
          * 给定条件删除数据，如果D为类型DeletableDo，将删除位置为true，反正进行物理删除
          *
@@ -68,18 +68,18 @@ public interface IdDoDao<ID, DO extends IdDO<ID, DO>> extends IDao<DO> {
     /**
      * 查询能力的定义
      *
-     * @param <ID>   主键类型
-     * @param <IdDo> DB存储对象对应的java类型
+     * @param <ID> 主键类型
+     * @param <D>  DB存储对象对应的java类型
      */
-    interface IdQueryDao<ID, IdDo extends IdDO<ID, IdDo>> extends IQueryDao<IdDo> {
+    interface IQueryDao<ID, D extends IdentifiableData<ID, D>> extends IIdentifiableDataDao<ID, D>, IDao.IQueryDao<D> {
         /**
          * 查询给定主键的DB对象
          *
          * @param id 待查询的id
          * @return 查询得到的结果
          */
-        default IdDo getById(ID id) {
-            List<IdDo> dos = getByIds(Collections.singleton(id));
+        default D getById(ID id) {
+            List<D> dos = getByIds(Collections.singleton(id));
             return dos.isEmpty() ? null : dos.get(0);
         }
 
@@ -89,7 +89,7 @@ public interface IdDoDao<ID, DO extends IdDO<ID, DO>> extends IDao<DO> {
          * @param ids 待查询的id
          * @return 查询得到的结果
          */
-        default List<IdDo> getByIds(Collection<ID> ids) {
+        default List<D> getByIds(Collection<ID> ids) {
             return query(Criteria.in("id", ids));
         }
 
@@ -98,11 +98,12 @@ public interface IdDoDao<ID, DO extends IdDO<ID, DO>> extends IDao<DO> {
     /**
      * 更新能力的定义
      *
-     * @param <ID>   主键类型
-     * @param <IdDo> DB存储对象对应的java类型
-     * @param <DH>   DB存储对象对应的java类型
+     * @param <ID> 主键类型
+     * @param <D>  DB存储对象对应的java类型
+     * @param <DH> DB存储对象对应的java类型
      */
-    interface IdUpdateDao<ID, IdDo extends IdDO<ID, IdDo> & DataHolder<IdDo>, DH extends DataHolder<IdDo>> extends IUpdateDao<IdDo, DH> {
+    interface IUpdateDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DH extends DataHolder<D>>
+            extends IIdentifiableDataDao<ID, D>, IDao.IUpdateDao<D, DH> {
         /**
          * 更新相关数据
          *

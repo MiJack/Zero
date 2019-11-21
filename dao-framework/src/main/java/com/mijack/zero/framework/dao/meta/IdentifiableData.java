@@ -23,7 +23,7 @@ package com.mijack.zero.framework.dao.meta;
  * @param <D>  DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IdDO<ID, D extends BasicDO<D>> extends BasicDO<D> {
+public interface IdentifiableData<ID, D extends Data<D>> extends Data<D> {
     /**
      * 获取主键
      *

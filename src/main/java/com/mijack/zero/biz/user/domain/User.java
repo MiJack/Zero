@@ -19,9 +19,8 @@ package com.mijack.zero.biz.user.domain;
 import java.sql.Timestamp;
 
 import com.mijack.zero.ddd.domain.DeletableDomain;
-import com.mijack.zero.framework.dao.meta.BasicDO;
+import com.mijack.zero.framework.dao.meta.Data;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -29,10 +28,10 @@ import lombok.NoArgsConstructor;
  *
  * @author Mi&Jack
  */
-@Data
+@lombok.Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements DeletableDomain<Long>, BasicDO {
+public class User implements DeletableDomain<Long>, Data {
     private static final long serialVersionUID = 8983720612047767458L;
     /**
      * 用户id
