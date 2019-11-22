@@ -19,7 +19,6 @@ package com.mijack.zero;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
-import com.mijack.zero.ddd.domain.BaseDomain;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
@@ -40,7 +39,7 @@ public class ArchitectureTest {
     public void validateArchitectureRule() {
         // 检查领域是否依赖基础领域对象
         JavaClasses importedClasses = new ClassFileImporter().importPackages("com.mijack.zero.biz.user.domain");
-        ArchRule baseDomainRule = classes().should().implement(BaseDomain.class);
+//        ArchRule baseDomainRule = classes().should().implement(BaseDomain.class);
         //  delete字段移至do层
         ArchRule fieldRule = fields().that().areNotFinal().and().areNotStatic()
                 .and().doNotHaveName("deleted")
@@ -50,7 +49,7 @@ public class ArchitectureTest {
                         return input.isPrimitive();
                     }
                 });
-        baseDomainRule.because("领域对象应该实现接口BaseDomain").check(importedClasses);
+//        baseDomainRule.because("领域对象应该实现接口BaseDomain").check(importedClasses);
         fieldRule.because("领域对象的非静态非final字段不应该为Primitive类型(delete字段除外)").check(importedClasses);
     }
 }

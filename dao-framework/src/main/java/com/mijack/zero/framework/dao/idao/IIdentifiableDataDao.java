@@ -170,5 +170,15 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
         default <DH extends DataHolder<D>> long update(DH dh, ID id) {
             return update(dh, Collections.singleton(id));
         }
+
+        /**
+         * 更新相关数据
+         *
+         * @param d 待更新的数据
+         * @return 更新的数目
+         */
+        default long update(D d) {
+            return update(d, d.getId());
+        }
     }
 }

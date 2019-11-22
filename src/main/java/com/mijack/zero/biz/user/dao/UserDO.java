@@ -36,4 +36,8 @@ public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>
     public static UserDO from(User user) {
         return null;
     }
+
+    public static User to(UserDO userDO) {
+        return null;
+    }
 }
