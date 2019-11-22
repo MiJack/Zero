@@ -14,6 +14,21 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.biz.user.dao;
 
+import com.mijack.zero.framework.dao.idata.DeletableDo;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * @author Mi&Jack
+ */
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>, DeletableDo<UserDO> {
+    /**
+     * 用户id
+     */
+    private Long id;
+}

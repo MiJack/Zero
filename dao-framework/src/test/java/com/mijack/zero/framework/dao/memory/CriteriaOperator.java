@@ -14,47 +14,44 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.infrastructure.criteria;
+package com.mijack.zero.framework.dao.memory;
 
 import java.util.Objects;
 
+import com.mijack.zero.framework.dao.Criteria;
 import org.apache.commons.beanutils.BeanMap;
 
 /**
  * @author Mi&Jack
  */
-public interface CriteriaOperator {
-    boolean validateBean(BeanMap beanMap);
+public interface CriteriaOperator<C extends Criteria> {
 
-    static EqCriteriaOperator create(Criteria.EqCriteria eqCriteria) {
-        return new EqCriteriaOperator(eqCriteria);
-    }
 
-    class NullCriteriaOperator implements CriteriaOperator{
-        /**
-         * 单例模式
-         */
-        public static final CriteriaOperator INSTANCE = new NullCriteriaOperator();
+    boolean validateBean(C criteria, BeanMap beanMap);
 
-        @Override
-        public boolean validateBean(BeanMap beanMap) {
-            return false;
-        }
-    }
-
-    class EqCriteriaOperator implements CriteriaOperator {
-        private final Criteria.EqCriteria eqCriteria;
-
-        public EqCriteriaOperator(Criteria.EqCriteria eqCriteria) {
-            this.eqCriteria = eqCriteria;
-        }
-
-        @Override
-        public boolean validateBean(BeanMap beanMap) {
+    static CriteriaOperator createEqCriteria() {
+        return (CriteriaOperator<Criteria.EqCriteria>) (eqCriteria, beanMap) -> {
             String field = eqCriteria.getField();
             Object targetValue = eqCriteria.getValue();
             Object value = beanMap.get(field);
             return Objects.equals(targetValue, value);
-        }
+        };
     }
+
+    static CriteriaOperator createFalseCriteria() {
+        return (criteria, beanMap) -> true;
+    }
+
+    static CriteriaOperator createTrueCriteria() {
+        return (criteria, beanMap) -> true;
+    }
+
+    static CriteriaOperator createInCriteria() {
+        return (CriteriaOperator<Criteria.InCriteria>) (inCriteria, beanMap) -> {
+            String field = inCriteria.getField();
+            Object value = beanMap.get(field);
+            return inCriteria.getValues().contains(value);
+        };
+    }
+
 }

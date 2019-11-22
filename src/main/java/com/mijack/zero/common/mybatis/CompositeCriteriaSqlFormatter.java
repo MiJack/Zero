@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
  * @author Mi&Jack
  */
 @Component
+@Deprecated
 public class CompositeCriteriaSqlFormatter {
     final Map<Class<? extends Criteria>, CriteriaFormatter<? extends Criteria>> map = new HashMap<>();
 
@@ -147,12 +148,12 @@ public class CompositeCriteriaSqlFormatter {
 
         @Override
         public String formatSql(InCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
-            return criteria.getField() + " in ( ? )";
+            return criteria.getField() + " in ( " + criteria.getValues().stream().map(s -> " ? ").collect(Collectors.joining(" , ")) + " )";
         }
 
         @Override
         public List<ParameterHolder> getParameters(InCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
-            return null;
+            return criteria.getValues().stream().map(v -> new ParameterHolder(null, v, v.getClass())).collect(Collectors.toList());
         }
     }
 }

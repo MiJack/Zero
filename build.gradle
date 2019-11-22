@@ -78,6 +78,7 @@ configurations {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:27.1-jre'
+    implementation project(':dao-framework')
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-beanutils:commons-beanutils:1.9.3'
@@ -126,4 +127,9 @@ docker {
     name "${project.group}/${bootJar.baseName}"
     copySpec.from(tasks.unpack.outputs).into("dependency")
     buildArgs(['DEPENDENCY': "dependency"])
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }

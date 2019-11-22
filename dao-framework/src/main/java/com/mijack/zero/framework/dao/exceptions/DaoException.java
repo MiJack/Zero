@@ -14,6 +14,14 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.exceptions;
 
+/**
+ * @author Mi&Jack
+ */
+@SuppressWarnings("serial")
+public class DaoException extends RuntimeException {
+    public DaoException(Exception e) {
+        super(e);
+    }
+}

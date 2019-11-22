@@ -14,21 +14,30 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.infrastructure.criteria;
-
-
-import org.apache.commons.beanutils.BeanMap;
+package com.mijack.zero.framework.dao.memory;
 
 /**
  * @author Mi&Jack
  */
-public class CriteriaFilter {
-    public boolean doCriteria(Object domain, Criteria criteria) {
-        if (domain == null) {
-            return false;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
+
+/**
+ * @author Mi&Jack
+ */
+public interface IDomainKeyGenerator<K, D extends IdentifiableData<K, D> & DataHolder<D>> {
+    K allocateKey(Map<K, D> domainMap);
+
+    default List<K> allocateKeys(Map<K, D> domainMap, int number) {
+        List<K> list = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            list.add(allocateKey(domainMap));
         }
-        BeanMap beanMap = new BeanMap(domain);
-        CriteriaOperator c = CriteriaOperatorFactory.loadCriteriaOperator(criteria);
-        return c.validateBean(beanMap);
+        return list;
     }
 }

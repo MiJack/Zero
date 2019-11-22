@@ -23,6 +23,8 @@ import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.common.web.bo.ApiResult;
 import com.mijack.zero.common.web.mvc.view.ApiJsonView;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Mi&Jack
  */
 public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
+    public static final Logger logger = LoggerFactory.getLogger(ApiHandlerExceptionResolver.class);
+
     @Override
     public ModelAndView resolveException(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object handler, @NotNull Exception ex) {
         ModelAndView modelAndView = new ModelAndView();
@@ -41,6 +45,7 @@ public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
             code = ((BaseBizException) ex).getCode();
             message = ex.getMessage();
         }
+        logger.error("url error, url = {}", request.getRequestURI(), ex);
         modelAndView.addObject(ApiJsonView.API_RESULT, ApiResult.fail(code, message));
         return modelAndView;
     }

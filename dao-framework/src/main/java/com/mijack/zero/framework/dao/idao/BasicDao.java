@@ -14,6 +14,17 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.idao;
 
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
+
+/**
+ * 基础dao能力的集合
+ *
+ * @author Mi&Jack
+ */
+public interface BasicDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>>
+        extends IIdentifiableDataDao.IInsertDao<ID, D>, IIdentifiableDataDao.IQueryDao<ID, D>, IIdentifiableDataDao.IDeleteDao<ID, D>,
+        IIdentifiableDataDao.IUpdateDao<ID, D>, IDao.IStatisticsDao<D> {
+}

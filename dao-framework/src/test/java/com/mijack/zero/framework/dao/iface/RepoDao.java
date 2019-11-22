@@ -14,6 +14,13 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.iface;
 
+import com.mijack.zero.demo.Repo;
+import com.mijack.zero.framework.dao.idao.BasicDao;
+
+/**
+ * @author Mi&Jack
+ */
+public interface RepoDao extends BasicDao<Long, Repo> {
+}

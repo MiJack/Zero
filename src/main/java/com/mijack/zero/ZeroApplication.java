@@ -33,14 +33,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 @ImportAutoConfiguration(JdbcTemplateAutoConfiguration.class)
 @SpringBootApplication(scanBasePackages = "com.mijack.zero")
 public class ZeroApplication {
-    public static final Logger logger = LoggerFactory.getLogger(ZeroApplication.class);
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(ZeroApplication.class, args);
-        UserService userService = context.getBean(UserService.class);
-        User user = userService.registerUser("mijack" + UUID.randomUUID().toString(), "mijack@email.com" + UUID.randomUUID().toString());
-        logger.info("user: {}", user);
-        userService.listUser().forEach(u -> logger.info("{}", u));
+        SpringApplication.run(ZeroApplication.class, args);
     }
 
 }

@@ -14,6 +14,13 @@
  *    limitations under the License.
  */
 
-rootProject.name = 'Zero'
-include 'dao-framework'
+package com.mijack.zero.framework.dao.idata;
 
+/**
+ * 用于表示存储对象中非主键和删除标记的字段
+ *
+ * @param <D> DB存储对象对应的java类型
+ * @author Mi&Jack
+ */
+public interface DataHolder<D extends Data<D> & DataHolder<D>> {
+}

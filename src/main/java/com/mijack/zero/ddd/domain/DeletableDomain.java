@@ -21,6 +21,7 @@ package com.mijack.zero.ddd.domain;
  *
  * @author Mi&Jack
  */
+@Deprecated
 public interface DeletableDomain<K> extends BaseDomain<K> {
 
     /**

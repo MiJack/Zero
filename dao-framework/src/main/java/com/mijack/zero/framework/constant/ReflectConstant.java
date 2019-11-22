@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.constant;
+package com.mijack.zero.framework.constant;
 
 import com.fasterxml.classmate.TypeResolver;
 

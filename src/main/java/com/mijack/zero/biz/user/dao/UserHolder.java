@@ -14,29 +14,19 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.domain;
+package com.mijack.zero.biz.user.dao;
 
 import java.sql.Timestamp;
 
-import com.mijack.zero.ddd.domain.DeletableDomain;
-import com.mijack.zero.framework.dao.idata.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import lombok.Data;
 
 /**
- * 用户信息抽象
- *
  * @author Mi&Jack
  */
-@lombok.Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class User implements DeletableDomain<Long> {
-    private static final long serialVersionUID = 8983720612047767458L;
-    /**
-     * 用户id
-     */
-    private Long id;
+@Data
+public class UserHolder implements DataHolder<UserDO> {
+
     /**
      * 用户名
      */
@@ -53,18 +43,4 @@ public class User implements DeletableDomain<Long> {
      * 更新时间
      */
     private Timestamp updateTime;
-    /**
-     * 是否删除
-     */
-    private Boolean deleted;
-
-    @Override
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    @Override
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 }
