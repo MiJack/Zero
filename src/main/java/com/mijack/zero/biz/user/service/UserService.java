@@ -43,7 +43,7 @@ import com.mijack.zero.common.Assert;
 public class UserService {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     final UserDao userDao;
-    final  UserFactory userFactory;
+    final UserFactory userFactory;
 
     @Autowired
     public UserService(UserDao userDao, UserFactory userFactory) {

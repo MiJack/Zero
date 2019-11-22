@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.mybatis;
+package com.mijack.zero.common.dao;
 
 import java.util.Set;
 

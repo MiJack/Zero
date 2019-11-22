@@ -23,7 +23,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.dao.idata.Data;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
@@ -51,7 +50,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
          * @return 删除成功的数目
          * @see DeletableDo <D>
          */
-        default int delete(ID id) {
+        default long delete(ID id) {
             return delete(Collections.singletonList(id));
         }
 
@@ -61,7 +60,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
          * @param ids id标识
          * @return 删除成功的数目
          */
-        default int delete(List<ID> ids) {
+        default long delete(List<ID> ids) {
             return delete(Criteria.in("id", ids));
         }
 
@@ -97,7 +96,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
         List<ID> allocateIds(int number);
 
         @Override
-        default int addData(List<? extends DataHolder<D>> list) {
+        default long addData(List<? extends DataHolder<D>> list) {
             List<ID> ids = insertData(list);
             return ids.size();
         }
@@ -157,7 +156,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
          * @param ids 待更新的数据
          * @return 更新的数目
          */
-        default int update(DataHolder<D> dh, Collection<ID> ids) {
+        default <DH extends DataHolder<D>> long update(DH dh, Collection<ID> ids) {
             return update(dh, Criteria.in("id", ids));
         }
 
@@ -168,7 +167,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
          * @param id 待更新的数据
          * @return 更新的数目
          */
-        default int update(DataHolder<D> dh, ID id) {
+        default <DH extends DataHolder<D>> long update(DH dh, ID id) {
             return update(dh, Collections.singleton(id));
         }
     }

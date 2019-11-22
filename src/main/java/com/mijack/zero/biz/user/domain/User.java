@@ -18,9 +18,8 @@ package com.mijack.zero.biz.user.domain;
 
 import java.sql.Timestamp;
 
-import com.mijack.zero.ddd.domain.DeletableDomain;
-import com.mijack.zero.framework.dao.idata.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -28,10 +27,10 @@ import lombok.NoArgsConstructor;
  *
  * @author Mi&Jack
  */
-@lombok.Data
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements DeletableDomain<Long> {
+public class User  {
     private static final long serialVersionUID = 8983720612047767458L;
     /**
      * 用户id
@@ -53,18 +52,4 @@ public class User implements DeletableDomain<Long> {
      * 更新时间
      */
     private Timestamp updateTime;
-    /**
-     * 是否删除
-     */
-    private Boolean deleted;
-
-    @Override
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    @Override
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 }

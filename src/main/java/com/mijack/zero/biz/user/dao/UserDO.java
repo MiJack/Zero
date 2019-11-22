@@ -16,6 +16,7 @@
 
 package com.mijack.zero.biz.user.dao;
 
+import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Data;
@@ -31,4 +32,8 @@ public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>
      * 用户id
      */
     private Long id;
+
+    public static UserDO from(User user) {
+        return null;
+    }
 }

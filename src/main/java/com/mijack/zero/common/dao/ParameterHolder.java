@@ -14,19 +14,18 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.infrastructure.criteria;
+package com.mijack.zero.common.dao;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * @author Mi&Jack
  */
-public class CriteriaOperatorFactory {
-    public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
-        if (criteria == null) {
-            return CriteriaOperator.NullCriteriaOperator.INSTANCE;
-        }
-        if (criteria instanceof Criteria.EqCriteria) {
-            return CriteriaOperator.create((Criteria.EqCriteria) criteria);
-        }
-        return CriteriaOperator.NullCriteriaOperator.INSTANCE;
-    }
+@Data
+@AllArgsConstructor
+public class ParameterHolder {
+    private String name;
+    private Object value;
+    private Class<?> type;
 }

@@ -52,7 +52,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @return 删除成功的数目
          * @see DeletableDo <D>
          */
-        int delete(Criteria criteria);
+        long delete(Criteria criteria);
     }
 
     /**
@@ -70,7 +70,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @return 添加成功的数目
          * @see IdentifiableData
          */
-        default int addDo(D d) {
+        default long addDo(D d) {
             return addDo(Collections.singletonList(d));
         }
 
@@ -83,7 +83,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @note 如果存在list存在一个对象
          * @see IdentifiableData
          */
-        default int addDo(List<D> list) {
+        default long addDo(List<D> list) {
             return addData(list);
         }
 
@@ -93,7 +93,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @param list 待添加的数据
          * @return 添加成功的数目
          */
-        int addData(List<? extends DataHolder<D>> list);
+        long addData(List<? extends DataHolder<D>> list);
     }
 
     /**
@@ -140,7 +140,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @param criteria 待删除的数据
          * @return 更新的数目
          */
-        int update(DataHolder<D> dh, Criteria criteria);
+        <DH extends DataHolder<D>> long update(DH dh, Criteria criteria);
     }
 
     interface IStatisticsDao<D extends Data<D> & DataHolder<D>> extends IDao<D> {
@@ -149,7 +149,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          *
          * @return 数据总条数
          */
-        default int count() {
+        default long count() {
             return count(Criteria.TRUE);
         }
 
@@ -159,7 +159,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @param criteria 待查询数据的条件
          * @return 数据总条数
          */
-        int count(Criteria criteria);
+        long count(Criteria criteria);
     }
 
 }

@@ -36,23 +36,23 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
  */
 public class MemoryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> implements BasicDao<ID, D> {
     private final static Logger logger = Logger.getLogger("MemoryDao");
-    private Class<D> daoInterface;
+    private Class<D> dataClazz;
     private Map<ID, D> domainMap = new HashMap<>(16);
     private final IDomainKeyGenerator<ID, D> domainKeyGenerator;
     private final CriteriaFilter criteriaFilter = new CriteriaFilter();
 
-    public MemoryDao(Class<D> daoInterface, IDomainKeyGenerator<ID, D> domainKeyGenerator) {
-        this.daoInterface = daoInterface;
+    public MemoryDao(Class<D> dataClazz, IDomainKeyGenerator<ID, D> domainKeyGenerator) {
+        this.dataClazz = dataClazz;
         this.domainKeyGenerator = domainKeyGenerator;
     }
 
     @Override
     public Class<D> getDataClazz() {
-        return daoInterface;
+        return dataClazz;
     }
 
     @Override
-    public int delete(Criteria criteria) {
+    public long delete(Criteria criteria) {
         List<D> query = query(criteria);
         return query.stream().map(D::getId).map(id -> domainMap.remove(id) != null).mapToInt(b -> b ? 1 : 0).reduce(Integer::sum).orElse(0);
     }
@@ -70,17 +70,13 @@ public class MemoryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> im
         return list;
     }
 
-    @Override
-    public int update(DataHolder<D> dh, Criteria criteria) {
-        throw new UnsupportedOperationException();
-    }
-
     protected boolean isValid(D domain) {
         return domain != null;
     }
 
     @Override
-    public @NotNull List<ID> allocateIds(int number) {
+    public @NotNull
+    List<ID> allocateIds(int number) {
         return domainKeyGenerator.allocateKeys(domainMap, number);
     }
 
@@ -108,7 +104,16 @@ public class MemoryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> im
     }
 
     @Override
-    public int count(Criteria criteria) {
+    public long count(Criteria criteria) {
         return query(criteria).size();
+    }
+
+    @Override
+    public <DH extends DataHolder<D>> long update(DH dh, Criteria criteria) {
+        List<D> result = query(criteria);
+        for (D d : result) {
+            d.setDataHolder(dh);
+        }
+        return result.size();
     }
 }

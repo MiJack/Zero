@@ -20,16 +20,16 @@ package com.mijack.zero.biz.user.service;
 import javax.annotation.Resource;
 
 import com.mijack.zero.ZeroApplication;
+import com.mijack.zero.biz.user.dao.UserDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
-import com.mijack.zero.ddd.domain.IDomainKeyGenerator;
-import com.mijack.zero.ddd.domain.MemoryDomainDaoFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import com.mijack.zero.framework.dao.memory.MemoryDaoProxy;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,16 +47,15 @@ public class UserServiceTest {
     UserDao userDao;
     @Resource
     UserFactory userFactory;
-    private final IDomainKeyGenerator<Long, User> domainKeyGenerator = map -> (long) (map.values().size() + 1);
 
     @Before
     public void beforeTest() {
         userFactory = new UserFactory();
-        userDao = MemoryDomainDaoFactory.proxyForDao(UserDao.class, domainKeyGenerator);
+        userDao = MemoryDaoProxy.defaultProxyForDao(UserDao.class);
         userService = new UserService(userDao, userFactory);
 
         User user = userFactory.createUser(0L, "user", "email");
-        userDao.add(user);
+        userDao.addDo(UserDO.from(user));
     }
 
     @Test

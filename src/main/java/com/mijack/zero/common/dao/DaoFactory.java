@@ -14,22 +14,23 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.mybatis;
+package com.mijack.zero.common.dao;
 
 import java.lang.reflect.Proxy;
 
-import com.mijack.zero.ddd.domain.BaseDomain;
-import com.mijack.zero.ddd.infrastructure.IDomainDao;
+import com.mijack.zero.framework.dao.idao.BasicDao;
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Mi&Jack
  */
-public class DaoFactory<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends IDomainDao<KEY, DOMAIN>> implements FactoryBean<DAO>, ApplicationContextAware {
+public class DaoFactory<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends BasicDao<ID, D>>
+        implements FactoryBean<DAO>, ApplicationContextAware {
     private Class<DAO> daoClazz;
     private ApplicationContext applicationContext;
 
@@ -40,8 +41,9 @@ public class DaoFactory<KEY, DOMAIN extends BaseDomain<KEY>, DAO extends IDomain
     @Override
     @SuppressWarnings("unchecked")
     public DAO getObject() {
-        JdbcTemplate jdbcTemplate = applicationContext.getBean(JdbcTemplate.class);
-        return (DAO) Proxy.newProxyInstance(daoClazz.getClassLoader(), new Class[]{daoClazz}, new DaoInvokeHandler<>(daoClazz, jdbcTemplate));
+        DaoInvokeConfiguration daoInvokeHandlerConfiguration = applicationContext.getBean(DaoInvokeConfiguration.class);
+        return (DAO) Proxy.newProxyInstance(daoClazz.getClassLoader(), new Class[]{daoClazz},
+                new DaoInvokeHandler<>(daoClazz, daoInvokeHandlerConfiguration));
     }
 
     @Override

@@ -14,14 +14,18 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.ddd.domain;
+package com.mijack.zero.common.dao;
 
-
-import java.util.Map;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Mi&Jack
  */
-public interface IDomainKeyGenerator<K, D extends BaseDomain<K>> {
-    K allocateKey(Map<K, D> domainMap);
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Table {
+    String name();
 }
