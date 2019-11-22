@@ -14,13 +14,30 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.idata;
+package com.mijack.zero.framework.dao.memory;
 
 /**
- * 用于表示存储对象中非主键和删除标记的字段
- *
- * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface DataHolder<D extends Data<D> & DataHolder<D>> {
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
+
+/**
+ * @author Mi&Jack
+ */
+public interface IDomainKeyGenerator<K, D extends IdentifiableData<K, D> & DataHolder<D>> {
+    K allocateKey(Map<K, D> domainMap);
+
+    default List<K> allocateKeys(Map<K, D> domainMap, int number) {
+        List<K> list = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            list.add(allocateKey(domainMap));
+        }
+        return list;
+    }
 }

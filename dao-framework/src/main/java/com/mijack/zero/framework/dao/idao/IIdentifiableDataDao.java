@@ -20,7 +20,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.dao.idata.Data;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
@@ -32,7 +35,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
  * @param <D>  DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> extends IDao<D> {
+public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> extends IDao<D> {
 
     /**
      * 删除能力的定义
@@ -40,7 +43,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> ext
      * @param <ID> 主键类型
      * @param <D>  DB存储对象对应的java类型
      */
-    interface IDeleteDao<ID, D extends IdentifiableData<ID, D>> extends IIdentifiableDataDao<ID, D>, IDao.IDeleteDao<D> {
+    interface IDeleteDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> extends IIdentifiableDataDao<ID, D>, IDao.IDeleteDao<D> {
         /**
          * 给定条件删除数据，如果D为类型DeletableDo，将删除位置为true，反正进行物理删除
          *
@@ -64,6 +67,50 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> ext
 
     }
 
+    /**
+     * 插入能力的定义
+     *
+     * @param <D> DB存储对象对应的java类型
+     */
+    interface IInsertDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>>
+            extends IIdentifiableDataDao<ID, D>, IDao.IInsertDao<D> {
+        /**
+         * 申请新的主键，用于新对象的创建
+         *
+         * @return 申请的新主键
+         */
+        default ID allocateId() {
+            List<ID> ids = allocateIds(1);
+            if (ids.size() == 1) {
+                return ids.get(0);
+            }
+            return null;
+        }
+
+        /**
+         * 申请新的主键，用于新对象的创建
+         *
+         * @param number 申请的主键个数
+         * @return 申请的新主键
+         */
+        @NotNull
+        List<ID> allocateIds(int number);
+
+        @Override
+        default int addData(List<? extends DataHolder<D>> list) {
+            List<ID> ids = insertData(list);
+            return ids.size();
+        }
+
+        /**
+         * 添加给定的数据，DH中如果包含主键，不会生效
+         *
+         * @param list 待添加的数据
+         * @return 添加成功的数目
+         */
+        @NotNull
+        List<ID> insertData(List<? extends DataHolder<D>> list);
+    }
 
     /**
      * 查询能力的定义
@@ -71,7 +118,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D>> ext
      * @param <ID> 主键类型
      * @param <D>  DB存储对象对应的java类型
      */
-    interface IQueryDao<ID, D extends IdentifiableData<ID, D>> extends IIdentifiableDataDao<ID, D>, IDao.IQueryDao<D> {
+    interface IQueryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> extends IIdentifiableDataDao<ID, D>, IDao.IQueryDao<D> {
         /**
          * 查询给定主键的DB对象
          *

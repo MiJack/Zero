@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @lombok.Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements DeletableDomain<Long>, Data {
+public class User implements DeletableDomain<Long> {
     private static final long serialVersionUID = 8983720612047767458L;
     /**
      * 用户id

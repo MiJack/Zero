@@ -14,8 +14,9 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.dao;
+package com.mijack.zero.framework.dao.iface;
 
+import com.mijack.zero.demo.Repo;
 import com.mijack.zero.framework.dao.idao.BasicDao;
 
 /**

@@ -16,11 +16,31 @@
 
 package com.mijack.zero.framework.dao.idata;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.beanutils.BeanUtils;
+
 /**
  * DB存储对象
  *
- * @param <D> DB存储对象对应的java类型
+ * @param <D>  DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface Data<D extends Data<D>> {
+public interface Data<D extends Data<D> & DataHolder<D>> {
+    Logger logger = Logger.getLogger("Data");
+
+    /**
+     * 将值从打他Holder拷贝到当前目录
+     *
+     * @param dataHolder 拷贝的值
+     */
+    default <DH extends DataHolder<D>> void setDataHolder(DH dataHolder) {
+        try {
+            BeanUtils.copyProperties(this, dataHolder);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            logger.log(Level.ALL, "set DataHolder error", e);
+        }
+    }
 }

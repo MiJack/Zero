@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.factory;
+package com.mijack.zero.framework.dao.memory;
 
 import static com.mijack.zero.framework.constant.ReflectConstant.TYPE_RESOLVER;
 
@@ -22,14 +22,13 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.lang.reflect.Proxy;
 import java.util.List;
-import java.util.Map;
+
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.classmate.ResolvedType;
-import com.mijack.zero.framework.dao.factory.memory.MemoryBasicDao;
 import com.mijack.zero.framework.dao.idao.IDao;
-import com.mijack.zero.framework.dao.idata.Data;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import org.apache.commons.beanutils.MethodUtils;
@@ -37,17 +36,30 @@ import org.apache.commons.beanutils.MethodUtils;
 /**
  * @author Mi&Jack
  */
-public class DaoProxy<D extends Data<D>, DAO extends IDao<D>> implements InvocationHandler {
-    private Class<DAO> daoClazz;
-    private Class<D> dataClazz;
-    private MemoryBasicDao<?, ? extends IdentifiableData<?, ? extends Data<?>>, ? extends DataHolder<?>> memoryBasicDao;
-    private Map<Class<? extends IDao<D>>, IDao<D>> daoMap = new HashMap<>();
+public class MemoryDaoProxy<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends IDao<D>> implements InvocationHandler {
+    public static <ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends IDao<D>>
+    DAO proxyForDao(Class<DAO> daoClazz, IDomainKeyGenerator<ID, D> domainKeyGenerator) {
+        @SuppressWarnings("unchecked")
+        DAO domainDao = (DAO) Proxy.newProxyInstance(daoClazz.getClassLoader(), new Class[]{daoClazz},
+                new MemoryDaoProxy<>(daoClazz, domainKeyGenerator));
+        return domainDao;
+    }
 
-    public DaoProxy(Class<DAO> daoClazz) {
+    public static <D extends IdentifiableData<Long, D> & DataHolder<D>, DAO extends IDao<D>>
+    DAO defaultProxyForDao(Class<DAO> daoClazz) {
+        return proxyForDao(daoClazz, database -> database.size() + 1L);
+    }
+
+    private final Class<DAO> daoClazz;
+    private final Class<D> dataClazz;
+    private final MemoryDao<ID, D> memoryDao;
+
+    public MemoryDaoProxy(@NotNull Class<DAO> daoClazz, @NotNull IDomainKeyGenerator<ID, D> domainKeyGenerator) {
         this.daoClazz = daoClazz;
         this.dataClazz = getDomainClass(daoClazz);
-        memoryBasicDao = new MemoryBasicDao<>(dataClazz);
+        this.memoryDao = new MemoryDao<>(dataClazz, domainKeyGenerator);
     }
+
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -65,7 +77,7 @@ public class DaoProxy<D extends Data<D>, DAO extends IDao<D>> implements Invocat
                 return invokeDefaultMethod(method, daoClazz, proxy, args);
             }
         }
-        return method.invoke(memoryBasicDao, args);
+        return method.invoke(memoryDao, args);
     }
 
     Object invokeDefaultMethod(Method method, Class<?> declaringClass, Object object,
@@ -84,7 +96,7 @@ public class DaoProxy<D extends Data<D>, DAO extends IDao<D>> implements Invocat
         ResolvedType resolve = TYPE_RESOLVER.resolve(daoClazz);
         if (resolve.isInstanceOf(IDao.class)) {
             List<ResolvedType> resolvedTypes = resolve.typeParametersFor(IDao.class);
-            ResolvedType domainType = resolvedTypes.get(1);
+            ResolvedType domainType = resolvedTypes.get(0);
             @SuppressWarnings("unchecked")
             Class<D> erasedType = (Class<D>) domainType.getErasedType();
             return erasedType;

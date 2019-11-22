@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.dao;
+package com.mijack.zero.demo;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ import com.mijack.zero.framework.dao.idata.DataHolder;
 /**
  * @author Mi&Jack
  */
-public class RepData implements DataHolder<Repo> {
+public class RepDataHolder implements DataHolder<Repo> {
     private String user;
     private String name;
 
@@ -43,9 +43,9 @@ public class RepData implements DataHolder<Repo> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RepData repData = (RepData) o;
-        return Objects.equals(user, repData.user) &&
-                Objects.equals(name, repData.name);
+        RepDataHolder repDataHolder = (RepDataHolder) o;
+        return Objects.equals(user, repDataHolder.user) &&
+                Objects.equals(name, repDataHolder.name);
     }
 
     @Override

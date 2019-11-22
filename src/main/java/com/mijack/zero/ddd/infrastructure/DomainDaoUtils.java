@@ -16,7 +16,8 @@
 
 package com.mijack.zero.ddd.infrastructure;
 
-import static com.mijack.zero.common.constant.ReflectConstant.TYPE_RESOLVER;
+
+import static com.mijack.zero.framework.constant.ReflectConstant.TYPE_RESOLVER;
 
 import java.util.List;
 

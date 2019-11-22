@@ -14,32 +14,36 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.factory.memory;
+package com.mijack.zero.framework.dao.memory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.validation.constraints.NotNull;
 
 import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.dao.exceptions.DaoException;
 import com.mijack.zero.framework.dao.idao.BasicDao;
 import com.mijack.zero.framework.dao.idata.DataHolder;
-import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 
 /**
  * @author Mi&Jack
  */
-public class MemoryBasicDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> implements BasicDao<ID, D> {
+public class MemoryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> implements BasicDao<ID, D> {
+    private final static Logger logger = Logger.getLogger("MemoryDao");
     private Class<D> daoInterface;
     private Map<ID, D> domainMap = new HashMap<>(16);
     private final IDomainKeyGenerator<ID, D> domainKeyGenerator;
-    private final CriteriaFilter criteriaFilter;
+    private final CriteriaFilter criteriaFilter = new CriteriaFilter();
 
-    public MemoryBasicDao(Class<D> daoInterface, IDomainKeyGenerator<ID, D> domainKeyGenerator, CriteriaFilter criteriaFilter) {
+    public MemoryDao(Class<D> daoInterface, IDomainKeyGenerator<ID, D> domainKeyGenerator) {
         this.daoInterface = daoInterface;
         this.domainKeyGenerator = domainKeyGenerator;
-        this.criteriaFilter = criteriaFilter;
     }
 
     @Override
@@ -51,11 +55,6 @@ public class MemoryBasicDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D
     public int delete(Criteria criteria) {
         List<D> query = query(criteria);
         return query.stream().map(D::getId).map(id -> domainMap.remove(id) != null).mapToInt(b -> b ? 1 : 0).reduce(Integer::sum).orElse(0);
-    }
-
-    @Override
-    public int addData(List<? extends DataHolder<D>> list) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -77,20 +76,39 @@ public class MemoryBasicDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D
     }
 
     protected boolean isValid(D domain) {
-        if (domain == null) {
-            return false;
-        }
-        if (domain instanceof DeletableDo) {
-            @SuppressWarnings("unchecked")
-            DeletableDo<D> deletableDomain = (DeletableDo<D>) domain;
-            return !(deletableDomain).isDeleted();
-        }
-        return true;
+        return domain != null;
     }
 
-
-    public ID allocateKey() {
-        return domainKeyGenerator.allocateKey(domainMap);
+    @Override
+    public @NotNull List<ID> allocateIds(int number) {
+        return domainKeyGenerator.allocateKeys(domainMap, number);
     }
 
+    @Override
+    public List<ID> insertData(List<? extends DataHolder<D>> list) {
+        int count = list.size();
+        @NotNull List<ID> ids = allocateIds(count);
+        for (int i = 0; i < count; i++) {
+            ID id = ids.get(i);
+            DataHolder<D> dataHolder = list.get(i);
+            D d = newDoInstance();
+            d.setDataHolder(dataHolder);
+            domainMap.put(id, d);
+        }
+        return ids;
+    }
+
+    private D newDoInstance() {
+        try {
+            return getDataClazz().newInstance();
+        } catch (Exception e) {
+            logger.log(Level.ALL, "生成DO对象异常", e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public int count(Criteria criteria) {
+        return query(criteria).size();
+    }
 }

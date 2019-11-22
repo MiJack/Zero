@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.dao;
+package com.mijack.zero.demo;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
 /**
  * @author Mi&Jack
  */
-public class Repo extends RepData implements IdentifiableData<Long, Repo>, DeletableDo<Repo> {
+public class Repo extends RepDataHolder implements IdentifiableData<Long, Repo>, DeletableDo<Repo> {
     private Long id;
 
     @Override

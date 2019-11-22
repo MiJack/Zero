@@ -14,32 +14,36 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.dao;
+package com.mijack.zero.framework.dao;
 
 import java.util.logging.Logger;
 
-import com.mijack.zero.framework.dao.factory.DaoFactory;
+import com.mijack.zero.demo.Repo;
+import com.mijack.zero.framework.dao.iface.RepoDao;
+import com.mijack.zero.framework.dao.memory.MemoryDaoProxy;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author Mi&Jack
  */
-public class DaoCase {
+public class RepDaoCase {
     private Logger logger = Logger.getLogger("daoCase");
 
     @Test
     public void doTest() {
-        DaoFactory daoFactory = new DaoFactory();
         Long id = 1L;
         Repo repo = new Repo();
         repo.setId(id);
         repo.setName("repo");
         repo.setUser("user");
-        RepoDao repoDao = daoFactory.proxyForDao(RepoDao.class);
+        RepoDao repoDao = MemoryDaoProxy.defaultProxyForDao(RepoDao.class);
+        int count = repoDao.count();
         int i = repoDao.addDo(repo);
         Assert.assertEquals("插入成功为1", i, 1);
+        int newCount = repoDao.count();
+        Assert.assertEquals("数据库中的数据应该发生变化", count + i, newCount);
         Repo repoInDb = repoDao.getById(id);
-
+        Assert.assertEquals("db存储和内存应该保持一致", repo, repoInDb);
     }
 }

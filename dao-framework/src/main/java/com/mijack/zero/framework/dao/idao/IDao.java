@@ -31,7 +31,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
  * @param <D> DB存储对象对应的java类型
  * @author Mi&Jack
  */
-public interface IDao<D extends Data<D>> {
+public interface IDao<D extends Data<D> & DataHolder<D>> {
     /**
      * DB存储对象对应的java类型
      *
@@ -44,7 +44,7 @@ public interface IDao<D extends Data<D>> {
      *
      * @param <D> DB存储对象对应的java类型
      */
-    interface IDeleteDao<D extends Data<D>> extends IDao<D> {
+    interface IDeleteDao<D extends Data<D> & DataHolder<D>> extends IDao<D> {
         /**
          * 给定条件删除数据，如果D为类型DeletableDo，将删除位置为true，反正进行物理删除
          *
@@ -101,7 +101,7 @@ public interface IDao<D extends Data<D>> {
      *
      * @param <D> DB存储对象对应的java类型
      */
-    interface IQueryDao<D extends Data<D>> extends IDao<D> {
+    interface IQueryDao<D extends Data<D> & DataHolder<D>> {
         /**
          * 给定条件进行查询
          *
@@ -141,6 +141,25 @@ public interface IDao<D extends Data<D>> {
          * @return 更新的数目
          */
         int update(DataHolder<D> dh, Criteria criteria);
+    }
+
+    interface IStatisticsDao<D extends Data<D> & DataHolder<D>> extends IDao<D> {
+        /**
+         * 统计所有的数据
+         *
+         * @return 数据总条数
+         */
+        default int count() {
+            return count(Criteria.TRUE);
+        }
+
+        /**
+         * 给定条件进行查询满足的条数
+         *
+         * @param criteria 待查询数据的条件
+         * @return 数据总条数
+         */
+        int count(Criteria criteria);
     }
 
 }

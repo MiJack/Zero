@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.factory.memory;
+package com.mijack.zero.framework.dao.memory;
 
 import com.mijack.zero.framework.dao.Criteria;
 
@@ -23,12 +23,18 @@ import com.mijack.zero.framework.dao.Criteria;
  */
 public class CriteriaOperatorFactory {
     public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
-        if (criteria == null) {
-            return CriteriaOperator.NullCriteriaOperator.INSTANCE;
-        }
         if (criteria instanceof Criteria.EqCriteria) {
-            return CriteriaOperator.create((Criteria.EqCriteria) criteria);
+            return CriteriaOperator.createEqCriteria();
         }
-        return CriteriaOperator.NullCriteriaOperator.INSTANCE;
+        if (criteria instanceof Criteria.FalseCriteria) {
+            return CriteriaOperator.createFalseCriteria();
+        }
+        if (criteria instanceof Criteria.TrueCriteria) {
+            return CriteriaOperator.createTrueCriteria();
+        }
+        if (criteria instanceof Criteria.InCriteria) {
+            return CriteriaOperator.createInCriteria();
+        }
+        throw new UnsupportedOperationException("criteria [" + criteria.getClass() + "]is not supported!");
     }
 }

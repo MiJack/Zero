@@ -14,19 +14,14 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.framework.dao.factory.memory;
+package com.mijack.zero.framework.dao.exceptions;
 
 /**
  * @author Mi&Jack
  */
-
-import java.util.Map;
-
-import com.mijack.zero.framework.dao.idata.IdentifiableData;
-
-/**
- * @author Mi&Jack
- */
-public interface IDomainKeyGenerator<K, D extends IdentifiableData<K, D>> {
-    K allocateKey(Map<K, D> domainMap);
+@SuppressWarnings("serial")
+public class DaoException extends RuntimeException {
+    public DaoException(Exception e) {
+        super(e);
+    }
 }
