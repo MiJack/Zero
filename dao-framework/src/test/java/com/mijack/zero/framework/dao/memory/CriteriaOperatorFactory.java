@@ -22,7 +22,8 @@ import com.mijack.zero.framework.dao.Criteria;
  * @author Mi&Jack
  */
 public class CriteriaOperatorFactory {
-    public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
+    public static CriteriaOperator<? extends Criteria> loadCriteriaOperator(Criteria criteria) {
+
         if (criteria instanceof Criteria.EqCriteria) {
             return CriteriaOperator.createEqCriteria();
         }

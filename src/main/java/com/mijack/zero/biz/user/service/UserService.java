@@ -88,4 +88,8 @@ public class UserService {
     public List<UserDO> listUser() {
         return userDao.query(Criteria.TRUE);
     }
+
+    public boolean deleteUser(Long userId) {
+        return userDao.delete(userId) > 0;
+    }
 }

@@ -29,19 +29,19 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * @author Mi&Jack
  */
-public class DaoFactory<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends BasicDao<ID, D>>
+public class DaoInvokeProxyFactory<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends BasicDao<ID, D>>
         implements FactoryBean<DAO>, ApplicationContextAware {
-    private Class<DAO> daoClazz;
+    private final Class<DAO> daoClazz;
     private ApplicationContext applicationContext;
 
-    public DaoFactory(Class<DAO> daoClazz) {
+    public DaoInvokeProxyFactory(Class<DAO> daoClazz) {
         this.daoClazz = daoClazz;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public DAO getObject() {
-        DaoInvokeConfiguration daoInvokeHandlerConfiguration = applicationContext.getBean(DaoInvokeConfiguration.class);
+        DaoInvokeProxyConfiguration daoInvokeHandlerConfiguration = applicationContext.getBean(DaoInvokeProxyConfiguration.class);
         return (DAO) Proxy.newProxyInstance(daoClazz.getClassLoader(), new Class[]{daoClazz},
                 new DaoInvokeHandler<>(daoClazz, daoInvokeHandlerConfiguration));
     }

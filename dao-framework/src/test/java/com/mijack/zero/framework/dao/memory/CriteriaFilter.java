@@ -19,6 +19,7 @@ package com.mijack.zero.framework.dao.memory;
 /**
  * @author Mi&Jack
  */
+
 import com.mijack.zero.framework.dao.Criteria;
 import org.apache.commons.beanutils.BeanMap;
 
@@ -26,12 +27,13 @@ import org.apache.commons.beanutils.BeanMap;
  * @author Mi&Jack
  */
 public class CriteriaFilter {
-    public boolean doCriteria(Object domain, Criteria criteria) {
+    public <T extends Criteria> boolean doCriteria(Object domain, T criteria) {
         if (domain == null) {
             return false;
         }
         BeanMap beanMap = new BeanMap(domain);
-        CriteriaOperator c = CriteriaOperatorFactory.loadCriteriaOperator(criteria);
+        @SuppressWarnings("unchecked")
+        CriteriaOperator<T> c = (CriteriaOperator<T>) CriteriaOperatorFactory.loadCriteriaOperator(criteria);
         return c.validateBean(criteria, beanMap);
     }
 }

@@ -18,6 +18,7 @@ package com.mijack.zero.common.dao;
 
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -41,6 +42,7 @@ public class ClassPathDaoScanner extends ClassPathBeanDefinitionScanner  {
         addIncludeFilter(new AnnotationTypeFilter(Repository.class));
     }
 
+    @NotNull
     @Override
     protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
         Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
@@ -54,8 +56,8 @@ public class ClassPathDaoScanner extends ClassPathBeanDefinitionScanner  {
                 if (StringUtils.isEmpty(beanClass)) {
                     continue;
                 }
-                definition.setBeanClass(DaoFactory.class);
-                definition.getConstructorArgumentValues().addIndexedArgumentValue(0, ClassUtils.forName(beanClass, DaoFactory.class.getClassLoader()));
+                definition.setBeanClass(DaoInvokeProxyFactory.class);
+                definition.getConstructorArgumentValues().addIndexedArgumentValue(0, ClassUtils.forName(beanClass, DaoInvokeProxyFactory.class.getClassLoader()));
                 logger.info("accept info: beanDefinitionHolder = {}", holder.getBeanName());
             } catch (ClassNotFoundException e) {
                 logger.error("doScan error: ", e);

@@ -100,7 +100,7 @@ public class CompositeCriteriaSqlFormatter {
         return criteriaFormatter.getParameters(criteria, this);
     }
 
-    interface CriteriaFormatter<T extends Criteria> {
+    public interface CriteriaFormatter<T extends Criteria> {
         /**
          * 将Criteria格式化sql
          *

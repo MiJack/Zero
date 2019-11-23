@@ -68,11 +68,7 @@ public class ApiResponseReturnValueHandler implements HandlerMethodReturnValueHa
         if (returnValue instanceof ApiResult) {
             return (ApiResult<?>) returnValue;
         } else {
-            if (returnValue instanceof Serializable) {
-                return success((Serializable) returnValue);
-            } else {
-                return fail(BizCode.SERIALIZABLE_FAIL);
-            }
+            return success(returnValue);
         }
     }
 

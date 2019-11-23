@@ -15,22 +15,16 @@
  */
 package com.mijack.zero;
 
-import java.util.UUID;
-
-import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.mijack.zero.config.SpringJdbcConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Mi&Jack
  */
-@ImportAutoConfiguration(JdbcTemplateAutoConfiguration.class)
+@ImportAutoConfiguration({JdbcTemplateAutoConfiguration.class, SpringJdbcConfig.class})
 @SpringBootApplication(scanBasePackages = "com.mijack.zero")
 public class ZeroApplication {
 
