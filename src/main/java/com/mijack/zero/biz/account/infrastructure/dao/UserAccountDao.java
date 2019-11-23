@@ -14,41 +14,30 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.dao;
+package com.mijack.zero.biz.account.infrastructure.dao;
 
-import com.mijack.zero.biz.user.dao.UserDO;
-import com.mijack.zero.common.dao.Table;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
 import org.springframework.stereotype.Repository;
 
 /**
- * 用户存储管理
- *
  * @author Mi&Jack
  */
 @Repository
-@Table(name = "Zero_User")
-public interface UserDao extends BasicDao<Long, UserDO> {
-
+public interface UserAccountDao extends BasicDao<Long, UserAccountDO> {
     /**
-     * 根据用户名查找对应的用户
+     * 列举一个用户下的所有账号
      *
-     * @param name 用户名
-     * @return 如果未查询到，返回null
+     * @param userId
+     * @return
      */
-    default UserDO findOneByName(String name) {
-        return findOne(Criteria.eq("name", name));
-    }
-
-    /**
-     * 根据邮箱名查找对应的用户
-     *
-     * @param email 邮箱名
-     * @return 如果未查询到，返回null
-     */
-    default UserDO findOneByEmail(String email){
-        return findOne(Criteria.eq("email", email));
+    default @NotNull List<UserAccountDO> listUserAccount(Long userId) {
+        return query(Criteria.eq("userId", userId));
     }
 
 }

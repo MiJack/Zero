@@ -14,11 +14,8 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.dao;
+package com.mijack.zero.biz.user.infrastructure.dao.data;
 
-import javax.annotation.Nullable;
-
-import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Data;
@@ -34,20 +31,4 @@ public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>
      * 用户id
      */
     private Long id;
-
-    @Nullable
-    public static UserDO from(User user) {
-        if (user == null) {
-            return null;
-        }
-        return UserMapper.INSTANCE.carToCarDto(user);
-    }
-
-    @Nullable
-    public static User to(UserDO userDO) {
-        if (userDO == null) {
-            return null;
-        }
-        return UserMapper.INSTANCE.carToCarDto(userDO);
-    }
 }

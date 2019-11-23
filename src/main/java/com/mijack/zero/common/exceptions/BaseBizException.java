@@ -31,7 +31,7 @@ import org.springframework.beans.BeanUtils;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public abstract class BaseBizException extends RuntimeException {
+public class BaseBizException extends RuntimeException {
     private static final long serialVersionUID = -8684647774757420813L;
     /**
      * 异常代码

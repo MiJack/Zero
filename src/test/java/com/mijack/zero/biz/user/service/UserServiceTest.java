@@ -21,7 +21,7 @@ package com.mijack.zero.biz.user.service;
 import javax.annotation.Resource;
 
 import com.mijack.zero.ZeroApplication;
-import com.mijack.zero.biz.user.dao.UserDO;
+import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;

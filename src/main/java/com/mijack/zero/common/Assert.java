@@ -17,7 +17,7 @@
 package com.mijack.zero.common;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import com.mijack.zero.utils.CollectionHelper;
@@ -111,4 +111,30 @@ public interface Assert {
         return new IllegalArgumentException(message);
     }
 
+    /**
+     * 给定字符串不为空
+     *
+     * @param str
+     * @param supplier
+     */
+    static void notEmpty(String str, Supplier<? extends RuntimeException> supplier) {
+        state(str != null && str.length() > 0, supplier);
+    }
+
+    /**
+     * 给定字符串不为空
+     *
+     * @param str
+     */
+    static void notEmpty(String str) {
+        notEmpty(str, () -> createIllegalArgumentException("字符串为空"));
+    }
+
+    static void equals(Object source, Object target) {
+        equals(source, target, () -> createIllegalArgumentException("source != target"));
+    }
+
+    static void equals(Object source, Object target, Supplier<? extends RuntimeException> supplier) {
+        state(Objects.equals(source, target), supplier);
+    }
 }

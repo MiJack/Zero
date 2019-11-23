@@ -19,6 +19,8 @@ package com.mijack.zero.framework.dao.idao;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
@@ -124,7 +126,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @return 查询得到的结果，结果为空，返回{@code Collections#emptyList() }
          * @see Collections#emptyList()
          */
-        List<D> query(Criteria criteria);
+       @NotNull List<D> query(Criteria criteria);
     }
 
     /**

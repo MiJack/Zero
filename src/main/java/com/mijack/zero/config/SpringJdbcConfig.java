@@ -62,7 +62,7 @@ public class SpringJdbcConfig {
                     compositeCriteriaSqlFormatter.registerCriteriaFormatter(clazz, criteriaFormatter);
                 }
             } else {
-                // todo logger worn
+                // todo logger warn
             }
         }
 

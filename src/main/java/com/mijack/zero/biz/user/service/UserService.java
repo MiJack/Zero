@@ -17,7 +17,7 @@
 package com.mijack.zero.biz.user.service;
 
 
-import com.mijack.zero.biz.user.dao.UserDO;
+import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
@@ -28,7 +28,7 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
-import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
+import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import com.mijack.zero.framework.dao.Criteria;
 import org.apache.commons.lang3.StringUtils;
@@ -44,36 +44,36 @@ import com.mijack.zero.common.Assert;
 @Service
 public class UserService {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    final UserDao userDao;
+    final UserRepository userRepository;
     final UserFactory userFactory;
 
     @Autowired
-    public UserService(UserDao userDao, UserFactory userFactory) {
-        this.userDao = userDao;
+    public UserService(UserRepository userRepository, UserFactory userFactory) {
+        this.userRepository = userRepository;
         this.userFactory = userFactory;
     }
 
     public User getUser(long userId) {
-        return UserDO.to(userDao.getById(userId));
+        return userRepository.getUserById(userId);
     }
 
     public User registerUser(String name, String email) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
-        Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
-        Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
-        Long id = userDao.allocateId();
+        Assert.isNull(userRepository.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
+        Assert.isNull(userRepository.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
+        Long id = userRepository.allocateId();
         logger.info("allocateKey = {}", id);
         User user = userFactory.createUser(id, name, email);
-        userDao.update(UserDO.from(user));
+        userRepository.addUser(user);
         return user;
     }
 
     public User updateUserInfo(Long id, String name, String email) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
-        User user = UserDO.to(userDao.getById(id));
+        User user = userRepository.getUserById(id);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
-        Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
-        Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
+        Assert.isNull(userRepository.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
+        Assert.isNull(userRepository.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
         // todo 移至领域内部实现
         if (StringUtils.isNotBlank(email)) {
             user.setEmail(email);
@@ -81,15 +81,15 @@ public class UserService {
         if (StringUtils.isNotBlank(name)) {
             user.setName(name);
         }
-        Assert.state(userDao.update(UserDO.from(user)) > 0, () -> createException(SystemErrorException.class, "更新数据异常"));
+        Assert.state(userRepository.updateUser(user) > 0, () -> createException(SystemErrorException.class, "更新数据异常"));
         return user;
     }
 
     public List<UserDO> listUser() {
-        return userDao.query(Criteria.TRUE);
+        return userRepository.query(Criteria.TRUE);
     }
 
     public boolean deleteUser(Long userId) {
-        return userDao.delete(userId) > 0;
+        return userRepository.delete(userId) > 0;
     }
 }

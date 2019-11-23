@@ -14,19 +14,23 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.account.domain;
+package com.mijack.zero.biz.account.command;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Mi&Jack
  */
 @Data
-public class AccountType {
-    /**
-     * id
-     */
-    private Long id;
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+public class AccountTypeCreateCommand {
     /**
      * 账号类型名称
      */
@@ -38,5 +42,5 @@ public class AccountType {
     /**
      * 类型
      */
-    private BillingType billingType;
+    private int billingType;
 }

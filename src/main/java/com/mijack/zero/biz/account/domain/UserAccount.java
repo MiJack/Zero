@@ -14,33 +14,39 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.dao;
+package com.mijack.zero.biz.account.domain;
 
-import java.sql.Timestamp;
-
-import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.biz.user.domain.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Mi&Jack
  */
 @Data
-public class UserHolder implements DataHolder<UserDO> {
-
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+public class UserAccount {
     /**
-     * 用户名
+     * 主键
+     */
+    Long id;
+    /**
+     * 用户信息
+     */
+    User user;
+    /**
+     * 账号类型
+     */
+    private AccountType accountType;
+    /**
+     * 账号名称
      */
     private String name;
-    /**
-     * 用户邮箱
-     */
-    private String email;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+
 }
