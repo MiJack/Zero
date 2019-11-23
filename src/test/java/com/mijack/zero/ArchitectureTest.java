@@ -42,7 +42,6 @@ public class ArchitectureTest {
 //        ArchRule baseDomainRule = classes().should().implement(BaseDomain.class);
         //  delete字段移至do层
         ArchRule fieldRule = fields().that().areNotFinal().and().areNotStatic()
-                .and().doNotHaveName("deleted")
                 .should().notHaveRawType(new DescribedPredicate<JavaClass>("领域对象的非静态非final字段不应该为Primitive类型（delete字段除外）") {
                     @Override
                     public boolean apply(JavaClass input) {

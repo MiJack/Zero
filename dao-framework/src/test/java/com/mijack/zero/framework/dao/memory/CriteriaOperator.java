@@ -29,8 +29,8 @@ public interface CriteriaOperator<C extends Criteria> {
 
     boolean validateBean(C criteria, BeanMap beanMap);
 
-    static CriteriaOperator createEqCriteria() {
-        return (CriteriaOperator<Criteria.EqCriteria>) (eqCriteria, beanMap) -> {
+    static CriteriaOperator<Criteria.EqCriteria> createEqCriteria() {
+        return (eqCriteria, beanMap) -> {
             String field = eqCriteria.getField();
             Object targetValue = eqCriteria.getValue();
             Object value = beanMap.get(field);
@@ -38,16 +38,16 @@ public interface CriteriaOperator<C extends Criteria> {
         };
     }
 
-    static CriteriaOperator createFalseCriteria() {
+    static CriteriaOperator<Criteria.ExpressionCriteria> createFalseCriteria() {
+        return (criteria, beanMap) -> false;
+    }
+
+    static CriteriaOperator<Criteria.ExpressionCriteria> createTrueCriteria() {
         return (criteria, beanMap) -> true;
     }
 
-    static CriteriaOperator createTrueCriteria() {
-        return (criteria, beanMap) -> true;
-    }
-
-    static CriteriaOperator createInCriteria() {
-        return (CriteriaOperator<Criteria.InCriteria>) (inCriteria, beanMap) -> {
+    static CriteriaOperator<Criteria.InCriteria> createInCriteria() {
+        return (inCriteria, beanMap) -> {
             String field = inCriteria.getField();
             Object value = beanMap.get(field);
             return inCriteria.getValues().contains(value);

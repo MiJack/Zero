@@ -34,7 +34,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.activation.DataHandler;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -45,10 +44,12 @@ import com.mijack.zero.framework.dao.exceptions.DaoException;
 import com.mijack.zero.framework.dao.idao.BasicDao;
 import com.mijack.zero.framework.dao.idao.IDao;
 import com.mijack.zero.framework.dao.idata.DataHolder;
+import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Getter;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -126,6 +127,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
 
     // dao 实现部分
     @Override
+    @NotNull
     public Class<D> getDataClazz() {
         ResolvedType resolve = TYPE_RESOLVER.resolve(daoInterface);
         if (resolve.isInstanceOf(IDao.class)) {
@@ -135,11 +137,36 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
             Class<D> erasedType = (Class<D>) domainType.getErasedType();
             return erasedType;
         }
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long delete(Criteria criteria) {
+        if (isDeletableDo()) {
+            return updateDeleteStatus(fixCriteria(criteria));
+        } else {
+            return deletePyi(criteria);
+        }
+    }
+
+    private boolean isDeletableDo() {
+        return DeletableDo.class.isAssignableFrom(getDataClazz());
+    }
+
+    private long updateDeleteStatus(Criteria criteria) {
+        CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
+        JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
+        String condition = compositeCriteriaSqlFormatter.toSql(criteria);
+        String sql = "update " + loadTable() + " set  " + getDeletedField() + " = 1 " + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
+        List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
+        return jdbcTemplate.update(sql, getArgs(parameters));
+    }
+
+    private String getDeletedField() {
+        return "deleted";
+    }
+
+    private long deletePyi(Criteria criteria) {
         CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
         JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
         String condition = compositeCriteriaSqlFormatter.toSql(criteria);
@@ -161,7 +188,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
     private D mapRow(ResultSet rs, int rowNum) {
         @NotNull Class<D> domainClass = getDataClazz();
         D domain = BeanUtils.instantiateClass(domainClass);
-        Field[] declaredFields = domainClass.getDeclaredFields();
+        List<Field> declaredFields = FieldUtils.getAllFieldsList(domainClass);
         for (Field field : declaredFields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
@@ -186,7 +213,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
 
         CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
         JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
-        String condition = compositeCriteriaSqlFormatter.toSql(criteria);
+        String condition = compositeCriteriaSqlFormatter.toSql(fixCriteria(criteria));
         Object[] argsFromDomainHolder = getArgsFromDomainHolder(domainHolder);
         List<Object> argsList = Lists.newArrayList();
         argsList.addAll(Lists.newArrayList(argsFromDomainHolder));
@@ -202,14 +229,14 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
     }
 
 
-    private <DH extends DataHolder<D>>  String formatSetSql(DH domainHolder) {
+    private <DH extends DataHolder<D>> String formatSetSql(DH domainHolder) {
         List<Field> holders = Lists.newArrayList();
         Field[] declaredFields = getDataClazz().getDeclaredFields();
         for (Field field : declaredFields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
-            if (field.getName().equals("id")) {
+            if ("id".equals(field.getName())) {
                 continue;
             }
             field.setAccessible(true);
@@ -229,12 +256,20 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
     public long count(Criteria criteria) {
         CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
         JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
-        String condition = compositeCriteriaSqlFormatter.toSql(criteria);
+        String condition = compositeCriteriaSqlFormatter.toSql(fixCriteria(criteria));
         String sql = " select count(1) from " + loadTable() + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
         List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
         Object[] args = getArgs(parameters);
         Long count = jdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> rs.getLong(0));
         return count != null ? count : 0L;
+    }
+
+    private Criteria fixCriteria(Criteria criteria) {
+        if (isDeletableDo()) {
+            return criteria.and(Criteria.nq(getDeletedField(), 1));
+        } else {
+            return criteria;
+        }
     }
 
     @Override
@@ -402,7 +437,8 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         sb.append(values);
         return sb.toString();
     }
-//
+
+    //
 //
 //
     private <DH extends DataHolder<D>> Object[] getArgsFromDomainHolder(DH domainHolder) {
@@ -412,7 +448,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
-            if (field.getName().equals("id")) {
+            if ("id".equals(field.getName())) {
                 continue;
             }
             field.setAccessible(true);
@@ -427,12 +463,13 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         }
         return holders.toArray();
     }
-//
+
+    //
     private Object[] getArgs(List<ParameterHolder> parameters) {
         return parameters.stream().map(ParameterHolder::getValue).toArray();
     }
 
-//
+    //
     private String loadTable() {
         Table table = daoInterface.getAnnotation(Table.class);
         return table.name();

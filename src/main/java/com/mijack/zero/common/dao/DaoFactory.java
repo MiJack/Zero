@@ -31,7 +31,7 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class DaoFactory<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends BasicDao<ID, D>>
         implements FactoryBean<DAO>, ApplicationContextAware {
-    private Class<DAO> daoClazz;
+    private final Class<DAO> daoClazz;
     private ApplicationContext applicationContext;
 
     public DaoFactory(Class<DAO> daoClazz) {

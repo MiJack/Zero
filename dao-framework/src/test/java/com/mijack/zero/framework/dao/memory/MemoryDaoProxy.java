@@ -51,12 +51,11 @@ public class MemoryDaoProxy<ID, D extends IdentifiableData<ID, D> & DataHolder<D
     }
 
     private final Class<DAO> daoClazz;
-    private final Class<D> dataClazz;
     private final MemoryDao<ID, D> memoryDao;
 
     public MemoryDaoProxy(@NotNull Class<DAO> daoClazz, @NotNull IDomainKeyGenerator<ID, D> domainKeyGenerator) {
         this.daoClazz = daoClazz;
-        this.dataClazz = getDomainClass(daoClazz);
+        Class<D> dataClazz = getDomainClass(daoClazz);
         this.memoryDao = new MemoryDao<>(dataClazz, domainKeyGenerator);
     }
 

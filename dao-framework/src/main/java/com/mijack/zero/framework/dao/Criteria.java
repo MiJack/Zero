@@ -42,6 +42,17 @@ public interface Criteria {
     }
 
     /**
+     * field != value
+     *
+     * @param field 字段
+     * @param value 字段值
+     * @return EqCriteria
+     */
+    static Criteria nq(String field, Object value) {
+        return new NotEqCriteria(field, value);
+    }
+
+    /**
      * field > value
      *
      * @param field 字段

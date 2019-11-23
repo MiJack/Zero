@@ -71,11 +71,4 @@ public interface CollectionHelper {
     }
 
 
-    static <T, P> void composeList(List<T> list1, List<P> list2, BiConsumer<T, P> consumer) {
-        Assert.sameSize(list1, list2);
-        int size = size(list1);
-        for (int i = 0; i < size; i++) {
-            consumer.accept(list1.get(i), list2.get(i));
-        }
-    }
 }

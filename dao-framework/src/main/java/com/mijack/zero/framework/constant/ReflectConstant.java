@@ -48,6 +48,6 @@ public class ReflectConstant {
         if (!Objects.equals(method1.getName(), method2.getName())) {
             return false;
         }
-        return false;
+        return true;
     }
 }

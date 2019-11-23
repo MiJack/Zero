@@ -16,16 +16,29 @@
 
 package com.mijack.zero.config;
 
+import java.lang.reflect.InvocationHandler;
+
 import javax.sql.DataSource;
 
+import com.mijack.zero.common.dao.ClassPathDaoScanner;
+import com.mijack.zero.common.dao.CompositeCriteriaSqlFormatter;
+import com.mijack.zero.common.dao.DaoInvokeConfiguration;
+import com.mijack.zero.common.dao.ForCriteria;
+import com.mijack.zero.common.dao.ImportDao;
+import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.dao.idao.IDao;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
  * @author Mi&Jack
  */
 @Configuration
+@Import(ImportDao.class)
 public class SpringJdbcConfig {
     @Bean
     public DataSource mysqlDataSource() {
@@ -35,5 +48,30 @@ public class SpringJdbcConfig {
         dataSource.setUsername("root");
         dataSource.setPassword("root");
         return dataSource;
+    }
+
+    @Bean
+    DaoInvokeConfiguration daoInvokeHandlerConfiguration(JdbcTemplate jdbcTemplate, ApplicationContext applicationContext) {
+        DaoInvokeConfiguration daoInvokeHandlerConfiguration = new DaoInvokeConfiguration();
+        daoInvokeHandlerConfiguration.setJdbcTemplate(jdbcTemplate);
+
+
+        CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = new CompositeCriteriaSqlFormatter();
+        String[] criteriaFormatterNames = applicationContext.getBeanNamesForType(CompositeCriteriaSqlFormatter.CriteriaFormatter.class);
+        for (String criteriaFormatterName : criteriaFormatterNames) {
+            @SuppressWarnings("unchecked")
+            CompositeCriteriaSqlFormatter.CriteriaFormatter<? extends Criteria> criteriaFormatter = applicationContext.getBean(criteriaFormatterName, CompositeCriteriaSqlFormatter.CriteriaFormatter.class);
+            ForCriteria forCriteria = criteriaFormatter.getClass().getAnnotation(ForCriteria.class);
+            if (forCriteria != null) {
+                for (Class<? extends Criteria> clazz : forCriteria.clazzes()) {
+                    compositeCriteriaSqlFormatter.registerCriteriaFormatter(clazz, criteriaFormatter);
+                }
+            } else {
+                // todo logger worn
+            }
+        }
+
+        daoInvokeHandlerConfiguration.setCompositeCriteriaSqlFormatter(compositeCriteriaSqlFormatter);
+        return daoInvokeHandlerConfiguration;
     }
 }

@@ -16,11 +16,15 @@
 
 package com.mijack.zero.biz.user.dao;
 
+import javax.annotation.Nullable;
+
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.BeanUtils;
+import org.springframework.cglib.beans.BeanMap;
 
 /**
  * @author Mi&Jack
@@ -33,11 +37,19 @@ public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>
      */
     private Long id;
 
+    @Nullable
     public static UserDO from(User user) {
-        return null;
+        if (user == null) {
+            return null;
+        }
+        return UserMapper.INSTANCE.carToCarDto(user);
     }
 
+    @Nullable
     public static User to(UserDO userDO) {
-        return null;
+        if (userDO == null) {
+            return null;
+        }
+        return UserMapper.INSTANCE.carToCarDto(userDO);
     }
 }

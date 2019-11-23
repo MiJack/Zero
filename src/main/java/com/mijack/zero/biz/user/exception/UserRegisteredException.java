@@ -21,8 +21,8 @@ import com.mijack.zero.common.exceptions.BaseBizException;
 /**
  * @author Mi&Jack
  */
+@SuppressWarnings("serial")
 public class UserRegisteredException extends BaseBizException {
-    private static final long serialVersionUID = 858769791869245561L;
 
     public UserRegisteredException() {
         super(UserError.USER_REGISTERED);

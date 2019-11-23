@@ -29,6 +29,7 @@ import com.mijack.zero.biz.user.service.UserService;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,5 +67,10 @@ public class UserController {
         User user = userService.getUser(userId);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         return user;
+    }
+
+    @DeleteMapping("/user/{id}")
+    public boolean deleteUser(@PathVariable("id") Long userId) {
+        return userService.deleteUser(userId);
     }
 }

@@ -36,8 +36,8 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
  */
 public class MemoryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> implements BasicDao<ID, D> {
     private final static Logger logger = Logger.getLogger("MemoryDao");
-    private Class<D> dataClazz;
-    private Map<ID, D> domainMap = new HashMap<>(16);
+    private final Class<D> dataClazz;
+    private final Map<ID, D> domainMap = new HashMap<>(16);
     private final IDomainKeyGenerator<ID, D> domainKeyGenerator;
     private final CriteriaFilter criteriaFilter = new CriteriaFilter();
 

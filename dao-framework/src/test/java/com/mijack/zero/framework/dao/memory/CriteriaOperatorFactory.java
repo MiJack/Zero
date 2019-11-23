@@ -22,18 +22,20 @@ import com.mijack.zero.framework.dao.Criteria;
  * @author Mi&Jack
  */
 public class CriteriaOperatorFactory {
-    public static CriteriaOperator loadCriteriaOperator(Criteria criteria) {
+    public static <D extends Criteria, C extends D>
+    CriteriaOperator<D> loadCriteriaOperator(C criteria) {
+
         if (criteria instanceof Criteria.EqCriteria) {
-            return CriteriaOperator.createEqCriteria();
+            return (CriteriaOperator<D>) CriteriaOperator.createEqCriteria();
         }
         if (criteria instanceof Criteria.FalseCriteria) {
-            return CriteriaOperator.createFalseCriteria();
+            return (CriteriaOperator<D>) CriteriaOperator.createFalseCriteria();
         }
         if (criteria instanceof Criteria.TrueCriteria) {
-            return CriteriaOperator.createTrueCriteria();
+            return (CriteriaOperator<D>) CriteriaOperator.createTrueCriteria();
         }
         if (criteria instanceof Criteria.InCriteria) {
-            return CriteriaOperator.createInCriteria();
+            return (CriteriaOperator<D>) CriteriaOperator.createInCriteria();
         }
         throw new UnsupportedOperationException("criteria [" + criteria.getClass() + "]is not supported!");
     }

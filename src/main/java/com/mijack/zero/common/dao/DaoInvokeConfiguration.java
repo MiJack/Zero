@@ -16,6 +16,7 @@
 
 package com.mijack.zero.common.dao;
 
+import java.lang.reflect.InvocationHandler;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +24,16 @@ import java.util.Map;
 import com.mijack.zero.framework.dao.idao.IDao;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author Mi&Jack
  */
-public class DaoInvokeConfiguration {
+public class DaoInvokeConfiguration implements BeanPostProcessor {
     @Getter
     @Setter
     private JdbcTemplate jdbcTemplate;
@@ -43,5 +48,21 @@ public class DaoInvokeConfiguration {
 
     public Map<Class<? extends IDao<?>>, IDao<?>> getDaoMap() {
         return Collections.unmodifiableMap(daoMap);
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) {
+        if (!(bean instanceof IDao)) {
+            return null;
+        }
+        IDao<?> dao = (IDao<?>) bean;
+        if (dao instanceof InvocationHandler) {
+            // skip
+            return null;
+        }
+        @SuppressWarnings("unchecked")
+        Class<? extends IDao<?>> daoClazz = (Class<? extends IDao<?>>) dao.getClass();
+        registerDao(daoClazz, dao);
+        return null;
     }
 }
