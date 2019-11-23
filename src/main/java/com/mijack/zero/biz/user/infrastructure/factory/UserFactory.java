@@ -40,7 +40,6 @@ public class UserFactory {
         user.setId(id);
         user.setEmail(email);
         user.setName(name);
-        user.setDeleted(false);
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return user;
     }

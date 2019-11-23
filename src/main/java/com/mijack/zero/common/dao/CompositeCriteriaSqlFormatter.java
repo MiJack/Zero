@@ -14,9 +14,8 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.mybatis;
+package com.mijack.zero.common.dao;
 
-import static com.mijack.zero.ddd.infrastructure.criteria.Criteria.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +24,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
+import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.dao.Criteria.ExpressionCriteria;
+import com.mijack.zero.framework.dao.Criteria.InCriteria;
+import com.mijack.zero.framework.dao.Criteria.EqCriteria;
+import com.mijack.zero.framework.dao.Criteria.NotEqCriteria;
+import com.mijack.zero.framework.dao.Criteria.LeCriteria;
+import com.mijack.zero.framework.dao.Criteria.GtCriteria;
+import com.mijack.zero.framework.dao.Criteria.JoinCriteria;
+import com.mijack.zero.framework.dao.Criteria.GeCriteria;
+import com.mijack.zero.framework.dao.Criteria.FalseCriteria;
+import com.mijack.zero.framework.dao.Criteria.LikeCriteria;
+import com.mijack.zero.framework.dao.Criteria.TrueCriteria;
+import com.mijack.zero.framework.dao.Criteria.AndCriteria;
+import com.mijack.zero.framework.dao.Criteria.OrCriteria;
+import com.mijack.zero.framework.dao.Criteria.FieldCriteria;
+import com.mijack.zero.framework.dao.Criteria.NotLikeCriteria;
+import com.mijack.zero.framework.dao.Criteria.LtCriteria;
+
+
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -34,30 +51,34 @@ import com.google.common.collect.Lists;
  * @author Mi&Jack
  */
 @Component
-@Deprecated
 public class CompositeCriteriaSqlFormatter {
     final Map<Class<? extends Criteria>, CriteriaFormatter<? extends Criteria>> map = new HashMap<>();
 
     public CompositeCriteriaSqlFormatter() {
         FieldCriteriaFormatter fieldCriteriaFormatter = new FieldCriteriaFormatter();
-        map.put(EqCriteria.class, fieldCriteriaFormatter);
-        map.put(NotEqCriteria.class, fieldCriteriaFormatter);
-        map.put(LeCriteria.class, fieldCriteriaFormatter);
-        map.put(LtCriteria.class, fieldCriteriaFormatter);
-        map.put(GeCriteria.class, fieldCriteriaFormatter);
-        map.put(GtCriteria.class, fieldCriteriaFormatter);
-        map.put(LikeCriteria.class, fieldCriteriaFormatter);
-        map.put(NotLikeCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(EqCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(NotEqCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(LeCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(LtCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(GeCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(GtCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(LikeCriteria.class, fieldCriteriaFormatter);
+        registerCriteriaFormatter(NotLikeCriteria.class, fieldCriteriaFormatter);
 
-        JoinCriteriaFormatter<AndCriteria> and = new JoinCriteriaFormatter<>("AND");
-        map.put(AndCriteria.class, and);
-        JoinCriteriaFormatter<OrCriteria> or = new JoinCriteriaFormatter<>("OR");
-        map.put(OrCriteria.class, or);
+        JoinCriteriaFormatter and = new JoinCriteriaFormatter("AND");
+        registerCriteriaFormatter(AndCriteria.class, and);
+        JoinCriteriaFormatter or = new JoinCriteriaFormatter("OR");
+        registerCriteriaFormatter(OrCriteria.class, or);
 
         ExpressionCriteriaFormatter expressionCriteriaFormatter = new ExpressionCriteriaFormatter();
-        map.put(FalseCriteria.class, expressionCriteriaFormatter);
-        map.put(TrueCriteria.class, expressionCriteriaFormatter);
-        map.put(InCriteria.class, new InCriteriaFormatter());
+        registerCriteriaFormatter(FalseCriteria.class, expressionCriteriaFormatter);
+        registerCriteriaFormatter(TrueCriteria.class, expressionCriteriaFormatter);
+        registerCriteriaFormatter(InCriteria.class, new InCriteriaFormatter());
+    }
+
+    public void registerCriteriaFormatter(Class<? extends Criteria> criteriaClass,
+                                          CriteriaFormatter<? extends Criteria> criteriaFormatter) {
+        map.put(criteriaClass, criteriaFormatter);
     }
 
     public <C extends Criteria> String toSql(C criteria) {
@@ -113,7 +134,7 @@ public class CompositeCriteriaSqlFormatter {
         }
     }
 
-    private static class JoinCriteriaFormatter<T extends JoinCriteria<T>> implements CriteriaFormatter<T> {
+    private static class JoinCriteriaFormatter implements CriteriaFormatter<JoinCriteria> {
         private final String join;
 
         public JoinCriteriaFormatter(String join) {
@@ -121,12 +142,12 @@ public class CompositeCriteriaSqlFormatter {
         }
 
         @Override
-        public String formatSql(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public String formatSql(JoinCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return criteria.getCriteria().stream().map(compositeFormatter::toSql).collect(Collectors.joining(" " + join + " "));
         }
 
         @Override
-        public List<ParameterHolder> getParameters(T criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
+        public List<ParameterHolder> getParameters(JoinCriteria criteria, CompositeCriteriaSqlFormatter compositeFormatter) {
             return criteria.getCriteria().stream().map(compositeFormatter::getParameters)
                     .flatMap(Collection::stream).collect(Collectors.toList());
         }

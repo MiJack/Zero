@@ -38,10 +38,10 @@ public class RepDaoCase {
         repo.setName("repo");
         repo.setUser("user");
         RepoDao repoDao = MemoryDaoProxy.defaultProxyForDao(RepoDao.class);
-        int count = repoDao.count();
-        int i = repoDao.addDo(repo);
+        long count = repoDao.count();
+        long i = repoDao.addDo(repo);
         Assert.assertEquals("插入成功为1", i, 1);
-        int newCount = repoDao.count();
+        long newCount = repoDao.count();
         Assert.assertEquals("数据库中的数据应该发生变化", count + i, newCount);
         Repo repoInDb = repoDao.getById(id);
         Assert.assertEquals("db存储和内存应该保持一致", repo, repoInDb);

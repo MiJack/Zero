@@ -1,6 +1,6 @@
 /*
  *    Copyright 2019 Mi&Jack
- *    
+ *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
@@ -14,15 +14,20 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.common.mybatis;
+package com.mijack.zero.common.dao;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.mijack.zero.framework.dao.Criteria;
 
 /**
  * @author Mi&Jack
  */
-public class DaoException extends RuntimeException {
-    private static final long serialVersionUID = 6539260994939508128L;
-
-    public DaoException(Exception e) {
-        initCause(e);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ForCriteria {
+    Class<? extends Criteria>[] clazzes() default {};
 }

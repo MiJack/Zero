@@ -16,10 +16,10 @@
 
 package com.mijack.zero.biz.user.infrastructure.dao;
 
-import com.mijack.zero.common.mybatis.Table;
-import com.mijack.zero.ddd.infrastructure.criteria.Criteria;
-import com.mijack.zero.ddd.infrastructure.IDomainDao;
-import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.dao.UserDO;
+import com.mijack.zero.common.dao.Table;
+import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.dao.idao.BasicDao;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Table(name = "Zero_User")
-public interface UserDao extends IDomainDao<Long, User> {
+public interface UserDao extends BasicDao<Long, UserDO> {
 
     /**
      * 根据用户名查找对应的用户
@@ -37,8 +37,8 @@ public interface UserDao extends IDomainDao<Long, User> {
      * @param name 用户名
      * @return 如果未查询到，返回null
      */
-    default User findOneByName(String name) {
-        return queryOne(Criteria.eq("name", name));
+    default UserDO findOneByName(String name) {
+        return findOne(Criteria.eq("name", name));
     }
 
     /**
@@ -47,8 +47,8 @@ public interface UserDao extends IDomainDao<Long, User> {
      * @param email 邮箱名
      * @return 如果未查询到，返回null
      */
-    default User findOneByEmail(String email){
-        return queryOne(Criteria.eq("email", email));
+    default UserDO findOneByEmail(String email){
+        return findOne(Criteria.eq("email", email));
     }
 
 }

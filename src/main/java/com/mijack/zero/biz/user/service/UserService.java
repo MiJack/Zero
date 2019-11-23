@@ -17,6 +17,7 @@
 package com.mijack.zero.biz.user.service;
 
 
+import com.mijack.zero.biz.user.dao.UserDO;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
@@ -29,6 +30,7 @@ import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
+import com.mijack.zero.framework.dao.Criteria;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,7 @@ import com.mijack.zero.common.Assert;
 public class UserService {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     final UserDao userDao;
-    final  UserFactory userFactory;
+    final UserFactory userFactory;
 
     @Autowired
     public UserService(UserDao userDao, UserFactory userFactory) {
@@ -52,23 +54,23 @@ public class UserService {
     }
 
     public User getUser(long userId) {
-        return userDao.findOne(userId);
+        return UserDO.to(userDao.getById(userId));
     }
 
     public User registerUser(String name, String email) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
         Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
-        Long id = userDao.allocateKey();
+        Long id = userDao.allocateId();
         logger.info("allocateKey = {}", id);
         User user = userFactory.createUser(id, name, email);
-        userDao.add(user);
+        userDao.update(UserDO.from(user));
         return user;
     }
 
     public User updateUserInfo(Long id, String name, String email) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
-        User user = userDao.findOne(id);
+        User user = UserDO.to(userDao.getById(id));
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
@@ -79,11 +81,11 @@ public class UserService {
         if (StringUtils.isNotBlank(name)) {
             user.setName(name);
         }
-        Assert.state(userDao.update(user) > 0, () -> createException(SystemErrorException.class, "更新数据异常"));
+        Assert.state(userDao.update(UserDO.from(user)) > 0, () -> createException(SystemErrorException.class, "更新数据异常"));
         return user;
     }
 
-    public List<User> listUser() {
-        return userDao.listAll();
+    public List<UserDO> listUser() {
+        return userDao.query(Criteria.TRUE);
     }
 }
