@@ -21,19 +21,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import com.mijack.zero.framework.dao.idao.IDao;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.ClassUtils;
 
 /**
  * @author Mi&Jack
  */
-public class DaoInvokeConfiguration implements BeanPostProcessor {
+public class DaoInvokeProxyConfiguration implements BeanPostProcessor {
     @Getter
     @Setter
     private JdbcTemplate jdbcTemplate;
@@ -51,7 +50,7 @@ public class DaoInvokeConfiguration implements BeanPostProcessor {
     }
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) {
+    public Object postProcessAfterInitialization(@NotNull Object bean, String beanName) {
         if (!(bean instanceof IDao)) {
             return null;
         }

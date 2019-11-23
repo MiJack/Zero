@@ -32,7 +32,8 @@ public class CriteriaFilter {
             return false;
         }
         BeanMap beanMap = new BeanMap(domain);
-        CriteriaOperator<T> c = CriteriaOperatorFactory.loadCriteriaOperator(criteria);
+        @SuppressWarnings("unchecked")
+        CriteriaOperator<T> c = (CriteriaOperator<T>) CriteriaOperatorFactory.loadCriteriaOperator(criteria);
         return c.validateBean(criteria, beanMap);
     }
 }

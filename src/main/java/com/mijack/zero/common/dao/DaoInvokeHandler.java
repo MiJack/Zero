@@ -67,9 +67,9 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
     private static final String GENERATED_KEY = "GENERATED_KEY";
     @Getter
     private final Class<DAO> daoInterface;
-    private final DaoInvokeConfiguration daoInvokeHandlerConfiguration;
+    private final DaoInvokeProxyConfiguration daoInvokeHandlerConfiguration;
 
-    public DaoInvokeHandler(Class<DAO> daoInterface, DaoInvokeConfiguration daoInvokeHandlerConfiguration) {
+    public DaoInvokeHandler(Class<DAO> daoInterface, DaoInvokeProxyConfiguration daoInvokeHandlerConfiguration) {
         this.daoInterface = daoInterface;
         this.daoInvokeHandlerConfiguration = daoInvokeHandlerConfiguration;
     }

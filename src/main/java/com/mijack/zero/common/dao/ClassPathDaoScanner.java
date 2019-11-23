@@ -56,8 +56,8 @@ public class ClassPathDaoScanner extends ClassPathBeanDefinitionScanner  {
                 if (StringUtils.isEmpty(beanClass)) {
                     continue;
                 }
-                definition.setBeanClass(DaoFactory.class);
-                definition.getConstructorArgumentValues().addIndexedArgumentValue(0, ClassUtils.forName(beanClass, DaoFactory.class.getClassLoader()));
+                definition.setBeanClass(DaoInvokeProxyFactory.class);
+                definition.getConstructorArgumentValues().addIndexedArgumentValue(0, ClassUtils.forName(beanClass, DaoInvokeProxyFactory.class.getClassLoader()));
                 logger.info("accept info: beanDefinitionHolder = {}", holder.getBeanName());
             } catch (ClassNotFoundException e) {
                 logger.error("doScan error: ", e);

@@ -23,8 +23,6 @@ import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.beans.BeanUtils;
-import org.springframework.cglib.beans.BeanMap;
 
 /**
  * @author Mi&Jack

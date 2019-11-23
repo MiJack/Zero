@@ -36,7 +36,7 @@ public interface Data<D extends Data<D> & DataHolder<D>> {
      *
      * @param dataHolder 拷贝的值
      */
-    default <DH extends DataHolder<D>> void setDataHolder(DH dataHolder) {
+    default <DH extends DataHolder<D>> void loadData(DH dataHolder) {
         try {
             BeanUtils.copyProperties(this, dataHolder);
         } catch (IllegalAccessException | InvocationTargetException e) {

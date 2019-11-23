@@ -16,21 +16,16 @@
 
 package com.mijack.zero.config;
 
-import java.lang.reflect.InvocationHandler;
-
 import javax.sql.DataSource;
 
-import com.mijack.zero.common.dao.ClassPathDaoScanner;
 import com.mijack.zero.common.dao.CompositeCriteriaSqlFormatter;
-import com.mijack.zero.common.dao.DaoInvokeConfiguration;
+import com.mijack.zero.common.dao.DaoInvokeProxyConfiguration;
+import com.mijack.zero.common.dao.EnableDaoInvokeProxy;
 import com.mijack.zero.common.dao.ForCriteria;
-import com.mijack.zero.common.dao.ImportDao;
 import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.dao.idao.IDao;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -38,7 +33,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  * @author Mi&Jack
  */
 @Configuration
-@Import(ImportDao.class)
+@EnableDaoInvokeProxy
 public class SpringJdbcConfig {
     @Bean
     public DataSource mysqlDataSource() {
@@ -51,8 +46,8 @@ public class SpringJdbcConfig {
     }
 
     @Bean
-    DaoInvokeConfiguration daoInvokeHandlerConfiguration(JdbcTemplate jdbcTemplate, ApplicationContext applicationContext) {
-        DaoInvokeConfiguration daoInvokeHandlerConfiguration = new DaoInvokeConfiguration();
+    DaoInvokeProxyConfiguration daoInvokeHandlerConfiguration(JdbcTemplate jdbcTemplate, ApplicationContext applicationContext) {
+        DaoInvokeProxyConfiguration daoInvokeHandlerConfiguration = new DaoInvokeProxyConfiguration();
         daoInvokeHandlerConfiguration.setJdbcTemplate(jdbcTemplate);
 
 
