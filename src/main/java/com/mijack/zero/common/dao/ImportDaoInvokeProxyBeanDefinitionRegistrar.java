@@ -2,6 +2,8 @@ package com.mijack.zero.common.dao;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.mijack.zero.ZeroApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,7 @@ public class ImportDaoInvokeProxyBeanDefinitionRegistrar implements ImportBeanDe
     public static final Logger logger = LoggerFactory.getLogger(ImportDaoInvokeProxyBeanDefinitionRegistrar.class);
 
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, @Nonnull BeanDefinitionRegistry registry) {
         Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(EnableDaoInvokeProxy.class.getName());
         logger.info("annotationAttributes = {}", annotationAttributes);
         ClassPathDaoScanner scanner = new ClassPathDaoScanner(registry);

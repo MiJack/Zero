@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.domain.AccountType;
-import com.mijack.zero.biz.account.infrastructure.dao.AccountTypeDao;
+import com.mijack.zero.biz.account.repository.AccountTypeRepository;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
@@ -40,12 +40,12 @@ public class UserAccountFactory {
     @Resource
     UserRepository userRepository;
     @Resource
-    AccountTypeDao accountTypeDao;
+    AccountTypeRepository accountTypeRepository;
 
     public UserAccount create(long userId, String accountName, Long accountTypeCode) {
         User user = userRepository.getUserById(userId);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
-        AccountType accountType = accountTypeDao.getAccountTypeById(accountTypeCode);
+        AccountType accountType = accountTypeRepository.getAccountTypeById(accountTypeCode);
         Long id = userAccountDao.allocateId();
         UserAccount userAccount = new UserAccount();
         userAccount.setId(id);

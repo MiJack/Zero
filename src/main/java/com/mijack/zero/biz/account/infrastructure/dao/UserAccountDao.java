@@ -40,4 +40,25 @@ public interface UserAccountDao extends BasicDao<Long, UserAccountDO> {
         return query(Criteria.eq("userId", userId));
     }
 
+    /**
+     * 给定userId和accountId，返回对应的UserAccount
+     *
+     * @param userId
+     * @param accountId
+     * @return
+     */
+    default UserAccountDO findByUserIdAndAccountId(long userId, long accountId) {
+        return findOne(Criteria.eq("id", accountId).and(Criteria.eq("userId", userId)));
+    }
+
+    /**
+     * 给定userId和accountId，删除对应的UserAccount
+     *
+     * @param userId
+     * @param accountId
+     * @return
+     */
+    default long deleteByUserIdAndAccountId(Long userId, Long accountId) {
+        return delete(Criteria.eq("id", accountId).and(Criteria.eq("userId", userId)));
+    }
 }

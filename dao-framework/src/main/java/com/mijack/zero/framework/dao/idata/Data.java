@@ -16,11 +16,11 @@
 
 package com.mijack.zero.framework.dao.idata;
 
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 /**
  * DB存储对象
@@ -38,7 +38,7 @@ public interface Data<D extends Data<D> & DataHolder<D>> {
      */
     default <DH extends DataHolder<D>> void loadData(DH dataHolder) {
         try {
-            BeanUtils.copyProperties(this, dataHolder);
+            copyProperties(this, dataHolder);
         } catch (IllegalAccessException | InvocationTargetException e) {
             logger.log(Level.ALL, "set DataHolder error", e);
         }

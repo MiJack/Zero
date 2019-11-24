@@ -130,10 +130,23 @@ public interface Assert {
         notEmpty(str, () -> createIllegalArgumentException("字符串为空"));
     }
 
+    /**
+     * 给定的两个值相同
+     *
+     * @param source 比较值
+     * @param target 目标值
+     */
     static void equals(Object source, Object target) {
         equals(source, target, () -> createIllegalArgumentException("source != target"));
     }
 
+    /**
+     * 给定的两个值相同
+     *
+     * @param source 比较值
+     * @param target 目标值
+     * @param supplier
+     */
     static void equals(Object source, Object target, Supplier<? extends RuntimeException> supplier) {
         state(Objects.equals(source, target), supplier);
     }

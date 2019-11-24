@@ -85,9 +85,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @note 如果存在list存在一个对象
          * @see IdentifiableData
          */
-        default long addDo(List<D> list) {
-            return addData(list);
-        }
+        long addDo(List<D> list);
 
         /**
          * 添加给定的数据，DH中如果包含主键，不会生效
@@ -95,7 +93,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @param list 待添加的数据
          * @return 添加成功的数目
          */
-        long addData(List<? extends DataHolder<D>> list);
+        <DH extends DataHolder<D>> long addData(List<DH> list);
     }
 
     /**
@@ -126,7 +124,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @return 查询得到的结果，结果为空，返回{@code Collections#emptyList() }
          * @see Collections#emptyList()
          */
-       @NotNull List<D> query(Criteria criteria);
+        @NotNull List<D> query(Criteria criteria);
     }
 
     /**

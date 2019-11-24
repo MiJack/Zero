@@ -23,7 +23,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.factory.UserAccountFactory;
 import com.mijack.zero.biz.account.factory.AccountTypeFactory;
 import com.mijack.zero.biz.account.repository.UserAccountRepository;
@@ -31,6 +30,7 @@ import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.service.UserService;
 import com.mijack.zero.common.Assert;
+import com.mijack.zero.common.exceptions.BaseBizException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,15 +55,14 @@ public class UserAccountService {
     }
 
     public UserAccount createAccount(long userId, String accountName, Long accountTypeCode) {
-
         UserAccount userAccount = userAccountFactory.create(userId, accountName, accountTypeCode);
-        userAccountRepository.addUserAccount(userAccount);
+        Assert.state(userAccountRepository.addUserAccount(userAccount) > 0, () -> createException(BaseBizException.class, "创建用户账号失败"));
         return userAccount;
     }
 
     public UserAccount deleteAccount(long userId, long accountId) {
-
-        //TODO: to write the method deleteAccount
-        throw new UnsupportedOperationException();
+        UserAccount userAccount = userAccountRepository.findUserAccount(userId, accountId);
+        Assert.state(userAccountRepository.deleteAccount(userAccount), () -> createException("用户删除失败"));
+        return userAccount;
     }
 }

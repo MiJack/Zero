@@ -18,9 +18,12 @@ package com.mijack.zero.biz.user.infrastructure.dao;
 
 import java.util.Optional;
 
+import com.mijack.zero.biz.account.domain.AccountType;
+import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.common.dao.Table;
+import com.mijack.zero.common.repository.BaseMapper;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
 import org.jetbrains.annotations.NotNull;
@@ -73,13 +76,27 @@ public interface UserRepository extends BasicDao<Long, UserDO> {
     }
 
     @Mapper
-    interface UserMapper {
+    interface UserMapper extends BaseMapper<User, UserDO> {
 
+        /**
+         * {@inheritDoc}
+         *
+         * @param domain
+         * @return
+         */
+        @Override
         @Mappings(value = {})
-        UserDO toDo(User user);
+        UserDO toDo(User domain);
 
+        /**
+         * {@inheritDoc}
+         *
+         * @param d
+         * @return
+         */
+        @Override
         @Mappings(value = {})
-        User formDo(UserDO userDO);
+        User formDo(UserDO d);
     }
 
 

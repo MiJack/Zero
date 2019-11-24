@@ -16,7 +16,6 @@
 
 package com.mijack.zero;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
 import com.tngtech.archunit.base.DescribedPredicate;

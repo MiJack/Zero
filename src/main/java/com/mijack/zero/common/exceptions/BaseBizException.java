@@ -60,4 +60,7 @@ public class BaseBizException extends RuntimeException {
         exception.setMessage(message);
         return exception;
     }
+    public static BaseBizException createException(String message) {
+        return createException(BaseBizException.class,message);
+    }
 }

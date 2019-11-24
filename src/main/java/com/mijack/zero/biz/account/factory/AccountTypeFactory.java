@@ -18,14 +18,15 @@ package com.mijack.zero.biz.account.factory;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
+import javax.annotation.Resource;
+
 import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.domain.BillingType;
-import com.mijack.zero.biz.account.infrastructure.dao.AccountTypeDao;
+import com.mijack.zero.biz.account.repository.AccountTypeRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.WrongParamException;
 import com.mijack.zero.utils.EnumUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,8 +34,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AccountTypeFactory {
-    @Autowired
-    AccountTypeDao accountTypeDao;
+    final AccountTypeRepository accountTypeRepository;
+
+    public AccountTypeFactory(AccountTypeRepository accountTypeRepository) {
+        this.accountTypeRepository = accountTypeRepository;
+    }
 
     @NotNull
     public AccountType createAccountType(String typeName, String accountTypeIcon, int billingTypeCode) {
@@ -43,7 +47,7 @@ public class AccountTypeFactory {
         Assert.notEmpty(accountTypeIcon, () -> createException(WrongParamException.class, "accountTypeIcon 为空"));
         Assert.notNull(billingType, () -> createException(WrongParamException.class, "billingType不存在"));
 
-        Long id = accountTypeDao.allocateId();
+        Long id = accountTypeRepository.allocateId();
         AccountType accountType = new AccountType();
         accountType.setId(id);
         accountType.setTypeName(typeName);
