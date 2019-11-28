@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @author yuanyujie
  */
-@ApiController
+@ApiController(path = "/api")
 public class AccountTypeController {
     @Resource
     private AccountTypeService accountTypeService;
