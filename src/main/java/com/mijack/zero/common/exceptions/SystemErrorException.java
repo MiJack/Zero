@@ -17,7 +17,7 @@
 package com.mijack.zero.common.exceptions;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class SystemErrorException extends BaseBizException {
     private static final long serialVersionUID = -2051021466108007497L;

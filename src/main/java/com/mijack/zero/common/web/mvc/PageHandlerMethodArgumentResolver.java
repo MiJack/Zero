@@ -31,7 +31,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 /**
  * 处理分页请求参数
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class PageHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     public static final String LIMIT_KEY = "limit";

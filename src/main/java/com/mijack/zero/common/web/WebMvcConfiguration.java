@@ -29,7 +29,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {

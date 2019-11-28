@@ -18,9 +18,6 @@ package com.mijack.zero.common.web.mvc;
 
 import static com.mijack.zero.common.web.bo.ApiResult.*;
 
-import java.io.Serializable;
-
-import com.mijack.zero.common.exceptions.BizCode;
 import com.mijack.zero.common.web.bo.ApiResult;
 import com.mijack.zero.common.web.mvc.view.ApiJsonView;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +32,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.google.common.collect.Maps;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApiResponseReturnValueHandler implements HandlerMethodReturnValueHandler {

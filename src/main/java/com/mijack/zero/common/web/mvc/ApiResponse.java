@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 
 @Retention(RetentionPolicy.RUNTIME)

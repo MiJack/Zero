@@ -30,7 +30,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Configuration
 @EnableDaoInvokeProxy
@@ -58,11 +58,9 @@ public class SpringJdbcConfig {
             CompositeCriteriaSqlFormatter.CriteriaFormatter<? extends Criteria> criteriaFormatter = applicationContext.getBean(criteriaFormatterName, CompositeCriteriaSqlFormatter.CriteriaFormatter.class);
             ForCriteria forCriteria = criteriaFormatter.getClass().getAnnotation(ForCriteria.class);
             if (forCriteria != null) {
-                for (Class<? extends Criteria> clazz : forCriteria.clazzes()) {
+                for (Class<? extends Criteria> clazz : forCriteria.classes()) {
                     compositeCriteriaSqlFormatter.registerCriteriaFormatter(clazz, criteriaFormatter);
                 }
-            } else {
-                // todo logger worn
             }
         }
 

@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -46,22 +47,25 @@ import com.mijack.zero.framework.dao.idao.IDao;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
+import com.mijack.zero.utils.CollectionHelper;
 import lombok.Getter;
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.google.common.collect.Lists;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
-public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends BasicDao<ID, D>>
-        implements InvocationHandler, BasicDao<ID, D> {
+public class DaoInvokeHandler<D extends IdentifiableData<Long, D> & DataHolder<D>, DAO extends BasicDao<Long, D>>
+        implements InvocationHandler, BasicDao<Long, D> {
 
     public static final Logger logger = LoggerFactory.getLogger(DaoInvokeHandler.class);
     private static final String GENERATED_KEY = "GENERATED_KEY";
@@ -99,6 +103,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         throw new UnsupportedOperationException();
     }
 
+    @Nullable
     private IDao<D> findProxyObject(Method method) {
         Map<Class<? extends IDao<?>>, IDao<?>> daoMap = daoInvokeHandlerConfiguration.getDaoMap();
         for (Map.Entry<Class<? extends IDao<?>>, IDao<?>> entry : daoMap.entrySet()) {
@@ -140,6 +145,13 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
+    private Class<DataHolder<D>> getDataHolderClazz() {
+        @SuppressWarnings("unchecked")
+        Class<DataHolder<D>> dataHolderClass = (Class<DataHolder<D>>) getDataClazz().getSuperclass();
+        return dataHolderClass;
+    }
+
     @Override
     public long delete(Criteria criteria) {
         if (isDeletableDo()) {
@@ -154,25 +166,28 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
     }
 
     private long updateDeleteStatus(Criteria criteria) {
-        CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
+        return doUpdate(criteria, condition -> "update " + loadTable() + " set  " + getDeletedField() + " = 1 " + condition);
+    }
+
+    private long doUpdate(Criteria criteria, Function<String, String> sqlFunction) {
+        CompositeCriteriaSqlFormatter sqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
+        String condition = sqlFormatter.toSql(criteria);
+        if (StringUtils.isNotEmpty(condition)) {
+            condition = " where " + condition;
+        }
+        String sql = sqlFunction.apply(condition);
         JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
-        String condition = compositeCriteriaSqlFormatter.toSql(criteria);
-        String sql = "update " + loadTable() + " set  " + getDeletedField() + " = 1 " + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
-        List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
+        List<ParameterHolder> parameters = sqlFormatter.getParameters(criteria);
         return jdbcTemplate.update(sql, getArgs(parameters));
     }
+
 
     private String getDeletedField() {
         return "deleted";
     }
 
     private long deletePyi(Criteria criteria) {
-        CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
-        JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
-        String condition = compositeCriteriaSqlFormatter.toSql(criteria);
-        String sql = "delete from " + loadTable() + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
-        List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
-        return jdbcTemplate.update(sql, getArgs(parameters));
+        return doUpdate(criteria, condition -> "delete from " + loadTable() + condition);
     }
 
     @Override
@@ -180,7 +195,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
         JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
         String condition = compositeCriteriaSqlFormatter.toSql(criteria);
-        String sql = " select * from " + loadTable() + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
+        String sql = " select * from " + loadTable() + condition;
         List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
         return jdbcTemplate.query(sql, getArgs(parameters), this::mapRow);
     }
@@ -223,7 +238,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         Object[] args = getArgs(parameters);
         argsList.addAll(Lists.newArrayList(args));
 
-        String sql = "update " + loadTable() + " set " + formatSetSql(domainHolder) + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
+        String sql = "update " + loadTable() + " set " + formatSetSql(domainHolder) + (StringUtils.isNotEmpty(condition) ? " where " + condition : "");
         return jdbcTemplate.update(sql, argsList.toArray());
 
     }
@@ -231,7 +246,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
 
     private <DH extends DataHolder<D>> String formatSetSql(DH domainHolder) {
         List<Field> holders = Lists.newArrayList();
-        Field[] declaredFields = getDataClazz().getDeclaredFields();
+        Field[] declaredFields = getDataHolderClazz().getDeclaredFields();
         for (Field field : declaredFields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
@@ -257,7 +272,7 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter = daoInvokeHandlerConfiguration.getCompositeCriteriaSqlFormatter();
         JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
         String condition = compositeCriteriaSqlFormatter.toSql(fixCriteria(criteria));
-        String sql = " select count(1) from " + loadTable() + (StringUtils.isNotEmpty(condition) ? (" where " + condition) : " ");
+        String sql = " select count(1) from " + loadTable() + condition;
         List<ParameterHolder> parameters = compositeCriteriaSqlFormatter.getParameters(criteria);
         Object[] args = getArgs(parameters);
         Long count = jdbcTemplate.queryForObject(sql, args, (rs, rowNum) -> rs.getLong(0));
@@ -273,12 +288,12 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
     }
 
     @Override
-    public List<ID> allocateIds(int number) {
+    public List<Long> allocateIds(int number) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<ID> insertData(List<? extends DataHolder<D>> list) {
+    public List<Long> insertData(List<? extends DataHolder<D>> list) {
         throw new UnsupportedOperationException();
     }
 
@@ -337,19 +352,18 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
 //        return realUpdate.stream().map(this::update).reduce(Long::sum).orElse(0L);
 //    }
 //
-//    private long doSqlAddOp(List<DOMAIN> domains) {
+//    private long doSqlAddOp(List<D> domains) {
 //        if (CollectionUtils.isEmpty(domains)) {
 //            return 0L;
 //        }
+//        JdbcTemplate jdbcTemplate = daoInvokeHandlerConfiguration.getJdbcTemplate();
 //        try {
-//            @NotNull Class<DOMAIN> domainClass = getDomainClass();
+//            @NotNull Class<D> domainClass = getDataClazz();
 //            Field[] declaredFields = domainClass.getDeclaredFields();
 //            List<List<ParameterHolder>> holders = new ArrayList<>();
-//            for (DOMAIN t : domains) {
+//            for (D t : domains) {
 //                List<ParameterHolder> holder = transformHolder(t, declaredFields);
-//                if (holder != null) {
-//                    holders.add(holder);
-//                }
+//                holders.add(holder);
 //            }
 //            String sql = buildInsertSql(holders);
 //            final Object[] argsForList = getArgsForList(holders);
@@ -384,28 +398,23 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
 //        }
 //    }
 //
-//    private KEY toKey(Map<String, Object> stringObjectMap, Class<DOMAIN> domainClass) {
-//        Class<KEY> keyClazz = DomainDaoUtils.getDomainKeyClazz(domainClass);
-//        if (keyClazz != null && keyClazz.isAssignableFrom(Long.class)) {
-//            // GENERATED_KEY
-//            if (stringObjectMap.containsKey(GENERATED_KEY)) {
-//                Object o = stringObjectMap.get(GENERATED_KEY);
-//                if (o instanceof BigInteger) {
-//                    Long value = ((BigInteger) o).longValue();
-//                    @SuppressWarnings("unchecked")
-//                    KEY key = (KEY) value;
-//                    return key;
-//                }
+    //
+//    private Long toKey(Map<String, Object> stringObjectMap) {
+//        // GENERATED_KEY
+//        if (stringObjectMap.containsKey(GENERATED_KEY)) {
+//            Object o = stringObjectMap.get(GENERATED_KEY);
+//            if (o instanceof BigInteger) {
+//                return ((BigInteger) o).longValue();
 //            }
 //        }
 //        throw new RuntimeException();
 //    }
-//
+
 //    private Object[] getArgsForList(List<List<ParameterHolder>> holders) {
 //        return holders.stream().flatMap(Collection::stream).map(ParameterHolder::getValue).toArray();
 //    }
 //
-//    private List<ParameterHolder> transformHolder(@NotNull DOMAIN t, Field[] declaredFields) throws IllegalAccessException {
+//    private List<ParameterHolder> transformHolder(@NotNull D t, Field[] declaredFields) throws IllegalAccessException {
 //        List<ParameterHolder> holders = Lists.newArrayList();
 //        for (Field field : declaredFields) {
 //            if (Modifier.isStatic(field.getModifiers())) {
@@ -420,40 +429,35 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
 //        return holders;
 //    }
 //
-    private String buildInsertSql(List<List<ParameterHolder>> holders) {
-        List<String> columnNames = holders.stream().flatMap(Collection::stream).filter(h -> Objects.nonNull(h.getValue())).map(ParameterHolder::getName).distinct()
-                .collect(Collectors.toList());
-        StringBuilder sb = new StringBuilder();
-        sb.append(" INSERT INTO ");
-        sb.append(loadTable());
-        sb.append(" (");
-        sb.append(String.join(" , ", columnNames));
-        sb.append(")");
-        sb.append(" values ");
-        int count = holders.size();
-        int columnCount = columnNames.size();
-        String valueForOne = IntStream.range(0, columnCount).mapToObj(s -> "?").collect(Collectors.joining(" , ", " ( ", " ) "));
-        String values = IntStream.range(0, count).mapToObj(s -> valueForOne).collect(Collectors.joining(" , "));
-        sb.append(values);
-        return sb.toString();
-    }
+//
+//    private String buildInsertSql(List<List<ParameterHolder>> holders) {
+//        List<String> columnNames = holders.stream().flatMap(Collection::stream).filter(h -> Objects.nonNull(h.getValue())).map(ParameterHolder::getName).distinct()
+//                .collect(Collectors.toList());
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(" INSERT INTO ");
+//        sb.append(loadTable());
+//        sb.append(" (");
+//        sb.append(String.join(" , ", columnNames));
+//        sb.append(")");
+//        sb.append(" values ");
+//        int count = holders.size();
+//        int columnCount = columnNames.size();
+//        String valueForOne = IntStream.range(0, columnCount).mapToObj(s -> "?").collect(Collectors.joining(" , ", " ( ", " ) "));
+//        String values = IntStream.range(0, count).mapToObj(s -> valueForOne).collect(Collectors.joining(" , "));
+//        sb.append(values);
+//        return sb.toString();
+//    }
 
-    //
-//
-//
-    private <DH extends DataHolder<D>> Object[] getArgsFromDomainHolder(DH domainHolder) {
+    private <DH extends DataHolder<D>> Object[] getArgsFromDomainHolder(DH dataHolder) {
         List<Object> holders = Lists.newArrayList();
-        Field[] declaredFields = getDataClazz().getDeclaredFields();
+        Field[] declaredFields = getDataHolderClazz().getDeclaredFields();
         for (Field field : declaredFields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
-            if ("id".equals(field.getName())) {
-                continue;
-            }
             field.setAccessible(true);
             try {
-                Object o = field.get(domainHolder);
+                Object o = field.get(dataHolder);
                 if (o != null) {
                     holders.add(o);
                 }
@@ -464,12 +468,10 @@ public class DaoInvokeHandler<ID, D extends IdentifiableData<ID, D> & DataHolder
         return holders.toArray();
     }
 
-    //
     private Object[] getArgs(List<ParameterHolder> parameters) {
         return parameters.stream().map(ParameterHolder::getValue).toArray();
     }
 
-    //
     private String loadTable() {
         Table table = daoInterface.getAnnotation(Table.class);
         return table.name();

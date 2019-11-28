@@ -22,7 +22,7 @@ import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @ApiController(path = "/api/test")
 public class TestController {

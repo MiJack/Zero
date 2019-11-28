@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @ImportAutoConfiguration({JdbcTemplateAutoConfiguration.class, SpringJdbcConfig.class})
 @SpringBootApplication(scanBasePackages = "com.mijack.zero")

@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.command.CreateUserCommand;
 import com.mijack.zero.biz.user.command.UpdateUserCommand;
-import com.mijack.zero.biz.user.dao.UserDO;
+import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.service.UserService;
@@ -36,9 +36,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
-@ApiController
+@ApiController(path = "/api")
 public class UserController {
     private final UserService userService;
 
@@ -47,17 +47,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/")
+    @PostMapping("/user/create")
     public User createUser(CreateUserCommand createUserCommand) {
         return userService.registerUser(createUserCommand.getName(), createUserCommand.getEmail());
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users/list")
     public List<UserDO> listUser() {
         return userService.listUser();
     }
 
-    @PutMapping("/user")
+    @PutMapping("/user/update")
     public User updateUserInfo(UpdateUserCommand updateUserCommand) {
         return userService.updateUserInfo(updateUserCommand.getId(), updateUserCommand.getName(), updateUserCommand.getEmail());
     }
@@ -69,7 +69,7 @@ public class UserController {
         return user;
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/user/{id}/delete")
     public boolean deleteUser(@PathVariable("id") Long userId) {
         return userService.deleteUser(userId);
     }

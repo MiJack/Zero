@@ -25,13 +25,13 @@ import org.springframework.beans.BeanUtils;
 /**
  * 针对业务的异常
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public abstract class BaseBizException extends RuntimeException {
+public class BaseBizException extends RuntimeException {
     private static final long serialVersionUID = -8684647774757420813L;
     /**
      * 异常代码
@@ -59,5 +59,8 @@ public abstract class BaseBizException extends RuntimeException {
         T exception = createException(clazz);
         exception.setMessage(message);
         return exception;
+    }
+    public static BaseBizException createException(String message) {
+        return createException(BaseBizException.class,message);
     }
 }

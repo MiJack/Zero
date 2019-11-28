@@ -21,16 +21,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
 
 import com.mijack.zero.framework.dao.idao.IDao;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class DaoInvokeProxyConfiguration implements BeanPostProcessor {
     @Getter
@@ -41,7 +41,7 @@ public class DaoInvokeProxyConfiguration implements BeanPostProcessor {
     private CompositeCriteriaSqlFormatter compositeCriteriaSqlFormatter;
     private final Map<Class<? extends IDao<?>>, IDao<?>> daoMap = new HashMap<>();
 
-    public void registerDao(Class<? extends IDao<?>> interfaceClazz, IDao dao) {
+    public void registerDao(Class<? extends IDao<?>> interfaceClazz, IDao<?> dao) {
         daoMap.put(interfaceClazz, dao);
     }
 

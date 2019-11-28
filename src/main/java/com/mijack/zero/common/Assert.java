@@ -17,7 +17,7 @@
 package com.mijack.zero.common;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import com.mijack.zero.utils.CollectionHelper;
@@ -26,7 +26,7 @@ import com.mijack.zero.utils.CollectionHelper;
 /**
  * 断言工具类
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface Assert {
     /**
@@ -111,4 +111,43 @@ public interface Assert {
         return new IllegalArgumentException(message);
     }
 
+    /**
+     * 给定字符串不为空
+     *
+     * @param str
+     * @param supplier
+     */
+    static void notEmpty(String str, Supplier<? extends RuntimeException> supplier) {
+        state(str != null && str.length() > 0, supplier);
+    }
+
+    /**
+     * 给定字符串不为空
+     *
+     * @param str
+     */
+    static void notEmpty(String str) {
+        notEmpty(str, () -> createIllegalArgumentException("字符串为空"));
+    }
+
+    /**
+     * 给定的两个值相同
+     *
+     * @param source 比较值
+     * @param target 目标值
+     */
+    static void equals(Object source, Object target) {
+        equals(source, target, () -> createIllegalArgumentException("source != target"));
+    }
+
+    /**
+     * 给定的两个值相同
+     *
+     * @param source 比较值
+     * @param target 目标值
+     * @param supplier
+     */
+    static void equals(Object source, Object target, Supplier<? extends RuntimeException> supplier) {
+        state(Objects.equals(source, target), supplier);
+    }
 }

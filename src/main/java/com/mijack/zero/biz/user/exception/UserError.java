@@ -20,7 +20,7 @@ import com.mijack.zero.common.exceptions.IError;
 import lombok.Getter;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public enum UserError implements IError {
     /**

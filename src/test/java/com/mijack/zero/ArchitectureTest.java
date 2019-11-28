@@ -16,7 +16,6 @@
 
 package com.mijack.zero;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
 import com.tngtech.archunit.base.DescribedPredicate;
@@ -29,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 
 public class ArchitectureTest {

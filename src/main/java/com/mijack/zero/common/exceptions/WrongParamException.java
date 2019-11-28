@@ -17,7 +17,7 @@
 package com.mijack.zero.common.exceptions;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class WrongParamException extends BaseBizException {
     private static final long serialVersionUID = 1069430370433813252L;

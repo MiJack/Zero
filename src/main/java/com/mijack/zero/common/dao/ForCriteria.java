@@ -24,10 +24,10 @@ import java.lang.annotation.Target;
 import com.mijack.zero.framework.dao.Criteria;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ForCriteria {
-    Class<? extends Criteria>[] clazzes() default {};
+    Class<? extends Criteria>[] classes() default {};
 }
