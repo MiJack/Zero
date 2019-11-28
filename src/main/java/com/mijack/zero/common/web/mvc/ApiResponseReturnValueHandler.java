@@ -32,7 +32,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.google.common.collect.Maps;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApiResponseReturnValueHandler implements HandlerMethodReturnValueHandler {

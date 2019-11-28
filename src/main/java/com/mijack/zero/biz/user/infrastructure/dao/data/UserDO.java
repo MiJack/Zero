@@ -22,7 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

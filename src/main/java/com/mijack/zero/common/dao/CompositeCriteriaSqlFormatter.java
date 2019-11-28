@@ -48,7 +48,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.Lists;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Component
 public class CompositeCriteriaSqlFormatter {

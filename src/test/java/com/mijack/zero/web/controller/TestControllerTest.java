@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @RunWith(SpringRunner.class)
 @Ignore

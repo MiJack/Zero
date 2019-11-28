@@ -32,7 +32,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class ClassPathDaoScanner extends ClassPathBeanDefinitionScanner  {
     public static final Logger logger = LoggerFactory.getLogger(ClassPathDaoScanner.class);

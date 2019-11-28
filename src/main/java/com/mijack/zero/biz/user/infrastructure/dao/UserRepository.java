@@ -35,7 +35,7 @@ import org.springframework.stereotype.Repository;
 /**
  * 用户存储管理
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Repository
 @Table(name = "Zero_User")

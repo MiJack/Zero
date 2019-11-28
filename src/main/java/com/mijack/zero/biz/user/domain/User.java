@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 /**
  * 用户信息抽象
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 @NoArgsConstructor

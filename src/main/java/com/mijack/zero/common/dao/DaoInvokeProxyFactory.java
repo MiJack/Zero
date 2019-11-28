@@ -27,9 +27,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
-public class DaoInvokeProxyFactory<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends BasicDao<ID, D>>
+public class DaoInvokeProxyFactory< D extends IdentifiableData<Long, D> & DataHolder<D>, DAO extends BasicDao<Long, D>>
         implements FactoryBean<DAO>, ApplicationContextAware {
     private final Class<DAO> daoClazz;
     private ApplicationContext applicationContext;

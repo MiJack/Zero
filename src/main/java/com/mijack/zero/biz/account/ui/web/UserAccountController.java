@@ -27,18 +27,19 @@ import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.service.UserAccountService;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
-@ApiController
+@ApiController(path = "/api")
 public class UserAccountController {
     @Resource
     UserAccountService userAccountService;
 
-    @PutMapping("/account/list")
+    @GetMapping(value = "/account/list")
     public List<UserAccount> listUserAccount(@RequestParam AccountListCommand accountListCommand) {
         return userAccountService.listUserAccount(accountListCommand.getUserId());
     }

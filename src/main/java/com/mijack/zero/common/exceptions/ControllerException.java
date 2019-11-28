@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 /**
  * web层的异常
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

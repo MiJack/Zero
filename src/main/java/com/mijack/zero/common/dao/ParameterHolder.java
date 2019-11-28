@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 @AllArgsConstructor

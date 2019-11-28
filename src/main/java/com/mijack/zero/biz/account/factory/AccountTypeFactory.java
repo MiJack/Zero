@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Component
 public class AccountTypeFactory {

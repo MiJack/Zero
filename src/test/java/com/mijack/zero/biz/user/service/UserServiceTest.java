@@ -37,7 +37,7 @@ import org.springframework.context.annotation.Import;
 
 */
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  *//*
 
 @SpringBootTest

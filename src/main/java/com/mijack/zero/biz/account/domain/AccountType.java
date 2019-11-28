@@ -19,7 +19,7 @@ package com.mijack.zero.biz.account.domain;
 import lombok.Data;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 public class AccountType {

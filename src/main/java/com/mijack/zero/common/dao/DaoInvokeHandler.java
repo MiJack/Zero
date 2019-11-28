@@ -24,13 +24,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.math.BigInteger;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +62,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import com.google.common.collect.Lists;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class DaoInvokeHandler<D extends IdentifiableData<Long, D> & DataHolder<D>, DAO extends BasicDao<Long, D>>
         implements InvocationHandler, BasicDao<Long, D> {

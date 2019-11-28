@@ -30,7 +30,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class DaoInvokeProxyConfiguration implements BeanPostProcessor {
     @Getter

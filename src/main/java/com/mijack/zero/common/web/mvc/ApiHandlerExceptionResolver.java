@@ -30,7 +30,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class ApiHandlerExceptionResolver implements HandlerExceptionResolver {
     public static final Logger logger = LoggerFactory.getLogger(ApiHandlerExceptionResolver.class);

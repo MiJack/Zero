@@ -39,7 +39,7 @@ import org.springframework.stereotype.Service;
 import com.mijack.zero.common.Assert;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Service
 public class UserService {
