@@ -8,7 +8,7 @@ import lombok.Getter;
  *
  * @author yuanyujie
  */
-public enum CurrencyUnit implements IdentifiableEnum<CurrencyUnit> {
+public enum Currency implements IdentifiableEnum<Currency> {
     /**
      * 人民币
      */
@@ -22,7 +22,7 @@ public enum CurrencyUnit implements IdentifiableEnum<CurrencyUnit> {
     @Getter
     private final String desc;
 
-    CurrencyUnit(int id, String desc) {
+    Currency(int id, String desc) {
         this.id = id;
         this.desc = desc;
     }
