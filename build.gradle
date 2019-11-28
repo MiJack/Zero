@@ -78,7 +78,7 @@ configurations {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:27.1-jre'
-    implementation project(':dao-framework')
+//    implementation project(':dao-framework')
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-beanutils:commons-beanutils:1.9.3'
@@ -140,7 +140,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 allprojects {
-//    ...
+
     tasks.withType(Javadoc) {
         options{
             encoding "UTF-8"
