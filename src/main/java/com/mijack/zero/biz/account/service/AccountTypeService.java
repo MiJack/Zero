@@ -2,6 +2,8 @@ package com.mijack.zero.biz.account.service;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
+import java.util.List;
+
 import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.factory.AccountTypeFactory;
 import com.mijack.zero.biz.account.repository.AccountTypeRepository;
@@ -10,7 +12,7 @@ import com.mijack.zero.common.exceptions.BaseBizException;
 import org.springframework.stereotype.Service;
 
 /**
- * @author yuanyujie
+ * @author Mi&jack
  */
 @Service
 public class AccountTypeService {
@@ -27,5 +29,9 @@ public class AccountTypeService {
         long count = accountTypeRepository.addAccountType(accountType);
         Assert.equals(count, 1, () -> createException(BaseBizException.class, "AccountType创建失败"));
         return accountType;
+    }
+
+    public List<AccountType> listAccountType() {
+        return accountTypeRepository.listAccountType();
     }
 }
