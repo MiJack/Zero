@@ -32,7 +32,7 @@ import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class MemoryDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> implements BasicDao<ID, D> {
     private final static Logger logger = Logger.getLogger("MemoryDao");

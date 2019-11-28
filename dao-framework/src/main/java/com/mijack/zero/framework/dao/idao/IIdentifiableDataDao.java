@@ -32,7 +32,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
  *
  * @param <ID> 主键类型
  * @param <D>  DB存储对象对应的java类型
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>> extends IDao<D> {
 
@@ -48,7 +48,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
          *
          * @param id id标识
          * @return 删除成功的数目
-         * @see DeletableDo <D>
+         * @see DeletableDo
          */
         default long delete(ID id) {
             return delete(Collections.singletonList(id));

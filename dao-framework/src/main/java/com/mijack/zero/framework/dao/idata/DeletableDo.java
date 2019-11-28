@@ -20,7 +20,7 @@ package com.mijack.zero.framework.dao.idata;
  * 表结构支持非物理删除的DB存储对象
  *
  * @param <D> DB存储对象对应的java类型
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface DeletableDo<D extends Data<D> & DataHolder<D>> extends DataHolder<D> {
 

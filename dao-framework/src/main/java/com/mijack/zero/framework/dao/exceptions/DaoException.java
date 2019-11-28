@@ -17,7 +17,7 @@
 package com.mijack.zero.framework.dao.exceptions;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @SuppressWarnings("serial")
 public class DaoException extends RuntimeException {

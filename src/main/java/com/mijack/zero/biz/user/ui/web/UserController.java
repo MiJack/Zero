@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @ApiController(path = "/api")
 public class UserController {

@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface Criteria {
 
@@ -53,7 +53,7 @@ public interface Criteria {
     }
 
     /**
-     * field > value
+     * field &gt; value
      *
      * @param field 字段
      * @param value 字段值
@@ -64,7 +64,7 @@ public interface Criteria {
     }
 
     /**
-     * field >= value
+     * field &gt;= value
      *
      * @param field 字段
      * @param value 字段值
@@ -75,7 +75,7 @@ public interface Criteria {
     }
 
     /**
-     * field < value
+     * field &lt; value
      *
      * @param field 字段
      * @param value 字段值
@@ -86,7 +86,7 @@ public interface Criteria {
     }
 
     /**
-     * field <= value
+     * field &lt;= value
      *
      * @param field 字段
      * @param value 字段值

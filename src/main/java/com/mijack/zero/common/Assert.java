@@ -26,7 +26,7 @@ import com.mijack.zero.utils.CollectionHelper;
 /**
  * 断言工具类
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface Assert {
     /**

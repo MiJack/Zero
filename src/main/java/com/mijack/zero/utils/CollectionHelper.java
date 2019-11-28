@@ -25,12 +25,13 @@ import java.util.List;
 /**
  * 集合工具类
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface CollectionHelper {
     /**
      * 将不定的参数转化成list
-     * <note> 如果keys为空，返回{@link Collections#emptyList()}</note>
+     *
+     * 如果keys为空，返回{@link Collections#emptyList()}
      *
      * @param items 列表
      * @param <T>   泛型

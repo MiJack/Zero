@@ -29,7 +29,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
  * 针对存储对象<code>D</code>的存储能力定义
  *
  * @param <D> DB存储对象对应的java类型
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface IDao<D extends Data<D> & DataHolder<D>> {
     /**
@@ -50,7 +50,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          *
          * @param criteria 待删除数据的条件
          * @return 删除成功的数目
-         * @see DeletableDo <D>
+         * @see DeletableDo
          */
         long delete(Criteria criteria);
     }
@@ -80,7 +80,6 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          *
          * @param list 待添加的数据
          * @return 添加成功的数目
-         * @note 如果存在list存在一个对象
          * @see IdentifiableData
          */
         default long addDo(List<D> list) {

@@ -19,7 +19,7 @@ package com.mijack.zero.common.exceptions;
 import lombok.Getter;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public enum BizCode implements IError {
     /**

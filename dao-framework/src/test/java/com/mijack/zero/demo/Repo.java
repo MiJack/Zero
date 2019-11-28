@@ -22,7 +22,7 @@ import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class Repo extends RepDataHolder implements IdentifiableData<Long, Repo>, DeletableDo<Repo> {
     private Long id;

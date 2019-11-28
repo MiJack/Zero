@@ -17,7 +17,7 @@
 package com.mijack.zero.framework.dao.memory;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface IDomainKeyGenerator<K, D extends IdentifiableData<K, D> & DataHolder<D>> {
     K allocateKey(Map<K, D> domainMap);

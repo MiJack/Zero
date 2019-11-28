@@ -22,7 +22,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
 /**
  * 基础dao能力的集合
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface BasicDao<ID, D extends IdentifiableData<ID, D> & DataHolder<D>>
         extends IIdentifiableDataDao.IInsertDao<ID, D>, IIdentifiableDataDao.IQueryDao<ID, D>, IIdentifiableDataDao.IDeleteDao<ID, D>,

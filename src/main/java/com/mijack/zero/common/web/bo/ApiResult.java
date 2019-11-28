@@ -29,7 +29,7 @@ import lombok.ToString;
 /**
  * http api接口统一返回的结果格式
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 @AllArgsConstructor

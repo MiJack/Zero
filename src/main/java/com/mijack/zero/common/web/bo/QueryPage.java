@@ -27,7 +27,7 @@ import lombok.ToString;
 /**
  * 网页请求分页查询
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 @AllArgsConstructor

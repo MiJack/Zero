@@ -20,6 +20,6 @@
  * 修改：根据id修改，根据条件修改
  * 删除：根据id删除，根据条件删除
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 package com.mijack.zero.framework.dao.idao;

@@ -31,7 +31,7 @@ import com.mijack.zero.common.Assert;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Component
 public class UserAccountFactory {

@@ -34,7 +34,7 @@ import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import org.apache.commons.beanutils.MethodUtils;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class MemoryDaoProxy<ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends IDao<D>> implements InvocationHandler {
     public static <ID, D extends IdentifiableData<ID, D> & DataHolder<D>, DAO extends IDao<D>>

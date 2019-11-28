@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 
 public class ArchitectureTest {

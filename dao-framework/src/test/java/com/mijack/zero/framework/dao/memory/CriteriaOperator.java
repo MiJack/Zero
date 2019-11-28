@@ -22,7 +22,7 @@ import com.mijack.zero.framework.dao.Criteria;
 import org.apache.commons.beanutils.BeanMap;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface CriteriaOperator<C extends Criteria> {
 

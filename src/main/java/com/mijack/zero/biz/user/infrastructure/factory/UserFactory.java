@@ -22,7 +22,7 @@ import com.mijack.zero.biz.user.domain.User;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Mi&#38;Jack
+ * @author Mi&amp;Jack
  */
 @Component
 public class UserFactory {

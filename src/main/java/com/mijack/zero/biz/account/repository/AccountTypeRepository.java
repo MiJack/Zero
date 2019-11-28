@@ -15,7 +15,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Mi&#38;Jack
+ * @author Mi&amp;Jack
  */
 @Repository
 public interface AccountTypeRepository extends BasicDao<Long, AccountTypeDO> {

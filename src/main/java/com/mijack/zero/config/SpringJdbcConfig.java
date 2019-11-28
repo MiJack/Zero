@@ -30,7 +30,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Configuration
 @EnableDaoInvokeProxy

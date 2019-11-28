@@ -20,7 +20,7 @@ import com.mijack.zero.demo.Repo;
 import com.mijack.zero.framework.dao.idao.BasicDao;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface RepoDao extends BasicDao<Long, Repo> {
 }

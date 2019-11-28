@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @ApiController(path = "/api")
 public class UserAccountController {

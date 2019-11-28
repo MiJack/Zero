@@ -17,14 +17,14 @@
 package com.mijack.zero.framework.dao.memory;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 
 import com.mijack.zero.framework.dao.Criteria;
 import org.apache.commons.beanutils.BeanMap;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class CriteriaFilter {
     public <T extends Criteria> boolean doCriteria(Object domain, T criteria) {

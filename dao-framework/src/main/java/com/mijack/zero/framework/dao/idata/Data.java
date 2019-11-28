@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * DB存储对象
  *
  * @param <D>  DB存储对象对应的java类型
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface Data<D extends Data<D> & DataHolder<D>> {
     Logger logger = Logger.getLogger("Data");

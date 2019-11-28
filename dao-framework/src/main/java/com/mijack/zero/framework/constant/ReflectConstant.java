@@ -22,7 +22,7 @@ import java.util.Objects;
 import com.fasterxml.classmate.TypeResolver;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class ReflectConstant {
     private ReflectConstant() {

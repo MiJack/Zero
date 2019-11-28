@@ -21,7 +21,7 @@ import java.util.Objects;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class RepDataHolder implements DataHolder<Repo> {
     private String user;

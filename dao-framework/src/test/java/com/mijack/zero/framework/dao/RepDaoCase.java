@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class RepDaoCase {
     private Logger logger = Logger.getLogger("daoCase");

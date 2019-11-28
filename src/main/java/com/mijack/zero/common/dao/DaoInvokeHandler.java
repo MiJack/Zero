@@ -62,7 +62,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import com.google.common.collect.Lists;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class DaoInvokeHandler<D extends IdentifiableData<Long, D> & DataHolder<D>, DAO extends BasicDao<Long, D>>
         implements InvocationHandler, BasicDao<Long, D> {

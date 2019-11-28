@@ -26,7 +26,7 @@ import com.mijack.zero.framework.dao.idao.BasicDao;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Repository
 public interface UserAccountDao extends BasicDao<Long, UserAccountDO> {

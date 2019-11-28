@@ -19,7 +19,7 @@ package com.mijack.zero.framework.dao.memory;
 import com.mijack.zero.framework.dao.Criteria;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class CriteriaOperatorFactory {
     public static CriteriaOperator<? extends Criteria> loadCriteriaOperator(Criteria criteria) {

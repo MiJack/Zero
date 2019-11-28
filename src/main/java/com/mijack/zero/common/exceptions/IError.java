@@ -17,7 +17,7 @@
 package com.mijack.zero.common.exceptions;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface IError {
     /**

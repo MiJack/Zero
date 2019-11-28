@@ -25,7 +25,7 @@ import org.springframework.beans.BeanUtils;
 /**
  * 针对业务的异常
  *
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 @AllArgsConstructor

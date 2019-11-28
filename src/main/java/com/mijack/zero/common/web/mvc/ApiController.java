@@ -26,7 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

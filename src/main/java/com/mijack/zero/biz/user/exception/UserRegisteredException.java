@@ -19,7 +19,7 @@ package com.mijack.zero.biz.user.exception;
 import com.mijack.zero.common.exceptions.BaseBizException;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @SuppressWarnings("serial")
 public class UserRegisteredException extends BaseBizException {

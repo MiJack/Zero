@@ -27,7 +27,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public class DaoInvokeProxyFactory< D extends IdentifiableData<Long, D> & DataHolder<D>, DAO extends BasicDao<Long, D>>
         implements FactoryBean<DAO>, ApplicationContextAware {

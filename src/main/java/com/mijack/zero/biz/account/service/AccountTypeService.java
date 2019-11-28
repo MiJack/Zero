@@ -12,7 +12,7 @@ import com.mijack.zero.common.exceptions.BaseBizException;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Mi&jack
+ * @author Mi&amp;Jack
  */
 @Service
 public class AccountTypeService {

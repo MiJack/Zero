@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Component(ApiJsonView.VIEW_NAME)
 public class ApiJsonView extends AbstractView implements InitializingBean {

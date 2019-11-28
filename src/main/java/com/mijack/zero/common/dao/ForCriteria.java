@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 import com.mijack.zero.framework.dao.Criteria;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

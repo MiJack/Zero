@@ -22,7 +22,7 @@ import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 @Data
 public class UserHolder implements DataHolder<UserDO> {

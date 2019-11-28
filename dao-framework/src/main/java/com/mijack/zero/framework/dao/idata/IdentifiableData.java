@@ -21,7 +21,7 @@ package com.mijack.zero.framework.dao.idata;
  *
  * @param <ID> DB存储对象对应的java类型的主键类型
  * @param <D>  DB存储对象对应的java类型
- * @author Mi&Jack
+ * @author Mi&amp;Jack
  */
 public interface IdentifiableData<ID, D extends Data<D> & DataHolder<D>> extends Data<D> {
     /**
