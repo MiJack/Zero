@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idata.DataHolder;

@@ -19,8 +19,6 @@ package com.mijack.zero.framework.dao.idao;
 import java.util.Collections;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
@@ -85,7 +83,9 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @note 如果存在list存在一个对象
          * @see IdentifiableData
          */
-        long addDo(List<D> list);
+        default long addDo(List<D> list) {
+            return addData(list);
+        }
 
         /**
          * 添加给定的数据，DH中如果包含主键，不会生效
@@ -93,7 +93,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @param list 待添加的数据
          * @return 添加成功的数目
          */
-        <DH extends DataHolder<D>> long addData(List<DH> list);
+        long addData(List<? extends DataHolder<D>> list);
     }
 
     /**
@@ -124,7 +124,7 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @return 查询得到的结果，结果为空，返回{@code Collections#emptyList() }
          * @see Collections#emptyList()
          */
-        @NotNull List<D> query(Criteria criteria);
+        List<D> query(Criteria criteria);
     }
 
     /**
