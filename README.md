@@ -18,3 +18,6 @@ FLUSH PRIVILEGES;
 
 ## todo
 [ ] 支持graph ql查询 
+[ ] 支持docker集成测试
+[ ] 运行环境docker化
+[ ] 采用六边形架构
