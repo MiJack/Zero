@@ -16,6 +16,7 @@
 
 package com.mijack.zero.biz.transaction.domain;
 
+import com.mijack.zero.utils.EnumUtils;
 import lombok.Data;
 
 /**
@@ -32,5 +33,16 @@ public class Money {
     /**
      * 具体数值
      */
-    private Long money;
+    private Float money;
+
+    public static Money create(Float money, Integer currency) {
+        Money result = new Money();
+        result.setMoney(money);
+        result.setCurrency(EnumUtils.idOf(currency, Currency.class));
+        return result;
+    }
+
+    public static Money parse(String money) {
+        throw new UnsupportedOperationException();
+    }
 }

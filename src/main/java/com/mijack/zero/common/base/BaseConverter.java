@@ -14,31 +14,26 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.common.base;
 
-import java.sql.Timestamp;
+import javax.annotation.Nonnull;
 
-import com.mijack.zero.biz.account.domain.UserAccount;
-import lombok.Data;
+import com.mijack.zero.framework.dao.idata.Data;
+import com.mijack.zero.framework.dao.idata.DataHolder;
+
+import com.google.common.base.Converter;
 
 /**
- * 交易，往往会引起多个账户的余额变动，这里只关注余额的变动，不关心具体的数值<br/>
- * 例如
- * <ol>
- *     <li>购买商品</li>
- *     <li>股票收益</li>
- *     <li>分期付款</li>
- *     <li>转账</li>
- * </ol>
- *
  * @author Mi&amp;Jack
  */
-@Data
-public class Transaction {
-    private Long id;
-    private UserAccount userAccount;
-    private Money money;
-    private TransactionType transactionType;
-    private Timestamp createTime;
-    private Timestamp updateTime;
+public class BaseConverter<DO extends Data<DO> & DataHolder<DO>, DOMAIN> extends Converter<DO, DOMAIN> {
+    @Override
+    protected DOMAIN doForward(@Nonnull DO d) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected DO doBackward(@Nonnull DOMAIN d) {
+        throw new UnsupportedOperationException();
+    }
 }

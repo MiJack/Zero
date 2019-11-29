@@ -14,29 +14,25 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.transaction.command;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.mijack.zero.biz.user.domain.User;
 import lombok.Data;
 
 /**
- * 资金活动的事项
+ * 目前支持单个资金变动
  *
  * @author Mi&amp;Jack
  */
 @Data
-public class Activity {
-    /**
-     * 事项id
-     */
-    private Long id;
+public class ActivityCreateCommand {
+
     /**
      * 产生事项的用户
      */
-    private User user;
+    private Long userId;
     /**
      * 事项的名称
      */
@@ -48,17 +44,18 @@ public class Activity {
     /**
      * 标记
      */
-    private List<String> tags;
+    private String tags;
     /**
      * 对应账户的资金的变动
      */
-    private List<Transaction> transactions;
+    private Long userAccountId;
+    /**
+     * 对应的格式为CNY 111.22
+     */
+    private String money;
+    private Integer transactionType;
     /**
      * 事项最早一笔资金产生的时间
      */
     private Timestamp createTime;
-    /**
-     * 事项最新一笔资金产生的时间
-     */
-    private Timestamp updateTime;
 }

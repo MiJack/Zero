@@ -25,15 +25,14 @@ import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
+import com.mijack.zero.common.base.BaseConverter;
 import org.springframework.stereotype.Repository;
-
-import com.google.common.base.Converter;
 
 /**
  * @author Mi&amp;Jack
  */
 @Repository
-public class UserAccountRepository extends Converter<UserAccountDO, UserAccount> {
+public class UserAccountRepository extends BaseConverter<UserAccountDO, UserAccount> {
     final UserRepository userRepository;
     final UserAccountDao userAccountDao;
     final AccountTypeRepository accountTypeRepository;
@@ -84,5 +83,9 @@ public class UserAccountRepository extends Converter<UserAccountDO, UserAccount>
 
     public boolean deleteAccount(UserAccount userAccount) {
         return userAccountDao.deleteByUserIdAndAccountId(userAccount.getId(), userAccount.getUser().getId()) > 0;
+    }
+
+    public UserAccount findUserAccountByAccountId(Long userAccountId) {
+        return convert(userAccountDao.getById(userAccountId));
     }
 }

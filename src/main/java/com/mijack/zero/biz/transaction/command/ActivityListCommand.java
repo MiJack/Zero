@@ -14,31 +14,14 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.transaction.command;
 
-import java.sql.Timestamp;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
 import lombok.Data;
 
 /**
- * 交易，往往会引起多个账户的余额变动，这里只关注余额的变动，不关心具体的数值<br/>
- * 例如
- * <ol>
- *     <li>购买商品</li>
- *     <li>股票收益</li>
- *     <li>分期付款</li>
- *     <li>转账</li>
- * </ol>
- *
  * @author Mi&amp;Jack
  */
 @Data
-public class Transaction {
-    private Long id;
-    private UserAccount userAccount;
-    private Money money;
-    private TransactionType transactionType;
-    private Timestamp createTime;
-    private Timestamp updateTime;
+public class ActivityListCommand {
+    private Long userId;
 }

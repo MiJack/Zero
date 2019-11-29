@@ -14,15 +14,27 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.transaction.infrastructure.dao.data;
 
+import java.sql.Timestamp;
+
+import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class ActivityTag {
-    private Long id;
-    private String name;
+public class TransactionHolder implements DataHolder<TransactionDO> {
+
+    private Long activityId;
+    private Long userAccountId;
+
+    private Integer currency;
+    private Float money;
+
+    private Integer transactionType;
+
+    private Timestamp createTime;
+    private Timestamp updateTime;
 }

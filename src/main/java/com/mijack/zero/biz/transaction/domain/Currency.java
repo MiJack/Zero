@@ -28,18 +28,26 @@ public enum Currency implements IdentifiableEnum<Currency> {
     /**
      * 人民币
      */
-    CNY(1, "人民币"),
+    CNY(1, "CNY", "人民币", 0.01f),
     /**
      * 美元
      */
-    USD(2, "美元");
+    USD(2, "USD", "美元", 0.01f);
     @Getter
     private final int id;
+    private final String shortName;
     @Getter
     private final String desc;
+    /**
+     * 货币辅助单元，即最小计费单元
+     */
+    @Getter
+    private float minor;
 
-    Currency(int id, String desc) {
+    Currency(int id, String shortName, String desc, float minor) {
         this.id = id;
+        this.shortName = shortName;
         this.desc = desc;
+        this.minor = minor;
     }
 }

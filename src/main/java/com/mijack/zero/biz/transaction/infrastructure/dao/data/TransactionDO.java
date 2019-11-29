@@ -14,31 +14,19 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.transaction.infrastructure.dao.data;
 
-import java.sql.Timestamp;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
+import com.mijack.zero.framework.dao.idata.DeletableDo;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 交易，往往会引起多个账户的余额变动，这里只关注余额的变动，不关心具体的数值<br/>
- * 例如
- * <ol>
- *     <li>购买商品</li>
- *     <li>股票收益</li>
- *     <li>分期付款</li>
- *     <li>转账</li>
- * </ol>
- *
  * @author Mi&amp;Jack
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Transaction {
+public class TransactionDO extends TransactionHolder
+        implements IdentifiableData<Long, TransactionDO>, DeletableDo<TransactionDO> {
     private Long id;
-    private UserAccount userAccount;
-    private Money money;
-    private TransactionType transactionType;
-    private Timestamp createTime;
-    private Timestamp updateTime;
 }

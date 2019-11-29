@@ -14,29 +14,22 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.transaction.infrastructure.dao.data;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
- * 资金活动的事项
- *
  * @author Mi&amp;Jack
  */
 @Data
-public class Activity {
-    /**
-     * 事项id
-     */
-    private Long id;
+public class ActivityHolder implements DataHolder<ActivityDO> {
     /**
      * 产生事项的用户
      */
-    private User user;
+    private Long userId;
     /**
      * 事项的名称
      */
@@ -48,11 +41,7 @@ public class Activity {
     /**
      * 标记
      */
-    private List<String> tags;
-    /**
-     * 对应账户的资金的变动
-     */
-    private List<Transaction> transactions;
+    private String tags;
     /**
      * 事项最早一笔资金产生的时间
      */
