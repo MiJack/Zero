@@ -14,16 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common.enums;
+package com.mijack.zero.biz.financial.dao;
+
+import com.mijack.zero.biz.financial.dao.data.AccountBalanceDo;
+import com.mijack.zero.framework.dao.idao.BasicDao;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> {
-    /**
-     * 枚举变量的id
-     *
-     * @return
-     */
-    int getId();
+@Repository
+public interface AccountBalanceDao extends BasicDao<Long, AccountBalanceDo> {
 }

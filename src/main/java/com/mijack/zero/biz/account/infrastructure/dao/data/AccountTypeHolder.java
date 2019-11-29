@@ -5,7 +5,7 @@ import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
- * @author yuanyujie
+ * @author Mi&amp;Jack
  */
 @Data
 public class AccountTypeHolder implements DataHolder<AccountTypeDO> {

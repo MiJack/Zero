@@ -14,16 +14,17 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common.enums;
+package com.mijack.zero.biz.financial.domain;
+
 
 /**
+ * 账号清算点
+ *
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> {
+public class CheckPoint {
     /**
-     * 枚举变量的id
-     *
-     * @return
+     * 如果
      */
-    int getId();
+    private CheckPoint lastCheckpoint;
 }

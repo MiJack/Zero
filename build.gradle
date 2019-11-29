@@ -73,6 +73,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoclet
 }
 
 dependencies {
@@ -101,6 +102,8 @@ dependencies {
     testCompile 'com.tngtech.archunit:archunit-junit4:0.12.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    asciidoclet 'org.asciidoctor:asciidoclet:1.+'
 
     components {
         withModule('org.springframework:spring-beans') {
@@ -142,10 +145,19 @@ java {
 allprojects {
 
     tasks.withType(Javadoc) {
-        options{
-            encoding "UTF-8"
-            charSet 'UTF-8'
-            links "http://docs.oracle.com/javase/7/docs/api"
+        options.with {
+            version = true
+            author = true
+            encoding = "UTF-8"
+            charSet = 'UTF-8'
+            doclet = 'org.asciidoctor.Asciidoclet'
+            docletpath = configurations.asciidoclet.files.asType(List)
+            overview = "src/main/java/overview.adoc"
+            addStringOption "-base-dir", "${projectDir}" // (1)
+            addStringOption "-attribute", // (2)
+                    "name=${project.name}," +
+                            "version=${project.version}," +
+                            "title-link=http://example.com[${project.name} ${project.version}]"
         }
     }
 }

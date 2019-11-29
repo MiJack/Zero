@@ -24,7 +24,6 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.factory.UserAccountFactory;
-import com.mijack.zero.biz.account.factory.AccountTypeFactory;
 import com.mijack.zero.biz.account.repository.UserAccountRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
@@ -43,8 +42,6 @@ public class UserAccountService {
     UserAccountRepository userAccountRepository;
     @Resource
     UserService userService;
-    @Resource
-    AccountTypeFactory accountTypeFactory;
     @Resource
     UserAccountFactory userAccountFactory;
 

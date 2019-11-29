@@ -14,16 +14,32 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common.enums;
+package com.mijack.zero.biz.financial.domain;
+
+import com.mijack.zero.biz.account.domain.UserAccount;
+import lombok.Data;
 
 /**
+ * {@code UserAccount }和{@code AccountBalance}的关系的是1对多的关系
+ *
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> {
+@Data
+public class AccountBalance {
     /**
-     * 枚举变量的id
-     *
-     * @return
+     * id
      */
-    int getId();
+    private Long id;
+    /**
+     * 关联账号的id
+     */
+    private UserAccount userAccount;
+    /**
+     * 当前资产
+     */
+    private Money balance;
+    /**
+     * 清算点id
+     */
+    private CheckPoint checkpoint;
 }

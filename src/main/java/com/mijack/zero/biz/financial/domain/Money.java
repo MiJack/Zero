@@ -14,16 +14,23 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common.enums;
+package com.mijack.zero.biz.financial.domain;
+
+import lombok.Data;
 
 /**
+ * 用于表示货币单位
+ *
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> {
+@Data
+public class Money {
     /**
-     * 枚举变量的id
-     *
-     * @return
+     * 货币单位
      */
-    int getId();
+    private Currency currency;
+    /**
+     * 具体数值
+     */
+    private Long money;
 }

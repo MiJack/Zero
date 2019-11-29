@@ -14,16 +14,33 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common.enums;
+package com.mijack.zero.biz.financial.dao.data;
+
+import com.mijack.zero.biz.financial.domain.Currency;
+import com.mijack.zero.framework.dao.idata.DataHolder;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> {
+@Data
+public class AccountBalanceHolder implements DataHolder<AccountBalanceDo> {
     /**
-     * 枚举变量的id
-     *
-     * @return
+     * 关联账号的id
      */
-    int getId();
+    private Long accountId;
+    /**
+     * 货币单位
+     *
+     * @see Currency#getId()
+     */
+    private Long currencyUnit;
+    /**
+     * 当前资产
+     */
+    private Long balance;
+    /**
+     * 清算点id
+     */
+    private Long checkpointId;
 }
