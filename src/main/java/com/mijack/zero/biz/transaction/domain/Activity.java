@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.domain;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -50,6 +50,10 @@ public class Activity {
      */
     private List<ActivityTag> tags;
     /**
+     * 对应账户的资金的变动
+     */
+    private List<Transaction> transactions;
+    /**
      * 事项最早一笔资金产生的时间
      */
     private Timestamp createTime;
@@ -57,8 +61,4 @@ public class Activity {
      * 事项最新一笔资金产生的时间
      */
     private Timestamp updateTime;
-    /**
-     * 对应账户的资金的变动
-     */
-    private List<Transaction> transactions;
 }

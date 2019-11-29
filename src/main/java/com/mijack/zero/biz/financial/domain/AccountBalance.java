@@ -16,7 +16,11 @@
 
 package com.mijack.zero.biz.financial.domain;
 
+import java.util.List;
+
 import com.mijack.zero.biz.account.domain.UserAccount;
+import com.mijack.zero.biz.transaction.domain.Money;
+import com.mijack.zero.biz.transaction.domain.Transaction;
 import lombok.Data;
 
 /**
@@ -38,6 +42,10 @@ public class AccountBalance {
      * 当前资产
      */
     private Money balance;
+    /**
+     * 所有的交易记录
+     */
+    private List<Transaction> transactions;
     /**
      * 清算点id
      */

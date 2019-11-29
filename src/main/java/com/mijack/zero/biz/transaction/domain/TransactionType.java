@@ -14,15 +14,40 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.dao;
+package com.mijack.zero.biz.transaction.domain;
 
-import com.mijack.zero.biz.financial.dao.data.AccountBalanceDo;
-import com.mijack.zero.framework.dao.idao.BasicDao;
-import org.springframework.stereotype.Repository;
+import com.mijack.zero.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
+ * 资金变动的类型
+ *
  * @author Mi&amp;Jack
  */
-@Repository
-public interface AccountBalanceDao extends BasicDao<Long, AccountBalanceDo> {
+public enum TransactionType implements IdentifiableEnum<TransactionType> {
+    /**
+     * 支出
+     */
+    EXPENDITURE(1, "支出"),
+    /**
+     * 收入
+     */
+    INCOME(2, "收入"),
+    /**
+     * 预支
+     */
+    ADVANCE(3, "预支"),
+    /**
+     * 还款
+     */
+    REPAYMENT(4, "还款");
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
+
+    TransactionType(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }

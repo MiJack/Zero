@@ -14,33 +14,23 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.dao.data;
+package com.mijack.zero.biz.transaction.domain;
 
-import com.mijack.zero.biz.financial.domain.Currency;
-import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
+ * 用于表示货币单位
+ *
  * @author Mi&amp;Jack
  */
 @Data
-public class AccountBalanceHolder implements DataHolder<AccountBalanceDo> {
-    /**
-     * 关联账号的id
-     */
-    private Long accountId;
+public class Money {
     /**
      * 货币单位
-     *
-     * @see Currency#getId()
      */
-    private Long currencyUnit;
+    private Currency currency;
     /**
-     * 当前资产
+     * 具体数值
      */
-    private Long balance;
-    /**
-     * 清算点id
-     */
-    private Long checkpointId;
+    private Long money;
 }
