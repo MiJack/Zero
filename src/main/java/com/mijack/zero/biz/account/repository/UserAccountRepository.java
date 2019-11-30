@@ -26,12 +26,12 @@ import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.common.base.BaseConverter;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Repo;
 
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Repo
 public class UserAccountRepository extends BaseConverter<UserAccountDO, UserAccount> {
     final UserRepository userRepository;
     final UserAccountDao userAccountDao;

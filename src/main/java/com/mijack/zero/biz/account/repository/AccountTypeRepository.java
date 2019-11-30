@@ -27,12 +27,12 @@ import com.mijack.zero.biz.account.infrastructure.dao.AccountTypeDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Repo;
 
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Repo
 public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountType> {
     @Resource
     AccountTypeDao accountTypeDao;

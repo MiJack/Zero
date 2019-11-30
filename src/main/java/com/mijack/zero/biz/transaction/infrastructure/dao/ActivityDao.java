@@ -18,11 +18,11 @@ package com.mijack.zero.biz.transaction.infrastructure.dao;
 
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.ActivityDO;
 import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Dao;
 
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Dao
 public interface ActivityDao extends BasicDao<Long, ActivityDO> {
 }

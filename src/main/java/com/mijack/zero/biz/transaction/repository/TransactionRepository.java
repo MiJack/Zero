@@ -16,6 +16,8 @@
 
 package com.mijack.zero.biz.transaction.repository;
 
+import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +31,10 @@ import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.domain.TransactionType;
 import com.mijack.zero.biz.transaction.infrastructure.dao.TransactionDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
+import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.base.BaseConverter;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.ddd.Repo;
 import com.mijack.zero.utils.EnumUtils;
 
 import com.google.common.collect.Lists;
@@ -38,7 +42,7 @@ import com.google.common.collect.Lists;
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Repo
 public class TransactionRepository extends BaseConverter<TransactionDO, Transaction> {
     @Resource
     private TransactionDao transactionDao;
@@ -85,5 +89,19 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
         }
         return transactions.size();
 
+    }
+
+    public int deleteTransactions(Activity activity, List<Transaction> transactions) {
+        transactionDao.beginTransaction();
+        try {
+            List<Long> ids = transactions.stream().map(Transaction::getId).collect(Collectors.toList());
+            long deleteCount = transactionDao.delete(ids, Criteria.eq("activityId", activity.getId()));
+            Assert.state(deleteCount == ids.size(), () -> createException("删除事务失败"));
+            transactionDao.commitTransaction();
+            return transactions.size();
+        } catch (Exception e) {
+            transactionDao.rollbackTransaction();
+            return 0;
+        }
     }
 }

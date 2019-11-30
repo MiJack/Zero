@@ -26,7 +26,9 @@ import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.domain.TransactionType;
-import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
+import com.mijack.zero.biz.transaction.repository.ActivityRepository;
+import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.utils.CollectionHelper;
 import com.mijack.zero.utils.EnumUtils;
@@ -42,6 +44,8 @@ public class ActivityFactory {
     UserRepository userRepository;
     @Resource
     UserAccountRepository userAccountRepository;
+    @Resource
+    ActivityRepository activityRepository;
 
     public Activity createActivity(ActivityCreateCommand command) {
         Timestamp now = command.getCreateTime() != null ? command.getCreateTime() :
@@ -60,5 +64,10 @@ public class ActivityFactory {
         activity.setTransactions(Lists.newArrayList(transaction));
         activity.setCreateTime(now);
         return activity;
+    }
+
+    public Activity findActivity(Long userId, Long activityId) {
+        User user = userRepository.getUserById(userId);
+        return activityRepository.findActivityByUserAndActivityId(user,activityId);
     }
 }

@@ -30,12 +30,12 @@ import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.infrastructure.dao.ActivityDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.ActivityDO;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
+import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.exceptions.DaoException;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Repo;
 import com.mijack.zero.utils.CollectionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Repo
 public class ActivityRepository extends BaseConverter<ActivityDO, Activity> {
     public static final Logger logger = LoggerFactory.getLogger(ActivityRepository.class);
     @Resource
@@ -58,6 +58,11 @@ public class ActivityRepository extends BaseConverter<ActivityDO, Activity> {
     public List<Activity> listActivity(User user) {
         List<ActivityDO> db = activityDao.query(Criteria.eq("userId", user.getId()));
         return db.stream().map(this::convert).collect(Collectors.toList());
+    }
+
+    public Activity findActivityByUserAndActivityId(User user, Long activityId) {
+        ActivityDO db = activityDao.queryOne(Criteria.eq("id", activityId).and(Criteria.eq("userId", user.getId())));
+        return convert(db);
     }
 
     @Override
@@ -85,6 +90,25 @@ public class ActivityRepository extends BaseConverter<ActivityDO, Activity> {
             Assert.state(activityDao.addDo(activityDO) > 0, () -> createException("创建activity记录失败"));
             Assert.state(transactionRepository.addTransaction(activity, activity.getTransactions()) > 0,
                     () -> createException("创建activity的transaction记录失败"));
+            activityDao.commitTransaction();
+            return 1;
+        } catch (DaoException e) {
+            logger.warn("addActivity warn: activity = {}", activity, e);
+            activityDao.rollbackTransaction();
+            return 0;
+        }
+    }
+
+    public int deleteActivity(Activity activity) {
+        try {
+            activityDao.beginTransaction();
+            ActivityDO activityDO = reverse().convert(activity);
+            assert activityDO != null;
+            Long activityId = activityDO.getId();
+            Assert.state(activityDao.delete(activityId) > 0, () -> createException("activity删除失败"));
+            Assert.state(transactionRepository.deleteTransactions(activity, activity.getTransactions())
+                            == activity.getTransactions().size(),
+                    () -> createException("删除activity的transaction记录失败"));
             activityDao.commitTransaction();
             return 1;
         } catch (DaoException e) {

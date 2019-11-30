@@ -14,21 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.framework.ddd;
+package com.mijack.zero.biz.transaction.command;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@org.springframework.stereotype.Repository
-public @interface Repository {
+@Data
+public class ActivityDeleteCommand {
+    private Long userId;
+    private Long activityId;
 }

@@ -26,7 +26,7 @@ import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Repo;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Lists;
@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Repo
 public class UserRepository extends BaseConverter<UserDO, User> {
     @Resource
     UserDao userDao;

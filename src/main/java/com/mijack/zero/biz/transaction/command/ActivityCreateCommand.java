@@ -17,8 +17,8 @@
 package com.mijack.zero.biz.transaction.command;
 
 import java.sql.Timestamp;
-import java.util.List;
 
+import com.mijack.zero.biz.transaction.domain.TransactionType;
 import lombok.Data;
 
 /**
@@ -53,6 +53,9 @@ public class ActivityCreateCommand {
      * 对应的格式为CNY 111.22
      */
     private String money;
+    /**
+     * @see TransactionType#getId()
+     */
     private Integer transactionType;
     /**
      * 事项最早一笔资金产生的时间

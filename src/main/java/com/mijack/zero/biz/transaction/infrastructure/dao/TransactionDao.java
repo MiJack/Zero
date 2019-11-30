@@ -21,12 +21,12 @@ import java.util.List;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Dao;
 
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Dao
 public interface TransactionDao extends BasicDao<Long, TransactionDO> {
     default List<TransactionDO> listTransactionByActivityId(Long activityId) {
         return query(Criteria.eq("activityId", activityId));

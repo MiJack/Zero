@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
+import com.mijack.zero.biz.transaction.command.ActivityDeleteCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.factory.ActivityFactory;
 import com.mijack.zero.biz.transaction.repository.ActivityRepository;
@@ -55,5 +56,10 @@ public class ActivityService {
         Activity activity = activityFactory.createActivity(activityCreateCommand);
         Assert.state(activityRepository.addActivity(activity) > 0, () -> createException(BaseBizException.class, "创建活动失败"));
         return activity;
+    }
+
+    public int deleteActivity(ActivityDeleteCommand activityDeleteCommand) {
+        Activity activity = activityFactory.findActivity(activityDeleteCommand.getUserId(), activityDeleteCommand.getActivityId());
+        return activityRepository.deleteActivity(activity);
     }
 }

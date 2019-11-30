@@ -21,6 +21,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
+import com.mijack.zero.biz.transaction.command.ActivityDeleteCommand;
 import com.mijack.zero.biz.transaction.command.ActivityListCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.service.ActivityService;
@@ -30,18 +31,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author Mi&amp;Jack
  */
-@ApiController(path = "/api")
+@ApiController(path = "/api/activity")
 public class ActivityController {
     @Resource
     ActivityService activityService;
 
-    @RequestMapping("/activity/list")
+    @RequestMapping("/list")
     public List<Activity> listActivity(ActivityListCommand activityListCommand) {
         return activityService.listActivity(activityListCommand.getUserId());
     }
 
-    @RequestMapping("/activity/create")
+    @RequestMapping("/create")
     public Activity createActivity(ActivityCreateCommand activityCreateCommand) {
         return activityService.createActivity(activityCreateCommand);
+    }
+
+    @RequestMapping("/delete")
+    public boolean deleteActivity(ActivityDeleteCommand activityDeleteCommand) {
+        return activityService.deleteActivity(activityDeleteCommand) > 0;
     }
 }
