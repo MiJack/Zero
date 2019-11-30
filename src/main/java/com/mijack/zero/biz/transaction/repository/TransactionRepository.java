@@ -104,4 +104,8 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
             return 0;
         }
     }
+
+    public Transaction findTransactionById(Long transactionId) {
+        return convert(transactionDao.getById(transactionId));
+    }
 }

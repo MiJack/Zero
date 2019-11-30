@@ -43,7 +43,7 @@ public class ActivityFactory {
     @Resource
     UserRepository userRepository;
     @Resource
-    UserAccountRepository userAccountRepository;
+    TransactionFactory transactionFactory;
     @Resource
     ActivityRepository activityRepository;
 
@@ -55,19 +55,13 @@ public class ActivityFactory {
         activity.setName(command.getName());
         activity.setUser(userRepository.getUserById(command.getUserId()));
         activity.setTags(CollectionHelper.toList(command.getTags().split(",")));
-        Transaction transaction = new Transaction();
-        transaction.setMoney(Money.parse(command.getMoney()));
-        transaction.setTransactionType(EnumUtils.idOf(command.getTransactionType(), TransactionType.class));
-        transaction.setUserAccount(userAccountRepository.findUserAccountByAccountId(command.getUserAccountId()));
-        transaction.setUpdateTime(now);
-
-        activity.setTransactions(Lists.newArrayList(transaction));
+        activity.setTransactions(Lists.newArrayList(transactionFactory.createTransaction(command)));
         activity.setCreateTime(now);
         return activity;
     }
 
     public Activity findActivity(Long userId, Long activityId) {
         User user = userRepository.getUserById(userId);
-        return activityRepository.findActivityByUserAndActivityId(user,activityId);
+        return activityRepository.findActivityByUserAndActivityId(user, activityId);
     }
 }

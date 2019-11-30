@@ -19,11 +19,17 @@ package com.mijack.zero.biz.transaction.service;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.transaction.command.TransactionAttachCommand;
+import com.mijack.zero.biz.transaction.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.factory.ActivityFactory;
+import com.mijack.zero.biz.transaction.factory.TransactionFactory;
 import com.mijack.zero.biz.transaction.repository.TransactionRepository;
+import com.mijack.zero.common.Assert;
+import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Mi&amp;Jack
@@ -33,12 +39,23 @@ public class TransactionService {
     @Resource
     TransactionRepository transactionRepository;
     @Resource
+    TransactionFactory transactionFactory;
+    @Resource
     ActivityFactory activityFactory;
 
 
-    public Transaction attachTransaction(TransactionAttachCommand transactionAttachCommand) {
-        Activity activity = activityFactory.findActivity(transactionAttachCommand.getUserId(), transactionAttachCommand.getActivityId());
-        
-        return null;
+    public Transaction attachTransaction(TransactionAttachCommand command) {
+        Activity activity = activityFactory.findActivity(command.getUserId(), command.getActivityId());
+        Assert.notNull(activity, () -> BaseBizException.createException("activity不存在"));
+        Transaction transaction = transactionFactory.createTransaction(command);
+        long count = transactionRepository.addTransaction(activity, Lists.newArrayList(transaction));
+        Assert.state(count == 1, () -> BaseBizException.createException("创建事务失败"));
+        return transaction;
+    }
+
+    public boolean removeTransaction(TransactionRemoveCommand command) {
+        Activity activity = activityFactory.findActivity(command.getUserId(), command.getActivityId());
+        Transaction transaction = transactionFactory.queryTransaction(command);
+        return transactionRepository.deleteTransactions(activity, Lists.newArrayList(transaction)) == 1;
     }
 }

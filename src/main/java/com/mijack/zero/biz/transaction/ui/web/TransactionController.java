@@ -19,6 +19,7 @@ package com.mijack.zero.biz.transaction.ui.web;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.transaction.command.TransactionAttachCommand;
+import com.mijack.zero.biz.transaction.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.service.TransactionService;
 import com.mijack.zero.common.web.mvc.ApiController;
@@ -35,5 +36,10 @@ public class TransactionController {
     @RequestMapping("/attach")
     public Transaction attachTransaction(TransactionAttachCommand transactionAttachCommand) {
         return transactionService.attachTransaction(transactionAttachCommand);
+    }
+
+    @RequestMapping("/remove")
+    public boolean attachTransaction(TransactionRemoveCommand transactionAttachCommand) {
+        return transactionService.removeTransaction(transactionAttachCommand);
     }
 }
