@@ -14,15 +14,21 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.infrastructure.dao;
+package com.mijack.zero.framework.ddd;
 
-import com.mijack.zero.biz.transaction.infrastructure.dao.data.ActivityDO;
-import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Repository;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Mi&amp;Jack
  */
-@Repository
-public interface ActivityDao extends BasicDao<Long, ActivityDO> {
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@org.springframework.stereotype.Service
+public @interface Service {
 }

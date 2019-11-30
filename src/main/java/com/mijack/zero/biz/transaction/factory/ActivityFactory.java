@@ -27,16 +27,16 @@ import com.mijack.zero.biz.transaction.domain.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.domain.TransactionType;
 import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
+import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.utils.CollectionHelper;
 import com.mijack.zero.utils.EnumUtils;
-import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
 /**
  * @author Mi&amp;Jack
  */
-@Component
+@Factory
 public class ActivityFactory {
     @Resource
     UserRepository userRepository;

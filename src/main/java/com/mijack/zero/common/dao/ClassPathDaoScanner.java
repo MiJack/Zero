@@ -18,6 +18,7 @@ package com.mijack.zero.common.dao;
 
 import java.util.Set;
 
+import com.mijack.zero.framework.ddd.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -39,7 +39,7 @@ public class ClassPathDaoScanner extends ClassPathBeanDefinitionScanner  {
 
     public ClassPathDaoScanner(BeanDefinitionRegistry registry) {
         super(registry, false);
-        addIncludeFilter(new AnnotationTypeFilter(Repository.class));
+        addIncludeFilter(new AnnotationTypeFilter(Dao.class));
     }
 
     @NotNull

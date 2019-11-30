@@ -25,10 +25,10 @@ import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
 import com.mijack.zero.common.repository.BaseMapper;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
+import com.mijack.zero.framework.ddd.Repository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Mi&amp;Jack

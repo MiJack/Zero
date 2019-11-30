@@ -26,7 +26,7 @@ import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
 import com.mijack.zero.common.base.BaseConverter;
-import org.springframework.stereotype.Repository;
+import com.mijack.zero.framework.ddd.Repository;
 
 /**
  * @author Mi&amp;Jack

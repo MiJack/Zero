@@ -30,8 +30,8 @@ import com.mijack.zero.biz.transaction.domain.TransactionType;
 import com.mijack.zero.biz.transaction.infrastructure.dao.TransactionDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
 import com.mijack.zero.common.base.BaseConverter;
+import com.mijack.zero.framework.ddd.Repository;
 import com.mijack.zero.utils.EnumUtils;
-import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
 

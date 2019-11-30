@@ -18,21 +18,20 @@ package com.mijack.zero.biz.account.factory;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
-import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.domain.BillingType;
 import com.mijack.zero.biz.account.repository.AccountTypeRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.WrongParamException;
+import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.utils.EnumUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Mi&amp;Jack
  */
-@Component
+@Factory
 public class AccountTypeFactory {
     final AccountTypeRepository accountTypeRepository;
 

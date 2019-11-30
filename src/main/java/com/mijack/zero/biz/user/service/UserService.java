@@ -31,11 +31,11 @@ import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import com.mijack.zero.framework.dao.Criteria;
+import com.mijack.zero.framework.ddd.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.mijack.zero.common.Assert;
 
 /**

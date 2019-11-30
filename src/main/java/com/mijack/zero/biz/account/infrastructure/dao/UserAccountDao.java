@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
-import org.springframework.stereotype.Repository;
+import com.mijack.zero.framework.ddd.Repository;
 
 /**
  * @author Mi&amp;Jack

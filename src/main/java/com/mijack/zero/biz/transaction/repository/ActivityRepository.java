@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Transaction;
@@ -36,11 +35,11 @@ import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.exceptions.DaoException;
+import com.mijack.zero.framework.ddd.Repository;
 import com.mijack.zero.utils.CollectionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 
 /**

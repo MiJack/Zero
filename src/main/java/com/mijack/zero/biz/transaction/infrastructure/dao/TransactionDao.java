@@ -21,7 +21,7 @@ import java.util.List;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
-import org.springframework.stereotype.Repository;
+import com.mijack.zero.framework.ddd.Repository;
 
 /**
  * @author Mi&amp;Jack

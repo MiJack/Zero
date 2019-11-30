@@ -26,11 +26,11 @@ import com.mijack.zero.common.dao.Table;
 import com.mijack.zero.common.repository.BaseMapper;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
+import com.mijack.zero.framework.ddd.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Repository;
 
 /**
  * 用户存储管理
