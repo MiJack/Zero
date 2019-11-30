@@ -18,7 +18,7 @@ package com.mijack.zero.common.dao;
 
 import java.util.Set;
 
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Dao;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -23,12 +23,12 @@ import javax.validation.constraints.NotNull;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Repository;
+import com.mijack.zero.framework.ddd.Dao;
 
 /**
  * @author Mi&amp;Jack
  */
-@Repository
+@Dao
 public interface UserAccountDao extends BasicDao<Long, UserAccountDO> {
     /**
      * 列举一个用户下的所有账号

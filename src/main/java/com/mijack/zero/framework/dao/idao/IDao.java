@@ -19,11 +19,14 @@ package com.mijack.zero.framework.dao.idao;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.Data;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * 针对存储对象<code>D</code>的存储能力定义
@@ -124,6 +127,22 @@ public interface IDao<D extends Data<D> & DataHolder<D>> {
          * @see Collections#emptyList()
          */
         List<D> query(Criteria criteria);
+
+        /**
+         * 给定条件进行查询
+         *
+         * @param criteria 待查询数据的条件
+         * @return 查询得到的结果，结果为空，返回{@code Collections#emptyList() }
+         * @see Collections#emptyList()
+         */
+        @Nullable
+        default D queryOne(Criteria criteria) {
+            List<D> db = query(criteria);
+            if (CollectionUtils.isEmpty(db)) {
+                return null;
+            }
+            return db.get(0);
+        }
     }
 
     /**

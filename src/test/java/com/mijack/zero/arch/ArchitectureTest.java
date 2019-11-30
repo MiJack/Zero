@@ -19,18 +19,12 @@ package com.mijack.zero.arch;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
-import com.mijack.zero.ZeroApplication;
-import com.mijack.zero.demo.Repo;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import org.junit.Test;
-import org.mockito.internal.util.collections.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -47,7 +41,7 @@ public class ArchitectureTest {
     public void validateArchitectureRule() {
         // 所有class不应该直接依赖Spring的注解
         JavaClasses allClasses = new ClassFileImporter().importClasspath();
-        allClasses.that(new DescribedPredicate<JavaClass>("加载所有的接口或者类", null) {
+        allClasses.that(new DescribedPredicate<JavaClass>("加载所有的接口或者类") {
             @Override
             public boolean apply(JavaClass input) {
                 Class<?> clazz = input.reflect();

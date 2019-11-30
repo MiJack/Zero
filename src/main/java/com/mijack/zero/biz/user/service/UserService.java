@@ -19,6 +19,7 @@ package com.mijack.zero.biz.user.service;
 
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
+import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
 
@@ -28,9 +29,7 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
-import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
 import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
-import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.ddd.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -85,11 +84,13 @@ public class UserService {
         return user;
     }
 
-    public List<UserDO> listUser() {
-        return userRepository.query(Criteria.TRUE);
+    public List<User> listUser() {
+        return userRepository.list();
     }
 
     public boolean deleteUser(Long userId) {
-        return userRepository.delete(userId) > 0;
+        User user = userRepository.getUserById(userId);
+        Assert.isNull(user, () -> createException("用户名不存在"));
+        return userRepository.delete(user) > 0;
     }
 }
