@@ -25,7 +25,7 @@ import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
-import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
+import com.mijack.zero.biz.user.factory.UserFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
