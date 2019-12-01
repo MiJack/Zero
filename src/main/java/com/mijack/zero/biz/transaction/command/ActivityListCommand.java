@@ -14,42 +14,14 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.command;
 
-
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
 import lombok.Data;
 
 /**
- * 账号清算点
- *
  * @author Mi&amp;Jack
  */
 @Data
-public class CheckPoint {
-
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 关联账号的id
-     */
-    private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
+public class ActivityListCommand {
+    private Long userId;
 }

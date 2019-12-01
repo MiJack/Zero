@@ -14,23 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.command;
 
 import lombok.Data;
 
 /**
- * 用于表示货币单位
- *
  * @author Mi&amp;Jack
  */
 @Data
-public class Money {
-    /**
-     * 货币单位
-     */
-    private Currency currency;
-    /**
-     * 具体数值
-     */
-    private Long money;
+public class ActivityDeleteCommand {
+    private Long userId;
+    private Long activityId;
 }

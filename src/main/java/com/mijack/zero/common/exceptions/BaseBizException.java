@@ -16,6 +16,7 @@
 
 package com.mijack.zero.common.exceptions;
 
+import com.mijack.zero.framework.dao.exceptions.DaoException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

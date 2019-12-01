@@ -64,6 +64,17 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
             return delete(Criteria.in("id", ids));
         }
 
+        /**
+         * 给定条件删除数据，如果D为类型DeletableDo，将删除位置为true，反正进行物理删除
+         *
+         * @param ids id标识
+         * @param criteria 附加的条件
+         * @return 删除成功的数目
+         */
+        default long delete(List<ID> ids, Criteria criteria) {
+            return delete(Criteria.in("id", ids).and(criteria));
+        }
+
     }
 
     /**
@@ -97,6 +108,7 @@ public interface IIdentifiableDataDao<ID, D extends IdentifiableData<ID, D> & Da
 
         /**
          * 添加给定的数据，DH中如果包含主键，不会生效
+         *
          * @param list 待添加的数据
          * @return
          */

@@ -25,7 +25,7 @@ import com.mijack.zero.biz.account.factory.AccountTypeFactory;
 import com.mijack.zero.biz.account.repository.AccountTypeRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
-import org.springframework.stereotype.Service;
+import com.mijack.zero.framework.ddd.Service;
 
 /**
  * @author Mi&amp;Jack

@@ -14,33 +14,24 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.dao.data;
+package com.mijack.zero.biz.transaction.command;
 
-import com.mijack.zero.biz.financial.domain.Currency;
-import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class AccountBalanceHolder implements DataHolder<AccountBalanceDo> {
+public class TransactionRemoveCommand {
+
     /**
-     * 关联账号的id
+     * 产生事项的用户
      */
-    private Long accountId;
+    private Long userId;
+    private Long activityId;
     /**
-     * 货币单位
-     *
-     * @see Currency#getId()
+     * 对应账户的资金的变动
      */
-    private Long currencyUnit;
-    /**
-     * 当前资产
-     */
-    private Long balance;
-    /**
-     * 清算点id
-     */
-    private Long checkpointId;
+    private Long userAccountId;
+    private Long transactionId;
 }

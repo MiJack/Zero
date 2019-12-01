@@ -14,42 +14,26 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.common.base;
 
+import javax.annotation.Nonnull;
 
-import java.util.List;
+import com.mijack.zero.framework.dao.idata.Data;
+import com.mijack.zero.framework.dao.idata.DataHolder;
 
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
-import lombok.Data;
+import com.google.common.base.Converter;
 
 /**
- * 账号清算点
- *
  * @author Mi&amp;Jack
  */
-@Data
-public class CheckPoint {
+public class BaseConverter<DO extends Data<DO> & DataHolder<DO>, DOMAIN> extends Converter<DO, DOMAIN> {
+    @Override
+    protected DOMAIN doForward(@Nonnull DO d) {
+        throw new UnsupportedOperationException();
+    }
 
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 关联账号的id
-     */
-    private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
+    @Override
+    protected DO doBackward(@Nonnull DOMAIN d) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -14,19 +14,21 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.dao.data;
+package com.mijack.zero.framework.ddd;
 
-import com.mijack.zero.framework.dao.idata.DeletableDo;
-import com.mijack.zero.framework.dao.idata.IdentifiableData;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Mi&amp;Jack
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class AccountBalanceDo extends AccountBalanceHolder implements IdentifiableData<Long, AccountBalanceDo>,
-        DeletableDo<AccountBalanceDo> {
-    private Long id;
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@org.springframework.stereotype.Service
+public @interface Service {
 }

@@ -14,42 +14,19 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.infrastructure.dao.data;
 
 
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
+import com.mijack.zero.framework.dao.idata.DeletableDo;
+import com.mijack.zero.framework.dao.idata.IdentifiableData;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 账号清算点
- *
  * @author Mi&amp;Jack
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CheckPoint {
-
-    /**
-     * id
-     */
+public class ActivityDO extends ActivityHolder implements IdentifiableData<Long, ActivityDO>, DeletableDo<ActivityDO> {
     private Long id;
-    /**
-     * 关联账号的id
-     */
-    private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
 }

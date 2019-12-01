@@ -14,42 +14,35 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.domain;
 
-
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
+import com.mijack.zero.utils.EnumUtils;
 import lombok.Data;
 
 /**
- * 账号清算点
+ * 用于表示货币单位
  *
  * @author Mi&amp;Jack
  */
 @Data
-public class CheckPoint {
+public class Money {
+    /**
+     * 货币单位
+     */
+    private Currency currency;
+    /**
+     * 具体数值
+     */
+    private Float money;
 
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 关联账号的id
-     */
-    private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
+    public static Money create(Float money, Integer currency) {
+        Money result = new Money();
+        result.setMoney(money);
+        result.setCurrency(EnumUtils.idOf(currency, Currency.class));
+        return result;
+    }
+
+    public static Money parse(String money) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -14,42 +14,40 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.domain;
 
-
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
-import lombok.Data;
+import com.mijack.zero.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
- * 账号清算点
+ * 资金变动的类型
  *
  * @author Mi&amp;Jack
  */
-@Data
-public class CheckPoint {
+public enum TransactionType implements IdentifiableEnum<TransactionType> {
+    /**
+     * 支出
+     */
+    EXPENDITURE(1, "支出"),
+    /**
+     * 收入
+     */
+    INCOME(2, "收入"),
+    /**
+     * 预支
+     */
+    ADVANCE(3, "预支"),
+    /**
+     * 还款
+     */
+    REPAYMENT(4, "还款");
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
 
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 关联账号的id
-     */
-    private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
+    TransactionType(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }

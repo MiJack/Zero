@@ -14,42 +14,31 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.domain;
 
-
-import java.util.List;
+import java.sql.Timestamp;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
 import lombok.Data;
 
 /**
- * 账号清算点
+ * 交易，往往会引起多个账户的余额变动，这里只关注余额的变动，不关心具体的数值<br/>
+ * 例如
+ * <ol>
+ *     <li>购买商品</li>
+ *     <li>股票收益</li>
+ *     <li>分期付款</li>
+ *     <li>转账</li>
+ * </ol>
  *
  * @author Mi&amp;Jack
  */
 @Data
-public class CheckPoint {
-
-    /**
-     * id
-     */
+public class Transaction {
     private Long id;
-    /**
-     * 关联账号的id
-     */
     private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
+    private Money money;
+    private TransactionType transactionType;
+    private Timestamp createTime;
+    private Timestamp updateTime;
 }

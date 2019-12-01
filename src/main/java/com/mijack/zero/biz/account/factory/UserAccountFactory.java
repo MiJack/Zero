@@ -26,14 +26,14 @@ import com.mijack.zero.biz.account.repository.AccountTypeRepository;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.infrastructure.dao.UserRepository;
+import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.common.Assert;
-import org.springframework.stereotype.Component;
+import com.mijack.zero.framework.ddd.Factory;
 
 /**
  * @author Mi&amp;Jack
  */
-@Component
+@Factory
 public class UserAccountFactory {
     @Resource
     UserAccountDao userAccountDao;

@@ -14,42 +14,51 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.command;
 
+import java.sql.Timestamp;
 
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
+import com.mijack.zero.biz.transaction.domain.TransactionType;
 import lombok.Data;
 
 /**
- * 账号清算点
+ * 目前支持单个资金变动
  *
  * @author Mi&amp;Jack
  */
 @Data
-public class CheckPoint {
+public class ActivityCreateCommand {
 
     /**
-     * id
+     * 产生事项的用户
      */
-    private Long id;
+    private Long userId;
     /**
-     * 关联账号的id
+     * 事项的名称
      */
-    private UserAccount userAccount;
+    private String name;
     /**
-     * 当前资产
+     * 事项的备注
      */
-    private Money balance;
+    private String mark;
     /**
-     *
+     * 标记
      */
-    private List<Transaction> transactions;
+    private String tags;
     /**
-     * 如果
+     * 对应账户的资金的变动
      */
-    private CheckPoint lastCheckpoint;
+    private Long userAccountId;
+    /**
+     * 对应的格式为CNY 111.22
+     */
+    private String money;
+    /**
+     * @see TransactionType#getId()
+     */
+    private Integer transactionType;
+    /**
+     * 事项最早一笔资金产生的时间
+     */
+    private Timestamp createTime;
 }

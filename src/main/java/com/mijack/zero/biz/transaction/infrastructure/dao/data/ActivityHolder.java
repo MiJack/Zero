@@ -14,42 +14,40 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.transaction.infrastructure.dao.data;
 
+import java.sql.Timestamp;
 
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
+import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
- * 账号清算点
- *
  * @author Mi&amp;Jack
  */
 @Data
-public class CheckPoint {
-
+public class ActivityHolder implements DataHolder<ActivityDO> {
     /**
-     * id
+     * 产生事项的用户
      */
-    private Long id;
+    private Long userId;
     /**
-     * 关联账号的id
+     * 事项的名称
      */
-    private UserAccount userAccount;
+    private String name;
     /**
-     * 当前资产
+     * 事项的备注
      */
-    private Money balance;
+    private String mark;
     /**
-     *
+     * 标记
      */
-    private List<Transaction> transactions;
+    private String tags;
     /**
-     * 如果
+     * 事项最早一笔资金产生的时间
      */
-    private CheckPoint lastCheckpoint;
+    private Timestamp createTime;
+    /**
+     * 事项最新一笔资金产生的时间
+     */
+    private Timestamp updateTime;
 }

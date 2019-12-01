@@ -14,42 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.financial.domain;
+package com.mijack.zero.biz.account.infrastructure.dao;
 
-
-import java.util.List;
-
-import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
-import lombok.Data;
+import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
+import com.mijack.zero.framework.dao.idao.BasicDao;
+import com.mijack.zero.framework.ddd.Dao;
 
 /**
- * 账号清算点
- *
  * @author Mi&amp;Jack
  */
-@Data
-public class CheckPoint {
-
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 关联账号的id
-     */
-    private UserAccount userAccount;
-    /**
-     * 当前资产
-     */
-    private Money balance;
-    /**
-     *
-     */
-    private List<Transaction> transactions;
-    /**
-     * 如果
-     */
-    private CheckPoint lastCheckpoint;
+@Dao
+public interface AccountTypeDao extends BasicDao<Long, AccountTypeDO> {
 }

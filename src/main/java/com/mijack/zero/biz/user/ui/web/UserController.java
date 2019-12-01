@@ -22,7 +22,6 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.command.CreateUserCommand;
 import com.mijack.zero.biz.user.command.UpdateUserCommand;
-import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.service.UserService;
@@ -53,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/users/list")
-    public List<UserDO> listUser() {
+    public List<User> listUser() {
         return userService.listUser();
     }
 

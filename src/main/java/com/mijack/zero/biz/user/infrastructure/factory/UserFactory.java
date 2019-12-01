@@ -19,12 +19,12 @@ package com.mijack.zero.biz.user.infrastructure.factory;
 import java.sql.Timestamp;
 
 import com.mijack.zero.biz.user.domain.User;
-import org.springframework.stereotype.Component;
+import com.mijack.zero.framework.ddd.Factory;
 
 /**
  * @author Mi&amp;Jack
  */
-@Component
+@Factory
 public class UserFactory {
 
     /**
