@@ -98,6 +98,9 @@ dependencies {
     // mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     implementation 'org.springframework:spring-jdbc'
+    // mybatis
+    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.1.2'
+
     // 架构验证
     testCompile 'com.tngtech.archunit:archunit-junit4:0.12.0'
 

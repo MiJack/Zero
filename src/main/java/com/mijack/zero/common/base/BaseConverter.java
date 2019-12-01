@@ -28,12 +28,12 @@ import com.google.common.base.Converter;
  */
 public class BaseConverter<DO extends Data<DO> & DataHolder<DO>, DOMAIN> extends Converter<DO, DOMAIN> {
     @Override
-    protected DOMAIN doForward(@Nonnull DO d) {
+    protected DOMAIN doForward(@Nonnull DO input) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected DO doBackward(@Nonnull DOMAIN d) {
+    protected DO doBackward(@Nonnull DOMAIN input) {
         throw new UnsupportedOperationException();
     }
 }

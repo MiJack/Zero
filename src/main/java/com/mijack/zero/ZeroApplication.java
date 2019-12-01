@@ -16,6 +16,7 @@
 package com.mijack.zero;
 
 import com.mijack.zero.config.SpringJdbcConfig;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +27,7 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
  */
 @ImportAutoConfiguration({JdbcTemplateAutoConfiguration.class, SpringJdbcConfig.class})
 @SpringBootApplication(scanBasePackages = "com.mijack.zero")
+@MapperScan("com.mijack.zero..dao")
 public class ZeroApplication {
 
     public static void main(String[] args) {

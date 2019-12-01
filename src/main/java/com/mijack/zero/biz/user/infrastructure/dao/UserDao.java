@@ -17,18 +17,14 @@
 package com.mijack.zero.biz.user.infrastructure.dao;
 
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
-import com.mijack.zero.common.dao.Table;
-import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Dao;
+import com.mijack.zero.framework.dao.BaseDao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 用户存储管理
  *
  * @author Mi&amp;Jack
  */
-@Dao
-@Table(name = "Zero_User")
-public interface UserDao extends BasicDao<Long, UserDO> {
-
-
+@Mapper
+public interface UserDao extends BaseDao<UserDO> {
 }

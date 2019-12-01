@@ -4,3 +4,7 @@ spring:
     password: root
     url: jdbc:mysql://localhost:3306/ZeroDB
     driver-class-name: com.mysql.cj.jdbc.Driver
+    schema: classpath:schema.sql
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true

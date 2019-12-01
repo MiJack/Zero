@@ -63,7 +63,7 @@ public class UserService {
         Long id = userRepository.allocateId();
         logger.info("allocateKey = {}", id);
         User user = userFactory.createUser(id, name, email);
-        Assert.state(userRepository.addUser(user) > 0, () -> createException("创建用户失败"));
+        Assert.state(userRepository.updateUser(user) > 0, () -> createException("创建用户失败"));
         return user;
     }
 
