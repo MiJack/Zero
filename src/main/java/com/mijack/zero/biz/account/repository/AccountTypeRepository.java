@@ -26,7 +26,6 @@ import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.infrastructure.dao.AccountTypeDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
 import com.mijack.zero.common.base.BaseConverter;
-import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.ddd.Repo;
 
 /**
@@ -45,7 +44,7 @@ public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountT
      */
     public long addAccountType(AccountType accountType) {
         AccountTypeDO accountTypeDO = reverse().convert(accountType);
-        return accountTypeDao.addDo(accountTypeDO);
+        return accountTypeDao.insert(accountTypeDO);
     }
 
     /**
@@ -55,7 +54,7 @@ public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountT
      * @return
      */
     public AccountType getAccountTypeById(Long id) {
-        return Optional.ofNullable(accountTypeDao.getById(id)).map(this::convert).orElse(null);
+        return Optional.ofNullable(accountTypeDao.selectById(id)).map(this::convert).orElse(null);
     }
 
     /**
@@ -64,7 +63,7 @@ public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountT
      * @return
      */
     public List<AccountType> listAccountType() {
-        List<AccountTypeDO> result = accountTypeDao.query(Criteria.TRUE);
+        List<AccountTypeDO> result = accountTypeDao.selectList(null);
         return result.stream().map(this::convert).collect(Collectors.toList());
     }
 

@@ -53,10 +53,6 @@ public interface BaseDao<T extends IdentifiableData<Long, T> & DataHolder<T>> ex
         return new QueryWrapper<T>().lambda();
     }
 
-    default LambdaQueryWrapper<T> queryById(Long id) {
-        return newQuery().eq(T::getId, id);
-    }
-
     default Class<T> getDataClazz() {
         ResolvedType resolve = TYPE_RESOLVER.resolve(getClass());
         if (resolve.isInstanceOf(BaseDao.class)) {

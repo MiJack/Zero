@@ -16,6 +16,8 @@
 
 package com.mijack.zero.biz.user.infrastructure.dao.data;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mijack.zero.framework.dao.idata.DeletableDo;
 import com.mijack.zero.framework.dao.idata.IdentifiableData;
@@ -32,5 +34,6 @@ public class UserDO extends UserHolder implements IdentifiableData<Long, UserDO>
     /**
      * 用户id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 }
