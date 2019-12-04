@@ -32,9 +32,14 @@ public enum Currency implements IdentifiableEnum<Currency> {
     /**
      * 美元
      */
-    USD(2, "USD", "美元", 0.01f);
+    USD(2, "USD", "美元", 0.01f),
+    /**
+     * 日元
+     */
+    JPY(3, "JPY", "日元", 1f);
     @Getter
     private final int id;
+    @Getter
     private final String shortName;
     @Getter
     private final String desc;
@@ -42,7 +47,7 @@ public enum Currency implements IdentifiableEnum<Currency> {
      * 货币辅助单元，即最小计费单元
      */
     @Getter
-    private float minor;
+    private final float minor;
 
     Currency(int id, String shortName, String desc, float minor) {
         this.id = id;

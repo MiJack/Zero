@@ -17,6 +17,7 @@
 package com.mijack.zero.utils;
 
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Function;
@@ -84,5 +85,16 @@ public interface EnumUtils {
             }
         }
         return defaultValue;
+    }
+
+    /**
+     * 列举给定枚举类的所有枚举值
+     *
+     * @param clazz
+     * @param <E>
+     * @return
+     */
+    static <E extends Enum<E>> Collection<E> listEnums(Class<E> clazz) {
+        return EnumSet.allOf(clazz);
     }
 }

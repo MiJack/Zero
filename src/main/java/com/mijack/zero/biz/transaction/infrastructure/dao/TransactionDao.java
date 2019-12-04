@@ -28,6 +28,12 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TransactionDao extends BaseDao<TransactionDO> {
+    /**
+     * 根据activityId查询关联的交易
+     *
+     * @param activityId 活动id
+     * @return activity下关联的交易信息
+     */
     default List<TransactionDO> listTransactionByActivityId(Long activityId) {
         return selectList(new QueryWrapper<TransactionDO>().lambda().eq(TransactionDO::getActivityId, activityId));
     }

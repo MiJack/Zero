@@ -39,8 +39,6 @@ import com.mijack.zero.framework.ddd.Repo;
 import com.mijack.zero.utils.EnumUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Lists;
-
 /**
  * @author Mi&amp;Jack
  */
@@ -71,7 +69,6 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
 
     @Transactional(rollbackFor = Exception.class)
     public long addTransaction(Activity activity, List<Transaction> transactions) {
-        List<TransactionDO> db = Lists.newArrayList();
         for (Transaction transaction : transactions) {
             TransactionDO transactionDO = new TransactionDO();
             transactionDO.setActivityId(activity.getId());
@@ -80,7 +77,8 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
             transactionDO.setTransactionType(transaction.getTransactionType().getId());
             transactionDO.setCreateTime(transaction.getCreateTime());
             transactionDO.setUpdateTime(transaction.getUpdateTime());
-            db.add(transactionDO);
+            int insert = transactionDao.insert(transactionDO);
+            Assert.state(insert == 1, () -> createException("创建交易失败"));
         }
         return transactions.size();
 

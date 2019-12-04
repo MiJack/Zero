@@ -85,6 +85,9 @@ public class ActivityRepository extends BaseConverter<ActivityDO, Activity> {
 
     @Transactional(rollbackFor = Exception.class)
     public long addActivity(Activity activity) {
+        if (activity == null) {
+            return 0;
+        }
         ActivityDO activityDO = reverse().convert(activity);
         Long activityId = activityDao.allocateId();
         Objects.requireNonNull(activityDO).setId(activityId);
@@ -97,6 +100,9 @@ public class ActivityRepository extends BaseConverter<ActivityDO, Activity> {
 
     @Transactional(rollbackFor = Exception.class)
     public int deleteActivity(Activity activity) {
+        if (activity == null) {
+            return 0;
+        }
         ActivityDO activityDO = reverse().convert(activity);
         assert activityDO != null;
         Long activityId = activityDO.getId();

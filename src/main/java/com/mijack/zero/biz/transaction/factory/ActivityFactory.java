@@ -20,18 +20,13 @@ import java.sql.Timestamp;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.account.repository.UserAccountRepository;
 import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
-import com.mijack.zero.biz.transaction.domain.Money;
-import com.mijack.zero.biz.transaction.domain.Transaction;
-import com.mijack.zero.biz.transaction.domain.TransactionType;
 import com.mijack.zero.biz.transaction.repository.ActivityRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.utils.CollectionHelper;
-import com.mijack.zero.utils.EnumUtils;
 
 import com.google.common.collect.Lists;
 
