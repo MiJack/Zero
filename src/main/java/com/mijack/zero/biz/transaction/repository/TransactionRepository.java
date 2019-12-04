@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mijack.zero.biz.account.repository.UserAccountRepository;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Money;
@@ -33,9 +35,9 @@ import com.mijack.zero.biz.transaction.infrastructure.dao.TransactionDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.base.BaseConverter;
-import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.ddd.Repo;
 import com.mijack.zero.utils.EnumUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
@@ -67,45 +69,34 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
         return transaction;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public long addTransaction(Activity activity, List<Transaction> transactions) {
-        transactionDao.beginTransaction();
-        try {
-            List<TransactionDO> db = Lists.newArrayList();
-            for (Transaction transaction : transactions) {
-                TransactionDO transactionDO = new TransactionDO();
-                transactionDO.setActivityId(activity.getId());
-                transactionDO.setMoney(transaction.getMoney().getMoney());
-                transactionDO.setCurrency(transaction.getMoney().getCurrency().getId());
-                transactionDO.setTransactionType(transaction.getTransactionType().getId());
-                transactionDO.setCreateTime(transaction.getCreateTime());
-                transactionDO.setUpdateTime(transaction.getUpdateTime());
-                db.add(transactionDO);
-            }
-            transactionDao.addDo(db);
-            transactionDao.commitTransaction();
-        } catch (Exception e) {
-            transactionDao.rollbackTransaction();
-            return 0;
+        List<TransactionDO> db = Lists.newArrayList();
+        for (Transaction transaction : transactions) {
+            TransactionDO transactionDO = new TransactionDO();
+            transactionDO.setActivityId(activity.getId());
+            transactionDO.setMoney(transaction.getMoney().getMoney());
+            transactionDO.setCurrency(transaction.getMoney().getCurrency().getId());
+            transactionDO.setTransactionType(transaction.getTransactionType().getId());
+            transactionDO.setCreateTime(transaction.getCreateTime());
+            transactionDO.setUpdateTime(transaction.getUpdateTime());
+            db.add(transactionDO);
         }
         return transactions.size();
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int deleteTransactions(Activity activity, List<Transaction> transactions) {
-        transactionDao.beginTransaction();
-        try {
-            List<Long> ids = transactions.stream().map(Transaction::getId).collect(Collectors.toList());
-            long deleteCount = transactionDao.delete(ids, Criteria.eq("activityId", activity.getId()));
-            Assert.state(deleteCount == ids.size(), () -> createException("删除事务失败"));
-            transactionDao.commitTransaction();
-            return transactions.size();
-        } catch (Exception e) {
-            transactionDao.rollbackTransaction();
-            return 0;
-        }
+        List<Long> ids = transactions.stream().map(Transaction::getId).collect(Collectors.toList());
+        LambdaQueryWrapper<TransactionDO> queryWrapper = new QueryWrapper<TransactionDO>().lambda()
+                .in(TransactionDO::getId, ids).eq(TransactionDO::getActivityId, activity.getId());
+        long deleteCount = transactionDao.delete(queryWrapper);
+        Assert.state(deleteCount == ids.size(), () -> createException("删除事务失败"));
+        return transactions.size();
     }
 
     public Transaction findTransactionById(Long transactionId) {
-        return convert(transactionDao.getById(transactionId));
+        return convert(transactionDao.selectById(transactionId));
     }
 }

@@ -18,6 +18,7 @@ package com.mijack.zero.biz.user.infrastructure.dao.data;
 
 import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
@@ -38,9 +39,11 @@ public class UserHolder implements DataHolder<UserDO> {
     /**
      * 创建时间
      */
+    @TableField("create_time")
     private Timestamp createTime;
     /**
      * 更新时间
      */
+    @TableField("update_time")
     private Timestamp updateTime;
 }

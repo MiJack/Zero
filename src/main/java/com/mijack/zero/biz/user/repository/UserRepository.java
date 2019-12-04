@@ -19,13 +19,14 @@ package com.mijack.zero.biz.user.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
+import com.mijack.zero.biz.user.infrastructure.dao.data.UserHolder;
 import com.mijack.zero.common.base.BaseConverter;
-import com.mijack.zero.framework.dao.Criteria;
 import com.mijack.zero.framework.ddd.Repo;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +47,7 @@ public class UserRepository extends BaseConverter<UserDO, User> {
      * @return 如果未查询到，返回null
      */
     public User findOneByName(String name) {
-        return convert(userDao.findOne(Criteria.eq("name", name)));
+        return convert(userDao.findOne(q -> q.eq(UserDO::getName, name)));
     }
 
     /**
@@ -56,19 +57,19 @@ public class UserRepository extends BaseConverter<UserDO, User> {
      * @return 如果未查询到，返回null
      */
     public User findOneByEmail(String email) {
-        return convert(userDao.findOne(Criteria.eq("email", email)));
+        return convert(userDao.findOne(q -> q.eq(UserHolder::getEmail, email)));
     }
 
     public User getUserById(long userId) {
-        return Optional.ofNullable(userDao.getById(userId)).map(this::convert).orElse(null);
+        return Optional.ofNullable(userDao.selectById(userId)).map(this::convert).orElse(null);
     }
 
     public long addUser(@NotNull User user) {
-        return userDao.addDo(reverse().convert(user));
+        return userDao.insert(reverse().convert(user));
     }
 
     public long updateUser(User user) {
-        return userDao.update(reverse().convert(user));
+        return userDao.updateById(reverse().convert(user));
     }
 
     public Long allocateId() {
@@ -76,10 +77,32 @@ public class UserRepository extends BaseConverter<UserDO, User> {
     }
 
     public List<User> list() {
-        return Lists.newArrayList(convertAll(userDao.query(Criteria.TRUE)));
+        return Lists.newArrayList(convertAll(userDao.selectList(null)));
     }
 
     public long delete(User user) {
-        return userDao.delete(user.getId());
+        return userDao.deleteById(user.getId());
+    }
+
+    @Override
+    protected UserDO doBackward(@Nonnull User input) {
+        UserDO output = new UserDO();
+        output.setId(input.getId());
+        output.setEmail(input.getEmail());
+        output.setCreateTime(input.getCreateTime());
+        output.setUpdateTime(input.getUpdateTime());
+        output.setName(input.getName());
+        return output;
+    }
+
+    @Override
+    protected User doForward(@Nonnull UserDO input) {
+        User output = new User();
+        output.setId(input.getId());
+        output.setEmail(input.getEmail());
+        output.setCreateTime(input.getCreateTime());
+        output.setUpdateTime(input.getUpdateTime());
+        output.setName(input.getName());
+        return output;
     }
 }

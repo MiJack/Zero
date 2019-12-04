@@ -18,17 +18,17 @@ package com.mijack.zero.biz.transaction.infrastructure.dao;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
-import com.mijack.zero.framework.dao.Criteria;
-import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Dao;
+import com.mijack.zero.framework.dao.BaseDao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@Dao
-public interface TransactionDao extends BasicDao<Long, TransactionDO> {
+@Mapper
+public interface TransactionDao extends BaseDao<TransactionDO> {
     default List<TransactionDO> listTransactionByActivityId(Long activityId) {
-        return query(Criteria.eq("activityId", activityId));
+        return selectList(new QueryWrapper<TransactionDO>().lambda().eq(TransactionDO::getActivityId, activityId));
     }
 }

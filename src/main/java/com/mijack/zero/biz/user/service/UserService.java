@@ -17,7 +17,6 @@
 package com.mijack.zero.biz.user.service;
 
 
-import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.common.exceptions.SystemErrorException;
@@ -29,7 +28,7 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
-import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
+import com.mijack.zero.biz.user.factory.UserFactory;
 import com.mijack.zero.framework.ddd.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -63,7 +62,7 @@ public class UserService {
         Long id = userRepository.allocateId();
         logger.info("allocateKey = {}", id);
         User user = userFactory.createUser(id, name, email);
-        Assert.state(userRepository.addUser(user) > 0, () -> createException("创建用户失败"));
+        Assert.state(userRepository.updateUser(user) > 0, () -> createException("创建用户失败"));
         return user;
     }
 

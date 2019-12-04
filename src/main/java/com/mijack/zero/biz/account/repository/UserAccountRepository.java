@@ -18,8 +18,7 @@ package com.mijack.zero.biz.account.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
@@ -27,6 +26,7 @@ import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.biz.user.repository.UserRepository;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.ddd.Repo;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Mi&amp;Jack
@@ -52,8 +52,9 @@ public class UserAccountRepository extends BaseConverter<UserAccountDO, UserAcco
         return userAccounts;
     }
 
-    public long addUserAccount(UserAccount userAccount) {
-        return userAccountDao.addDo(reverse().convert(userAccount));
+    public long addUserAccount(@NotNull UserAccount userAccount) {
+        UserAccountDO convert = Objects.requireNonNull(reverse().convert(userAccount));
+        return convert.getId() == null ? userAccountDao.insert(convert) : userAccountDao.updateById(convert);
     }
 
     @Override
@@ -86,6 +87,6 @@ public class UserAccountRepository extends BaseConverter<UserAccountDO, UserAcco
     }
 
     public UserAccount findUserAccountByAccountId(Long userAccountId) {
-        return convert(userAccountDao.getById(userAccountId));
+        return convert(userAccountDao.selectById(userAccountId));
     }
 }

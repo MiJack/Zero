@@ -14,12 +14,33 @@
  *    limitations under the License.
  */
 
+package com.mijack.zero.biz.user.factory;
+
+import java.sql.Timestamp;
+
+import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.framework.ddd.Factory;
+
 /**
- * 查询：针对id的查询、针对条件的查询、分页排序查询
- * 添加：添加默认值对象，添加值非空的对象
- * 修改：根据id修改，根据条件修改
- * 删除：根据id删除，根据条件删除
- *
  * @author Mi&amp;Jack
  */
-package com.mijack.zero.framework.dao.idao;
+@Factory
+public class UserFactory {
+
+    /**
+     * 创建用户
+     *
+     * @param id    用户id
+     * @param name  用户名
+     * @param email 用户邮箱
+     * @return 创建的用户
+     */
+    public User createUser(Long id, String name, String email) {
+        User user = new User();
+        user.setId(id);
+        user.setEmail(email);
+        user.setName(name);
+        user.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        return user;
+    }
+}

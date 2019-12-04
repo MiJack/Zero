@@ -17,12 +17,12 @@
 package com.mijack.zero.biz.account.infrastructure.dao;
 
 import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
-import com.mijack.zero.framework.dao.idao.BasicDao;
-import com.mijack.zero.framework.ddd.Dao;
+import com.mijack.zero.framework.dao.BaseDao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@Dao
-public interface AccountTypeDao extends BasicDao<Long, AccountTypeDO> {
+@Mapper
+public interface AccountTypeDao extends BaseDao<AccountTypeDO> {
 }
