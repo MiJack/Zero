@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.factory;
+package com.mijack.zero.biz.transaction.domain.factory;
 
 import java.sql.Timestamp;
 
@@ -22,15 +22,15 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
-import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
-import com.mijack.zero.biz.transaction.command.TransactionAttachCommand;
-import com.mijack.zero.biz.transaction.command.TransactionRemoveCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityCreateCommand;
+import com.mijack.zero.biz.transaction.ui.command.TransactionAttachCommand;
+import com.mijack.zero.biz.transaction.ui.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.domain.TransactionType;
-import com.mijack.zero.biz.transaction.repository.ActivityRepository;
-import com.mijack.zero.biz.transaction.repository.TransactionRepository;
+import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
+import com.mijack.zero.biz.transaction.domain.repository.TransactionRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.common.Assert;

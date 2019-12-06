@@ -14,15 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.factory;
+package com.mijack.zero.biz.transaction.domain.factory;
 
 import java.sql.Timestamp;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityCreateCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
-import com.mijack.zero.biz.transaction.repository.ActivityRepository;
+import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.framework.ddd.Factory;

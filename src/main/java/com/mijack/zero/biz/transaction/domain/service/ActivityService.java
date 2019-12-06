@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.service;
+package com.mijack.zero.biz.transaction.domain.service;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
@@ -22,11 +22,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
-import com.mijack.zero.biz.transaction.command.ActivityDeleteCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityCreateCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityDeleteCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
-import com.mijack.zero.biz.transaction.factory.ActivityFactory;
-import com.mijack.zero.biz.transaction.repository.ActivityRepository;
+import com.mijack.zero.biz.transaction.domain.factory.ActivityFactory;
+import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.service.UserService;

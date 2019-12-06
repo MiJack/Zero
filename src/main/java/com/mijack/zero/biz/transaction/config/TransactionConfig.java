@@ -14,14 +14,20 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.command;
+package com.mijack.zero.biz.transaction.config;
 
-import lombok.Data;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class ActivityListCommand {
-    private Long userId;
+@Configuration
+@ComponentScan({
+        "com.mijack.zero.biz.transaction.ui",
+        "com.mijack.zero.biz.transaction.infrastructure",
+        "com.mijack.zero.biz.transaction.domain"})
+@MapperScan("com.mijack.zero.biz.transaction.infrastructure.dao")
+public class TransactionConfig {
 }

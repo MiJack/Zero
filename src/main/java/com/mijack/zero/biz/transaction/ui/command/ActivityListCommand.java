@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.command;
+package com.mijack.zero.biz.transaction.ui.command;
 
 import lombok.Data;
 
@@ -22,16 +22,6 @@ import lombok.Data;
  * @author Mi&amp;Jack
  */
 @Data
-public class TransactionRemoveCommand {
-
-    /**
-     * 产生事项的用户
-     */
+public class ActivityListCommand {
     private Long userId;
-    private Long activityId;
-    /**
-     * 对应账户的资金的变动
-     */
-    private Long userAccountId;
-    private Long transactionId;
 }

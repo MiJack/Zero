@@ -14,17 +14,17 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.service;
+package com.mijack.zero.biz.transaction.domain.service;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.transaction.command.TransactionAttachCommand;
-import com.mijack.zero.biz.transaction.command.TransactionRemoveCommand;
+import com.mijack.zero.biz.transaction.ui.command.TransactionAttachCommand;
+import com.mijack.zero.biz.transaction.ui.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Transaction;
-import com.mijack.zero.biz.transaction.factory.ActivityFactory;
-import com.mijack.zero.biz.transaction.factory.TransactionFactory;
-import com.mijack.zero.biz.transaction.repository.TransactionRepository;
+import com.mijack.zero.biz.transaction.domain.factory.ActivityFactory;
+import com.mijack.zero.biz.transaction.domain.factory.TransactionFactory;
+import com.mijack.zero.biz.transaction.domain.repository.TransactionRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;

@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.repository;
+package com.mijack.zero.biz.transaction.domain.repository;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 

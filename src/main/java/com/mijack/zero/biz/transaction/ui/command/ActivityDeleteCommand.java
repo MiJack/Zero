@@ -14,38 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.command;
+package com.mijack.zero.biz.transaction.ui.command;
 
-import java.sql.Timestamp;
-
-import com.mijack.zero.biz.transaction.domain.TransactionType;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class TransactionAttachCommand {
-
-    /**
-     * 产生事项的用户
-     */
+public class ActivityDeleteCommand {
     private Long userId;
     private Long activityId;
-    /**
-     * 对应账户的资金的变动
-     */
-    private Long userAccountId;
-    /**
-     * 对应的格式为CNY 111.22
-     */
-    private String money;
-    /**
-     * @see TransactionType#getId()
-     */
-    private Integer transactionType;
-    /**
-     * 事项最早一笔资金产生的时间
-     */
-    private Timestamp createTime;
 }
