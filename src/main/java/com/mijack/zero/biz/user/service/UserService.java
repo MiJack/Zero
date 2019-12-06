@@ -18,7 +18,7 @@ package com.mijack.zero.biz.user.service;
 
 
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.repository.UserRepository;
+import com.mijack.zero.biz.user.infrastructure.repository.UserRepository;
 import com.mijack.zero.biz.user.usecase.UserCreateCase;
 import com.mijack.zero.biz.user.usecase.UserManagerCase;
 import com.mijack.zero.biz.user.usecase.UserQueryCase;
@@ -31,7 +31,7 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
-import com.mijack.zero.biz.user.factory.UserFactory;
+import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
 import com.mijack.zero.framework.ddd.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

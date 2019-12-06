@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.command;
+package com.mijack.zero.biz.user.meta.command;
 
 import java.io.Serializable;
 
@@ -26,9 +26,8 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class UpdateUserCommand implements Serializable {
-    private static final long serialVersionUID = -4941608878036224093L;
-    private Long id;
+public class CreateUserCommand implements Serializable {
+    private static final long serialVersionUID = 6042904662934731434L;
     private String name;
     private String email;
 }

@@ -32,7 +32,7 @@ import com.mijack.zero.biz.transaction.domain.TransactionType;
 import com.mijack.zero.biz.transaction.repository.ActivityRepository;
 import com.mijack.zero.biz.transaction.repository.TransactionRepository;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.repository.UserRepository;
+import com.mijack.zero.biz.user.infrastructure.repository.UserRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Factory;

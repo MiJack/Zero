@@ -14,37 +14,16 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.dto;
+package com.mijack.zero.biz.user.ui.mapper;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
-import lombok.Data;
+import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.meta.dto.UserDto;
+import com.mijack.zero.framework.mapper.BaseBeanMapper;
+import org.mapstruct.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserDto implements Serializable {
-    private static final long serialVersionUID = 8983720612047767458L;
-    /**
-     * 用户id
-     */
-    private Long id;
-    /**
-     * 用户名
-     */
-    private String name;
-    /**
-     * 用户邮箱
-     */
-    private String email;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+@Mapper(componentModel = "spring")
+public interface UserMapper extends BaseBeanMapper<User, UserDto> {
 }

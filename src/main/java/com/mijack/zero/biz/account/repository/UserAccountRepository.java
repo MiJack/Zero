@@ -23,7 +23,7 @@ import java.util.Objects;
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
-import com.mijack.zero.biz.user.repository.UserRepository;
+import com.mijack.zero.biz.user.infrastructure.repository.UserRepository;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.ddd.Repo;
 import org.jetbrains.annotations.NotNull;

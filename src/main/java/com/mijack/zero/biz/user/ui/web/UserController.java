@@ -22,12 +22,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.user.command.CreateUserCommand;
-import com.mijack.zero.biz.user.command.UpdateUserCommand;
+import com.mijack.zero.biz.user.meta.command.CreateUserCommand;
+import com.mijack.zero.biz.user.meta.command.UpdateUserCommand;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.dto.UserDto;
+import com.mijack.zero.biz.user.meta.dto.UserDto;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.mapper.UserMapper;
+import com.mijack.zero.biz.user.ui.mapper.UserMapper;
 import com.mijack.zero.biz.user.usecase.UserManagerCase;
 import com.mijack.zero.biz.user.usecase.UserQueryCase;
 import com.mijack.zero.biz.user.usecase.UserCreateCase;
