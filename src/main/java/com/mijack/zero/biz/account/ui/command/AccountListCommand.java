@@ -13,24 +13,15 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package com.mijack.zero.main;
 
-import com.mijack.zero.biz.account.config.AccountConfig;
-import com.mijack.zero.biz.user.config.UserConfig;
-import com.mijack.zero.config.ServerConfig;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
+package com.mijack.zero.biz.account.ui.command;
+
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-@SpringBootApplication
-@Import({UserConfig.class, AccountConfig.class, ServerConfig.class})
-public class ZeroApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZeroApplication.class, args);
-    }
-
+@Data
+public class AccountListCommand {
+    private long userId;
 }

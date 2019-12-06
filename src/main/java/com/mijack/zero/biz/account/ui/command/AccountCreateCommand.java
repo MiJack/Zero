@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.account.command;
+package com.mijack.zero.biz.account.ui.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

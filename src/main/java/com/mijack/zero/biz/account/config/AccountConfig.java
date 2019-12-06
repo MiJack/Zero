@@ -14,15 +14,21 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.account.command;
+package com.mijack.zero.biz.account.config;
 
-import lombok.Data;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class AccountDeleteCommand {
-    private long userId;
-    private long accountId;
+@Configuration
+
+@ComponentScan({
+        "com.mijack.zero.biz.account.ui",
+        "com.mijack.zero.biz.account.infrastructure",
+        "com.mijack.zero.biz.account.domain"})
+@MapperScan("com.mijack.zero.biz.account.infrastructure.dao")
+public class AccountConfig {
 }

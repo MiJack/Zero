@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.account.factory;
+package com.mijack.zero.biz.account.domain.factory;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
 
 import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.domain.BillingType;
-import com.mijack.zero.biz.account.repository.AccountTypeRepository;
+import com.mijack.zero.biz.account.domain.repository.AccountTypeRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.WrongParamException;
 import com.mijack.zero.framework.ddd.Factory;

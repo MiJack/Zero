@@ -20,9 +20,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.account.command.AccountTypeCreateCommand;
+import com.mijack.zero.biz.account.ui.command.AccountTypeCreateCommand;
 import com.mijack.zero.biz.account.domain.AccountType;
-import com.mijack.zero.biz.account.service.AccountTypeService;
+import com.mijack.zero.biz.account.domain.service.AccountTypeService;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;

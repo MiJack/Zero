@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.account.command;
+package com.mijack.zero.biz.account.ui.command;
 
 import lombok.Data;
 
@@ -22,6 +22,7 @@ import lombok.Data;
  * @author Mi&amp;Jack
  */
 @Data
-public class AccountListCommand {
+public class AccountDeleteCommand {
     private long userId;
+    private long accountId;
 }

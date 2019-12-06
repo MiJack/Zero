@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.account.repository.UserAccountRepository;
+import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
 import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
 import com.mijack.zero.biz.transaction.command.TransactionAttachCommand;
 import com.mijack.zero.biz.transaction.command.TransactionRemoveCommand;

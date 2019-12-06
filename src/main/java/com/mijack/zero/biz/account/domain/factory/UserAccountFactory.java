@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.account.factory;
+package com.mijack.zero.biz.account.domain.factory;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.domain.AccountType;
-import com.mijack.zero.biz.account.repository.AccountTypeRepository;
+import com.mijack.zero.biz.account.domain.repository.AccountTypeRepository;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;

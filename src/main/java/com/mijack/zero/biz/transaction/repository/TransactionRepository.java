@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.mijack.zero.biz.account.repository.UserAccountRepository;
+import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.account.service;
+package com.mijack.zero.biz.account.domain.service;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
@@ -23,8 +23,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.account.factory.UserAccountFactory;
-import com.mijack.zero.biz.account.repository.UserAccountRepository;
+import com.mijack.zero.biz.account.domain.factory.UserAccountFactory;
+import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.service.UserService;

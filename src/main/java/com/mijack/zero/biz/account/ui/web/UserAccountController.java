@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.account.command.AccountCreateCommand;
-import com.mijack.zero.biz.account.command.AccountDeleteCommand;
-import com.mijack.zero.biz.account.command.AccountListCommand;
+import com.mijack.zero.biz.account.ui.command.AccountCreateCommand;
+import com.mijack.zero.biz.account.ui.command.AccountDeleteCommand;
+import com.mijack.zero.biz.account.ui.command.AccountListCommand;
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.account.service.UserAccountService;
+import com.mijack.zero.biz.account.domain.service.UserAccountService;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

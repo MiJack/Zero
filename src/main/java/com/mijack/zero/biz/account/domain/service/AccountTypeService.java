@@ -14,15 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.account.service;
+package com.mijack.zero.biz.account.domain.service;
 
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
 import java.util.List;
 
 import com.mijack.zero.biz.account.domain.AccountType;
-import com.mijack.zero.biz.account.factory.AccountTypeFactory;
-import com.mijack.zero.biz.account.repository.AccountTypeRepository;
+import com.mijack.zero.biz.account.domain.factory.AccountTypeFactory;
+import com.mijack.zero.biz.account.domain.repository.AccountTypeRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;
