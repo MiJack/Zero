@@ -14,17 +14,21 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.usecase;
+package com.mijack.zero.biz.user.ui.command;
 
-import java.util.List;
+import java.io.Serializable;
 
-import com.mijack.zero.biz.user.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface UserQueryCase {
-    List<User> listUser();
-
-    User getUser(Long userId);
+@Data
+@AllArgsConstructor
+public class UpdateUserCommand implements Serializable {
+    private static final long serialVersionUID = -4941608878036224093L;
+    private Long id;
+    private String name;
+    private String email;
 }

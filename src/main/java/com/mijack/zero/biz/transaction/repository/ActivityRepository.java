@@ -31,7 +31,7 @@ import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.infrastructure.dao.ActivityDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.ActivityDO;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.infrastructure.repository.UserRepository;
+import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.base.BaseConverter;
 import com.mijack.zero.framework.ddd.Repo;

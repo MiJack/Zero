@@ -22,15 +22,15 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.user.meta.command.CreateUserCommand;
-import com.mijack.zero.biz.user.meta.command.UpdateUserCommand;
+import com.mijack.zero.biz.user.ui.command.CreateUserCommand;
+import com.mijack.zero.biz.user.ui.command.UpdateUserCommand;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.meta.dto.UserDto;
+import com.mijack.zero.biz.user.ui.dto.UserDto;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.ui.mapper.UserMapper;
-import com.mijack.zero.biz.user.usecase.UserManagerCase;
-import com.mijack.zero.biz.user.usecase.UserQueryCase;
-import com.mijack.zero.biz.user.usecase.UserCreateCase;
+import com.mijack.zero.biz.user.domain.usecase.UserManagerCase;
+import com.mijack.zero.biz.user.domain.usecase.UserQueryCase;
+import com.mijack.zero.biz.user.domain.usecase.UserCreateCase;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;

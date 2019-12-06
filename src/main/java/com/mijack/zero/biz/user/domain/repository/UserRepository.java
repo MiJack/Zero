@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.repository;
+package com.mijack.zero.biz.user.domain.repository;
 
 import java.util.List;
 import java.util.Optional;

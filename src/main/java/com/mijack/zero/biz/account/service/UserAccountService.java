@@ -27,7 +27,7 @@ import com.mijack.zero.biz.account.factory.UserAccountFactory;
 import com.mijack.zero.biz.account.repository.UserAccountRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.service.UserService;
+import com.mijack.zero.biz.user.domain.service.UserService;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;

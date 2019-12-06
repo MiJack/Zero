@@ -17,7 +17,7 @@
 package com.mijack.zero.biz.user.ui.mapper;
 
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.meta.dto.UserDto;
+import com.mijack.zero.biz.user.ui.dto.UserDto;
 import com.mijack.zero.framework.mapper.BaseBeanMapper;
 import org.mapstruct.Mapper;
 

@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.factory;
+package com.mijack.zero.biz.user.domain.factory;
 
 import java.sql.Timestamp;
 

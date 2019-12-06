@@ -14,20 +14,17 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.config;
+package com.mijack.zero.biz.user.domain.usecase;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import java.util.List;
+
+import com.mijack.zero.biz.user.domain.User;
 
 /**
  * @author Mi&amp;Jack
  */
-@Configuration
-@ComponentScan({
-        "com.mijack.zero.biz.user.ui",
-        "com.mijack.zero.biz.user.infrastructure",
-        "com.mijack.zero.biz.user.domain"})
-@MapperScan("com.mijack.zero.biz.user.infrastructure.dao")
-public class UserConfig {
+public interface UserQueryCase {
+    List<User> listUser();
+
+    User getUser(Long userId);
 }

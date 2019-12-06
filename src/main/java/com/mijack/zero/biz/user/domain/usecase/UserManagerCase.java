@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.usecase;
+package com.mijack.zero.biz.user.domain.usecase;
 
 import com.mijack.zero.biz.user.domain.User;
 

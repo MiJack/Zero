@@ -14,20 +14,20 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.config;
+package com.mijack.zero.biz.user.ui.command;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-@Configuration
-@ComponentScan({
-        "com.mijack.zero.biz.user.ui",
-        "com.mijack.zero.biz.user.infrastructure",
-        "com.mijack.zero.biz.user.domain"})
-@MapperScan("com.mijack.zero.biz.user.infrastructure.dao")
-public class UserConfig {
+@Data
+@AllArgsConstructor
+public class CreateUserCommand implements Serializable {
+    private static final long serialVersionUID = 6042904662934731434L;
+    private String name;
+    private String email;
 }

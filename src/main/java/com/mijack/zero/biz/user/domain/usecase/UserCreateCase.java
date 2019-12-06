@@ -14,37 +14,19 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.meta.dto;
+package com.mijack.zero.biz.user.domain.usecase;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
-import lombok.Data;
+import com.mijack.zero.biz.user.domain.User;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserDto implements Serializable {
-    private static final long serialVersionUID = 8983720612047767458L;
+public interface UserCreateCase {
+
     /**
-     * 用户id
+     * @param name
+     * @param email
+     * @return
      */
-    private Long id;
-    /**
-     * 用户名
-     */
-    private String name;
-    /**
-     * 用户邮箱
-     */
-    private String email;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+    User registerUser(String name, String email);
 }

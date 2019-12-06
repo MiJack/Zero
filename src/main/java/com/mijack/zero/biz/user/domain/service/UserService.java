@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 
-package com.mijack.zero.biz.user.service;
+package com.mijack.zero.biz.user.domain.service;
 
 
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.infrastructure.repository.UserRepository;
-import com.mijack.zero.biz.user.usecase.UserCreateCase;
-import com.mijack.zero.biz.user.usecase.UserManagerCase;
-import com.mijack.zero.biz.user.usecase.UserQueryCase;
+import com.mijack.zero.biz.user.domain.repository.UserRepository;
+import com.mijack.zero.biz.user.domain.usecase.UserCreateCase;
+import com.mijack.zero.biz.user.domain.usecase.UserManagerCase;
+import com.mijack.zero.biz.user.domain.usecase.UserQueryCase;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
 
@@ -31,7 +31,7 @@ import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
-import com.mijack.zero.biz.user.infrastructure.factory.UserFactory;
+import com.mijack.zero.biz.user.domain.factory.UserFactory;
 import com.mijack.zero.framework.ddd.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

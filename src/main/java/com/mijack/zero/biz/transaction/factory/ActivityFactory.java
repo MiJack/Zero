@@ -24,7 +24,7 @@ import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.repository.ActivityRepository;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.infrastructure.repository.UserRepository;
+import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.utils.CollectionHelper;
 
