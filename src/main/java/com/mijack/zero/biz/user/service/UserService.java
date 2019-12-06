@@ -19,6 +19,9 @@ package com.mijack.zero.biz.user.service;
 
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.repository.UserRepository;
+import com.mijack.zero.biz.user.usecase.UserCreateCase;
+import com.mijack.zero.biz.user.usecase.UserManagerCase;
+import com.mijack.zero.biz.user.usecase.UserQueryCase;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
 
@@ -40,7 +43,7 @@ import com.mijack.zero.common.Assert;
  * @author Mi&amp;Jack
  */
 @Service
-public class UserService {
+public class UserService implements UserCreateCase, UserQueryCase, UserManagerCase {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     final UserRepository userRepository;
     final UserFactory userFactory;
@@ -51,10 +54,12 @@ public class UserService {
         this.userFactory = userFactory;
     }
 
-    public User getUser(long userId) {
+    @Override
+    public User getUser(Long userId) {
         return userRepository.getUserById(userId);
     }
 
+    @Override
     public User registerUser(String name, String email) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
         Assert.isNull(userRepository.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
@@ -66,6 +71,7 @@ public class UserService {
         return user;
     }
 
+    @Override
     public User updateUserInfo(Long id, String name, String email) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
         User user = userRepository.getUserById(id);
@@ -83,10 +89,12 @@ public class UserService {
         return user;
     }
 
+    @Override
     public List<User> listUser() {
         return userRepository.list();
     }
 
+    @Override
     public boolean deleteUser(Long userId) {
         User user = userRepository.getUserById(userId);
         Assert.isNull(user, () -> createException("用户名不存在"));
