@@ -14,15 +14,36 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.domain.usecase;
+package com.mijack.zero.biz.user.domain.cases;
+
+import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface UserManagerCase {
-    User updateUserInfo(Long id, String name, String email);
+public interface UserCase {
 
-    boolean deleteUser(Long userId);
+    interface UserManagerCase extends UserCase {
+        User updateUserInfo(Long id, String name, String email);
+
+        boolean deleteUser(Long userId);
+    }
+
+    interface UserRegisterCase extends UserCase {
+
+        /**
+         * @param name
+         * @param email
+         * @return
+         */
+        User registerUser(String name, String email);
+    }
+
+    interface UserQueryCase extends UserCase {
+        List<User> listUser();
+
+        User getUser(Long userId);
+    }
 }

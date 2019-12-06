@@ -22,15 +22,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.mijack.zero.biz.user.domain.cases.UserCase;
 import com.mijack.zero.biz.user.ui.command.CreateUserCommand;
 import com.mijack.zero.biz.user.ui.command.UpdateUserCommand;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.ui.dto.UserDto;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.ui.mapper.UserMapper;
-import com.mijack.zero.biz.user.domain.usecase.UserManagerCase;
-import com.mijack.zero.biz.user.domain.usecase.UserQueryCase;
-import com.mijack.zero.biz.user.domain.usecase.UserCreateCase;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,17 +43,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 @ApiController(path = "/api")
 public class UserController {
     @Resource
-    private UserCreateCase userCreateCase;
+    private UserCase.UserRegisterCase userRegisterCase;
     @Resource
-    private UserQueryCase userQueryCase;
+    private UserCase.UserQueryCase userQueryCase;
     @Resource
-    private UserManagerCase userManagerCase;
+    private UserCase.UserManagerCase userManagerCase;
     @Resource
     private  UserMapper userMapper;
 
     @PostMapping("/user/create")
     public UserDto createUser(CreateUserCommand createUserCommand) {
-        return userMapper.transformDomain(userCreateCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail()));
+        return userMapper.transformDomain(userRegisterCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail()));
     }
 
     @GetMapping("/users/list")

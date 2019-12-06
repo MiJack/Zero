@@ -18,12 +18,15 @@ package com.mijack.zero.biz.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import java.util.UUID;
+
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.user.config.UserConfig;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.domain.usecase.UserCreateCase;
-import com.mijack.zero.biz.user.domain.usecase.UserQueryCase;
+import com.mijack.zero.biz.user.domain.cases.UserCase;
+import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +35,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- *
  * @author Mi&amp;Jack
  */
 @RunWith(SpringRunner.class)
@@ -41,18 +43,43 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = {UserConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class UserCaseTest {
     @Resource
-    UserCreateCase userCreateCase;
+    UserCase.UserRegisterCase userRegisterCase;
     @Resource
-    UserQueryCase userQueryCase;
+    UserCase.UserQueryCase userQueryCase;
 
-    @Test()
+    String userName = "test-user";
+    String userEmail = "test@test.com";
+
+    @Test
     public void registerUser() {
-        String userName = "test-user";
-        String userEmail = "test@test.com";
-        User user = userCreateCase.registerUser(userName, userEmail);
+        User user = userRegisterCase.registerUser(userName, userEmail);
         assertThat(user).isNotNull().as("用户注册成功");
         User queryUser = userQueryCase.getUser(user.getId());
         assertThat(queryUser).isEqualToComparingFieldByFieldRecursively(user)
                 .as("查询得到的用户信息用于注册时返回的信息保持一致");
+    }
+
+    @Test
+    public void registerUsers() {
+        int count = 10;
+        for (int i = 0; i < count; i++) {
+            String name = i + userName;
+            String password = i + userEmail;
+            userRegisterCase.registerUser(name, password);
+        }
+        List<User> users = userQueryCase.listUser();
+        assertThat(users).hasSize(count).as("列表数目应和注册数目保持一致");
+    }
+
+    @Test(expected = UserRegisteredException.class)
+    public void registerUserNameAgain() {
+        userRegisterCase.registerUser(userName, userEmail);
+        userRegisterCase.registerUser(UUID.randomUUID().toString(), userEmail);
+    }
+
+    @Test(expected = UserRegisteredException.class)
+    public void registerUserEmailAgain() {
+        userRegisterCase.registerUser(userName, userEmail);
+        userRegisterCase.registerUser(userName, UUID.randomUUID().toString());
     }
 }

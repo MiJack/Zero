@@ -17,11 +17,9 @@
 package com.mijack.zero.biz.user.domain.service;
 
 
+import com.mijack.zero.biz.user.domain.cases.UserCase;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
-import com.mijack.zero.biz.user.domain.usecase.UserCreateCase;
-import com.mijack.zero.biz.user.domain.usecase.UserManagerCase;
-import com.mijack.zero.biz.user.domain.usecase.UserQueryCase;
 import com.mijack.zero.common.exceptions.SystemErrorException;
 import com.mijack.zero.common.exceptions.WrongParamException;
 
@@ -43,7 +41,7 @@ import com.mijack.zero.common.Assert;
  * @author Mi&amp;Jack
  */
 @Service
-public class UserService implements UserCreateCase, UserQueryCase, UserManagerCase {
+public class UserService implements UserCase.UserRegisterCase, UserCase.UserQueryCase, UserCase.UserManagerCase {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     final UserRepository userRepository;
     final UserFactory userFactory;
