@@ -14,40 +14,27 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.transaction.ui.dto;
 
-import com.mijack.zero.common.enums.IdentifiableEnum;
-import lombok.Getter;
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+import com.mijack.zero.biz.account.ui.dto.UserAccountDto;
+import com.mijack.zero.biz.common.Money;
+import com.mijack.zero.biz.common.TransactionType;
+import lombok.Data;
 
 /**
- * 资金变动的类型
- *
  * @author Mi&amp;Jack
  */
-public enum TransactionType implements IdentifiableEnum<TransactionType> {
-    /**
-     * 支出
-     */
-    EXPENDITURE(1, "支出"),
-    /**
-     * 收入
-     */
-    INCOME(2, "收入"),
-    /**
-     * 预支
-     */
-    ADVANCE(3, "预支"),
-    /**
-     * 还款
-     */
-    REPAYMENT(4, "还款");
-    @Getter
-    private final int id;
-    @Getter
-    private final String desc;
+@Data
+public class TransactionDto implements Serializable {
+    private static final long serialVersionUID = -8868897945331263033L;
 
-    TransactionType(int id, String desc) {
-        this.id = id;
-        this.desc = desc;
-    }
+    private Long id;
+    private UserAccountDto userAccount;
+    private Money money;
+    private TransactionType transactionType;
+    private Timestamp createTime;
+    private Timestamp updateTime;
 }

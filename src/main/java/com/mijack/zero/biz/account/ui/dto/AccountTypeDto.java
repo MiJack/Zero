@@ -14,38 +14,34 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.ui.command;
+package com.mijack.zero.biz.account.ui.dto;
 
-import java.sql.Timestamp;
 
-import com.mijack.zero.biz.common.TransactionType;
+import java.io.Serializable;
+
+import com.mijack.zero.biz.account.domain.BillingType;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class TransactionAttachCommand {
-
+public class AccountTypeDto implements Serializable {
+    private static final long serialVersionUID = -2655335623178148426L;
     /**
-     * 产生事项的用户
+     * id
      */
-    private Long userId;
-    private Long activityId;
+    private Long id;
     /**
-     * 对应账户的资金的变动
+     * 账号类型名称
      */
-    private Long userAccountId;
+    private String typeName;
     /**
-     * 对应的格式为CNY 111.22
+     * 账号类型图标
      */
-    private String money;
+    private String accountTypeIcon;
     /**
-     * @see TransactionType#getId()
+     * 类型
      */
-    private Integer transactionType;
-    /**
-     * 事项最早一笔资金产生的时间
-     */
-    private Timestamp createTime;
+    private BillingType billingType;
 }

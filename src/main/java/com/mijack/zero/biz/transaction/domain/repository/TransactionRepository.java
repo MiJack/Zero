@@ -26,11 +26,11 @@ import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.mijack.zero.biz.account.domain.factory.MoneyFactory;
 import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
 import com.mijack.zero.biz.transaction.domain.Activity;
-import com.mijack.zero.biz.transaction.domain.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;
-import com.mijack.zero.biz.transaction.domain.TransactionType;
+import com.mijack.zero.biz.common.TransactionType;
 import com.mijack.zero.biz.transaction.infrastructure.dao.TransactionDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
 import com.mijack.zero.common.Assert;
@@ -47,6 +47,8 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
     @Resource
     private TransactionDao transactionDao;
     @Resource
+    private MoneyFactory moneyFactory;
+    @Resource
     private UserAccountRepository userAccountRepository;
 
     public List<Transaction> listTransactionByActivity(Activity activity) {
@@ -59,7 +61,7 @@ public class TransactionRepository extends BaseConverter<TransactionDO, Transact
         Transaction transaction = new Transaction();
         transaction.setId(transactionDO.getId());
         transaction.setUserAccount(userAccountRepository.findUserAccountByAccountId(transactionDO.getUserAccountId()));
-        transaction.setMoney(Money.create(transactionDO.getMoney(), transactionDO.getCurrency()));
+        transaction.setMoney(moneyFactory.create(transactionDO.getMoney(), transactionDO.getCurrency()));
 
         transaction.setTransactionType(EnumUtils.idOf(transactionDO.getTransactionType(), TransactionType.class));
         transaction.setCreateTime(transactionDO.getCreateTime());

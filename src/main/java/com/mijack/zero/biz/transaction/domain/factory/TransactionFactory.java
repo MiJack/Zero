@@ -21,14 +21,14 @@ import java.sql.Timestamp;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
+import com.mijack.zero.biz.account.domain.factory.MoneyFactory;
 import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
 import com.mijack.zero.biz.transaction.ui.command.ActivityCreateCommand;
 import com.mijack.zero.biz.transaction.ui.command.TransactionAttachCommand;
 import com.mijack.zero.biz.transaction.ui.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
-import com.mijack.zero.biz.transaction.domain.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;
-import com.mijack.zero.biz.transaction.domain.TransactionType;
+import com.mijack.zero.biz.common.TransactionType;
 import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
 import com.mijack.zero.biz.transaction.domain.repository.TransactionRepository;
 import com.mijack.zero.biz.user.domain.User;
@@ -51,12 +51,14 @@ public class TransactionFactory {
     ActivityRepository activityRepository;
     @Resource
     UserRepository userRepository;
+    @Resource
+    MoneyFactory moneyFactory;
 
     public Transaction createTransaction(ActivityCreateCommand command) {
         Timestamp now = command.getCreateTime() != null ? command.getCreateTime() :
                 new Timestamp(System.currentTimeMillis());
         Transaction transaction = new Transaction();
-        transaction.setMoney(Money.parse(command.getMoney()));
+        transaction.setMoney(moneyFactory.parse(command.getMoney()));
         transaction.setTransactionType(EnumUtils.idOf(command.getTransactionType(), TransactionType.class));
         transaction.setUserAccount(userAccountRepository.findUserAccountByAccountId(command.getUserAccountId()));
         transaction.setUpdateTime(now);
@@ -68,7 +70,7 @@ public class TransactionFactory {
                 new Timestamp(System.currentTimeMillis());
         Transaction transaction = new Transaction();
         transaction.setTransactionType(EnumUtils.idOf(command.getTransactionType(), TransactionType.class));
-        transaction.setMoney(Money.parse(command.getMoney()));
+        transaction.setMoney(moneyFactory.parse(command.getMoney()));
         transaction.setUserAccount(userAccountRepository.findUserAccountByAccountId(command.getUserAccountId()));
         transaction.setUpdateTime(now);
         return transaction;

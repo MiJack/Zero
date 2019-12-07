@@ -14,38 +14,16 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.ui.command;
+package com.mijack.zero.biz.account.ui.mapper;
 
-import java.sql.Timestamp;
-
-import com.mijack.zero.biz.common.TransactionType;
-import lombok.Data;
+import com.mijack.zero.biz.account.domain.AccountType;
+import com.mijack.zero.biz.account.ui.dto.AccountTypeDto;
+import com.mijack.zero.framework.mapper.BaseBeanMapper;
+import org.mapstruct.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class TransactionAttachCommand {
-
-    /**
-     * 产生事项的用户
-     */
-    private Long userId;
-    private Long activityId;
-    /**
-     * 对应账户的资金的变动
-     */
-    private Long userAccountId;
-    /**
-     * 对应的格式为CNY 111.22
-     */
-    private String money;
-    /**
-     * @see TransactionType#getId()
-     */
-    private Integer transactionType;
-    /**
-     * 事项最早一笔资金产生的时间
-     */
-    private Timestamp createTime;
+@Mapper(componentModel = "spring")
+public interface AccountTypeMapper extends BaseBeanMapper<AccountType, AccountTypeDto> {
 }

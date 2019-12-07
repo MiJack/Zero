@@ -14,39 +14,30 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.account.domain.factory;
 
 import java.util.Collection;
 
+import com.mijack.zero.biz.common.Currency;
+import com.mijack.zero.biz.common.Money;
 import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.utils.EnumUtils;
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 用于表示货币单位
- *
  * @author Mi&amp;Jack
  */
-@Data
-public class Money {
-    /**
-     * 货币单位
-     */
-    private Currency currency;
-    /**
-     * 具体数值
-     */
-    private Float money;
-
-    public static Money create(Float money, Integer currency) {
+@Factory
+public class MoneyFactory {
+    public Money create(Float money, Integer currency) {
         Money result = new Money();
         result.setMoney(money);
         result.setCurrency(EnumUtils.idOf(currency, Currency.class));
         return result;
     }
 
-    public static Money parse(String money) {
+    public Money parse(String money) {
         if (StringUtils.isNotEmpty(money)) {
             Collection<Currency> currencies = EnumUtils.listEnums(Currency.class);
             for (Currency currency : currencies) {

@@ -14,45 +14,40 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.transaction.domain;
+package com.mijack.zero.biz.common;
 
 import com.mijack.zero.common.enums.IdentifiableEnum;
 import lombok.Getter;
 
 /**
- * 货币单位枚举类
+ * 资金变动的类型
  *
- * @author yuanyujie
+ * @author Mi&amp;Jack
  */
-public enum Currency implements IdentifiableEnum<Currency> {
+public enum TransactionType implements IdentifiableEnum<TransactionType> {
     /**
-     * 人民币
+     * 支出
      */
-    CNY(1, "CNY", "人民币", 0.01f),
+    EXPENDITURE(1, "支出"),
     /**
-     * 美元
+     * 收入
      */
-    USD(2, "USD", "美元", 0.01f),
+    INCOME(2, "收入"),
     /**
-     * 日元
+     * 预支
      */
-    JPY(3, "JPY", "日元", 1f);
+    ADVANCE(3, "预支"),
+    /**
+     * 还款
+     */
+    REPAYMENT(4, "还款");
     @Getter
     private final int id;
     @Getter
-    private final String shortName;
-    @Getter
     private final String desc;
-    /**
-     * 货币辅助单元，即最小计费单元
-     */
-    @Getter
-    private final float minor;
 
-    Currency(int id, String shortName, String desc, float minor) {
+    TransactionType(int id, String desc) {
         this.id = id;
-        this.shortName = shortName;
         this.desc = desc;
-        this.minor = minor;
     }
 }

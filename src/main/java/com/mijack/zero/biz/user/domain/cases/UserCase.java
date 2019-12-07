@@ -19,11 +19,12 @@ package com.mijack.zero.biz.user.domain.cases;
 import java.util.List;
 
 import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.framework.cases.UseCase;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface UserCase {
+public interface UserCase extends UseCase {
 
     interface UserManagerCase extends UserCase {
         User updateUserInfo(Long id, String name, String email);

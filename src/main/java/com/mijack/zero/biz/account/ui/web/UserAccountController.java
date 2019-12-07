@@ -25,6 +25,8 @@ import com.mijack.zero.biz.account.ui.command.AccountDeleteCommand;
 import com.mijack.zero.biz.account.ui.command.AccountListCommand;
 import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.domain.service.UserAccountService;
+import com.mijack.zero.biz.account.ui.dto.UserAccountDto;
+import com.mijack.zero.biz.account.ui.mapper.UserAccountMapper;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,19 +40,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserAccountController {
     @Resource
     UserAccountService userAccountService;
+    @Resource
+    UserAccountMapper userAccountMapper;
 
     @GetMapping(value = "/account/list")
-    public List<UserAccount> listUserAccount(@RequestParam AccountListCommand accountListCommand) {
-        return userAccountService.listUserAccount(accountListCommand.getUserId());
+    public List<UserAccountDto> listUserAccount(@RequestParam AccountListCommand accountListCommand) {
+        return userAccountMapper.transformList(userAccountService.listUserAccount(accountListCommand.getUserId()));
     }
 
     @PutMapping("/account/create")
-    public UserAccount createAccount(@RequestParam AccountCreateCommand accountCreateCommand) {
-        return userAccountService.createAccount(accountCreateCommand.getUserId(), accountCreateCommand.getAccountName(), accountCreateCommand.getAccountType());
+    public UserAccountDto createAccount(@RequestParam AccountCreateCommand accountCreateCommand) {
+        return userAccountMapper.transformDomain(userAccountService.createAccount(accountCreateCommand.getUserId(), accountCreateCommand.getAccountName(), accountCreateCommand.getAccountType()));
     }
 
     @DeleteMapping("/account/delete")
-    public UserAccount deleteAccount(@RequestParam AccountDeleteCommand accountDeleteCommand) {
-        return userAccountService.deleteAccount(accountDeleteCommand.getUserId(), accountDeleteCommand.getAccountId());
+    public UserAccountDto deleteAccount(@RequestParam AccountDeleteCommand accountDeleteCommand) {
+        return  userAccountMapper.transformDomain(userAccountService.deleteAccount(accountDeleteCommand.getUserId(), accountDeleteCommand.getAccountId()));
     }
 }

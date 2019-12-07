@@ -18,6 +18,7 @@ package com.mijack.zero.arch;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
+import com.mijack.zero.common.web.mvc.ApiController;
 import com.mijack.zero.framework.ddd.Dao;
 import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.framework.ddd.Repo;
@@ -26,6 +27,7 @@ import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchUnitRunner;
 import com.tngtech.archunit.lang.ArchRule;
 import org.junit.runner.RunWith;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,17 +37,33 @@ import org.springframework.stereotype.Service;
 @AnalyzeClasses(packages = "com.mijack.zero.biz")
 public class ArchitectureTest {
     @ArchTest
-    public static final ArchRule ANNOTATION_SERVICE_RULE = classes().that().haveNameMatching(".*Service*").should()
-            .notBeAnnotatedWith(Service.class)
-            .andShould().beAnnotatedWith(com.mijack.zero.framework.ddd.Service.class)
-            .as("Service 应该依赖于Service(DDD)，而不是");
+    public static final ArchRule ANNOTATION_SERVICE_RULE = classes()
+            .that().resideInAPackage("com.mijack.zero.biz..service").and().haveNameMatching(".*Service*")
+            .should().notBeAnnotatedWith(Service.class)
+            .andShould().beAnnotatedWith(com.mijack.zero.framework.ddd.Service.class);
+
     @ArchTest
-    public static final ArchRule ANNOTATION_FACTORY_RULE = classes().that().haveNameMatching(".*Factory*").should()
-            .beAnnotatedWith(Factory.class);
+    public static final ArchRule ANNOTATION_FACTORY_RULE = classes()
+            .that().resideInAPackage("com.mijack.zero.biz..factory").and().haveNameMatching(".*Factory*")
+            .should().beAnnotatedWith(Factory.class);
+
     @ArchTest
-    public static final ArchRule ANNOTATION_DAO_RULE = classes().that().haveNameMatching(".*Dao*").should()
-            .beAnnotatedWith(Dao.class);
+    public static final ArchRule ANNOTATION_DAO_RULE = classes()
+            .that().resideInAPackage("com.mijack.zero.biz..dao").and().haveNameMatching(".*Dao*")
+            .should().beAnnotatedWith(Dao.class);
+
     @ArchTest
-    public static final ArchRule ANNOTATION_REPO_RULE = classes().that().haveNameMatching(".*Repo*").should()
-            .beAnnotatedWith(Repo.class);
+    public static final ArchRule ANNOTATION_REPO_RULE = classes()
+            .that().resideInAPackage("com.mijack.zero.biz..repository").and().haveNameMatching(".*Repo*")
+            .should().beAnnotatedWith(Repo.class);
+
+    // 所有的Controller只依赖于UserCase
+    @ArchTest
+    public static final ArchRule CONTROLLER_USER_CASE_RULE = classes()
+            .that().haveNameMatching(".*Controller")
+            .should().resideInAPackage("..ui.web").andShould()
+            .beAnnotatedWith(ApiController.class)
+            .andShould()
+            .notBeAnnotatedWith(Controller.class);
+    // 所有Controller方法的返回值必须输dto
 }
