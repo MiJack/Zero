@@ -21,12 +21,14 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.TransactionDO;
 import com.mijack.zero.framework.dao.BaseDao;
+import com.mijack.zero.framework.ddd.Dao;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
 @Mapper
+@Dao
 public interface TransactionDao extends BaseDao<TransactionDO> {
     /**
      * 根据activityId查询关联的交易

@@ -18,11 +18,13 @@ package com.mijack.zero.biz.transaction.infrastructure.dao;
 
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.ActivityDO;
 import com.mijack.zero.framework.dao.BaseDao;
+import com.mijack.zero.framework.ddd.Dao;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
 @Mapper
+@Dao
 public interface ActivityDao extends BaseDao<ActivityDO> {
 }

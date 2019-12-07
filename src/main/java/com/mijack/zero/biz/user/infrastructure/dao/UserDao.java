@@ -18,6 +18,7 @@ package com.mijack.zero.biz.user.infrastructure.dao;
 
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.framework.dao.BaseDao;
+import com.mijack.zero.framework.ddd.Dao;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -26,5 +27,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Mi&amp;Jack
  */
 @Mapper
+@Dao
 public interface UserDao extends BaseDao<UserDO> {
 }

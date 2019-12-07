@@ -17,59 +17,35 @@
 package com.mijack.zero.arch;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
-import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.mijack.zero.framework.ddd.Dao;
+import com.mijack.zero.framework.ddd.Factory;
+import com.mijack.zero.framework.ddd.Repo;
+import com.tngtech.archunit.junit.AnalyzeClasses;
+import com.tngtech.archunit.junit.ArchTest;
+import com.tngtech.archunit.junit.ArchUnitRunner;
 import com.tngtech.archunit.lang.ArchRule;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
+import org.junit.runner.RunWith;
 import org.springframework.stereotype.Service;
 
 /**
  * @author Mi&amp;Jack
  */
-
+@RunWith(ArchUnitRunner.class)
+@AnalyzeClasses(packages = "com.mijack.zero.biz")
 public class ArchitectureTest {
-    public static final Logger logger = LoggerFactory.getLogger(ArchitectureTest.class);
-
-    @Test
-    public void validateArchitectureRule() {
-        // 所有class不应该直接依赖Spring的注解
-        JavaClasses allClasses = new ClassFileImporter().importClasspath();
-        allClasses.that(new DescribedPredicate<JavaClass>("加载所有的接口或者类") {
-            @Override
-            public boolean apply(JavaClass input) {
-                Class<?> clazz = input.reflect();
-                return !clazz.isAnnotation();
-            }
-        });
-
-        ArchRule annotationRules = classes().should().accessClassesThat(new DescribedPredicate<JavaClass>("注解不直接依赖于spring") {
-            @Override
-            public boolean apply(JavaClass input) {
-
-                return !(input.tryGetAnnotationOfType(Service.class).isPresent()
-                        || input.tryGetAnnotationOfType(Repository.class).isPresent());
-            }
-        });
-        annotationRules.check(allClasses);
-        // 检查领域是否依赖基础领域对象
-        JavaClasses importedClasses = new ClassFileImporter().importPackages("com.mijack.zero.biz.user.domain");
-//        ArchRule baseDomainRule = classes().should().implement(BaseDomain.class);
-        //  delete字段移至do层
-        ArchRule fieldRule = fields().that().areNotFinal().and().areNotStatic()
-                .should().notHaveRawType(new DescribedPredicate<JavaClass>("领域对象的非静态非final字段不应该为Primitive类型（delete字段除外）") {
-                    @Override
-                    public boolean apply(JavaClass input) {
-                        return input.isPrimitive();
-                    }
-                });
-//        baseDomainRule.because("领域对象应该实现接口BaseDomain").check(importedClasses);
-        fieldRule.because("领域对象的非静态非final字段不应该为Primitive类型(delete字段除外)").check(importedClasses);
-    }
+    @ArchTest
+    public static final ArchRule ANNOTATION_SERVICE_RULE = classes().that().haveNameMatching(".*Service*").should()
+            .notBeAnnotatedWith(Service.class)
+            .andShould().beAnnotatedWith(com.mijack.zero.framework.ddd.Service.class)
+            .as("Service 应该依赖于Service(DDD)，而不是");
+    @ArchTest
+    public static final ArchRule ANNOTATION_FACTORY_RULE = classes().that().haveNameMatching(".*Factory*").should()
+            .beAnnotatedWith(Factory.class);
+    @ArchTest
+    public static final ArchRule ANNOTATION_DAO_RULE = classes().that().haveNameMatching(".*Dao*").should()
+            .beAnnotatedWith(Dao.class);
+    @ArchTest
+    public static final ArchRule ANNOTATION_REPO_RULE = classes().that().haveNameMatching(".*Repo*").should()
+            .beAnnotatedWith(Repo.class);
 }
