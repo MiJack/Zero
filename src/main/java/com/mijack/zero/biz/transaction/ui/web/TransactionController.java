@@ -18,10 +18,10 @@ package com.mijack.zero.biz.transaction.ui.web;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.transaction.command.TransactionAttachCommand;
-import com.mijack.zero.biz.transaction.command.TransactionRemoveCommand;
+import com.mijack.zero.biz.transaction.ui.command.TransactionAttachCommand;
+import com.mijack.zero.biz.transaction.ui.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Transaction;
-import com.mijack.zero.biz.transaction.service.TransactionService;
+import com.mijack.zero.biz.transaction.domain.service.TransactionService;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.RequestMapping;
 

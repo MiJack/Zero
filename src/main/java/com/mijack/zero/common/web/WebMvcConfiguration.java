@@ -22,6 +22,7 @@ import com.mijack.zero.common.web.mvc.ApiHandlerExceptionResolver;
 import com.mijack.zero.common.web.mvc.ApiResponseReturnValueHandler;
 import com.mijack.zero.common.web.mvc.PageHandlerMethodArgumentResolver;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -32,6 +33,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Mi&amp;Jack
  */
 @Configuration
+@ComponentScan("com.mijack.zero.common.web.mvc.view")
 public class WebMvcConfiguration implements WebMvcConfigurer {
     @Bean
     public ApiResponseReturnValueHandler apiResponseReturnValueHandler() {

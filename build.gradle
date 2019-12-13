@@ -98,6 +98,7 @@ dependencies {
     // mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     implementation 'org.springframework:spring-jdbc'
+    testImplementation 'com.h2database:h2:1.4.194'
     // mybatis
     compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.1.2'
 
@@ -108,16 +109,6 @@ dependencies {
 
     asciidoclet 'org.asciidoctor:asciidoclet:1.+'
 
-    components {
-        withModule('org.springframework:spring-beans') {
-            allVariants {
-                withDependencyConstraints {
-                    // Need to patch constraints because snakeyaml is an optional dependency
-                    it.findAll { it.name == 'snakeyaml' }.each { it.version { strictly '1.19' } }
-                }
-            }
-        }
-    }
 }
 
 application {
@@ -126,8 +117,8 @@ application {
 }
 
 bootJar {
-    archiveBaseName = 'gs-spring-boot-docker'
-    archiveVersion = '0.1.0'
+    getArchiveBaseName().set('gs-spring-boot-docker')
+    getArchiveVersion().set('0.1.0')
 }
 
 task unpack(type: Copy) {
@@ -154,13 +145,8 @@ allprojects {
             encoding = "UTF-8"
             charSet = 'UTF-8'
             doclet = 'org.asciidoctor.Asciidoclet'
-            docletpath = configurations.asciidoclet.files.asType(List)
+            docletpath = configurations.asciidoclet.files as List
             overview = "src/main/java/overview.adoc"
-            addStringOption "-base-dir", "${projectDir}" // (1)
-            addStringOption "-attribute", // (2)
-                    "name=${project.name}," +
-                            "version=${project.version}," +
-                            "title-link=http://example.com[${project.name} ${project.version}]"
         }
     }
 }

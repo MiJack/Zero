@@ -35,6 +35,11 @@ import org.springframework.beans.BeanUtils;
  * @author Mi&amp;Jack
  */
 public interface BaseDao<T extends IdentifiableData<Long, T> & DataHolder<T>> extends BaseMapper<T> {
+    /**
+     * 申请一个id
+     *
+     * @return 申请的id
+     */
     @Nullable
     default Long allocateId() {
         T t = BeanUtils.instantiateClass(getDataClazz());
@@ -45,14 +50,30 @@ public interface BaseDao<T extends IdentifiableData<Long, T> & DataHolder<T>> ex
         return null;
     }
 
+    /**
+     * 给定条件查询一个do对象
+     *
+     * @param function 用于填充query条件
+     * @return
+     */
     default T findOne(Function<LambdaQueryWrapper<T>, LambdaQueryWrapper<T>> function) {
         return selectOne(function.apply(newQuery()));
     }
 
+    /**
+     * 获取query查询的构造体
+     *
+     * @return
+     */
     default LambdaQueryWrapper<T> newQuery() {
         return new QueryWrapper<T>().lambda();
     }
 
+    /**
+     * 获取dao对应的do对象的class对象
+     *
+     * @return
+     */
     default Class<T> getDataClazz() {
         ResolvedType resolve = TYPE_RESOLVER.resolve(getClass());
         if (resolve.isInstanceOf(BaseDao.class)) {

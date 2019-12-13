@@ -18,46 +18,80 @@ package com.mijack.zero.web.controller;
 
 import com.mijack.zero.common.exceptions.BizCode;
 import com.mijack.zero.common.web.bo.ApiResult;
+import com.mijack.zero.common.web.mvc.view.ApiJsonView;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author Mi&amp;Jack
  */
 @RunWith(SpringRunner.class)
 @Ignore
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebMvcTest(TestController.class)
 public class TestControllerTest {
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mvc;
 
     @Test
-    public void testHello() {
-        ApiResult<?> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/hello", ApiResult.class);
-        assertNotNull(apiResult);
-        assertEquals(apiResult.getCode(), BizCode.SUCCESS.getCode());
-        assertEquals(apiResult.getMessage(), BizCode.SUCCESS.getMessage());
-        assertEquals(apiResult.getData(), "Hello world");
+    public void testHello() throws Exception {
+        mvc.perform(get("/api/test/hello")
+                .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute(ApiJsonView.API_RESULT, new TypeSafeMatcher<ApiResult<String>>() {
+                    @Override
+                    public void describeTo(Description description) {
+
+                    }
+
+                    @Override
+                    protected boolean matchesSafely(ApiResult<String> item) {
+                        return item != null && BizCode.SUCCESS.getCode() == item.getCode()
+                                && BizCode.SUCCESS.getMessage().equals(item.getMessage())
+                                && "Hello world".equals(item.getData());
+                    }
+                }))
+        ;
     }
 
     @Test
-    public void testError() {
-        ApiResult<?> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/error", ApiResult.class);
-        assertNotNull(apiResult);
-        assertEquals(apiResult.getCode(), BizCode.SYSTEM_ERROR.getCode());
-        assertEquals(apiResult.getMessage(), BizCode.SYSTEM_ERROR.getMessage());
-        assertNull(apiResult.getData());
+    public void testError() throws Exception {
+        mvc.perform(get("/api/test/error")
+                .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute(ApiJsonView.API_RESULT, new TypeSafeMatcher<ApiResult<String>>() {
+                    @Override
+                    public void describeTo(Description description) {
+
+                    }
+
+                    @Override
+                    protected boolean matchesSafely(ApiResult<String> item) {
+                        return item != null && BizCode.SYSTEM_ERROR.getCode() == item.getCode()
+                                && BizCode.SYSTEM_ERROR.getMessage().equals(item.getMessage());
+                    }
+                }))
+        ;
+//        ApiResult<?> apiResult = this.restTemplate.getForObject("http://localhost:" + port + "/api/test/error", ApiResult.class);
+//        assertNotNull(apiResult);
+//        assertEquals(apiResult.getCode(), BizCode.SYSTEM_ERROR.getCode());
+//        assertEquals(apiResult.getMessage(), BizCode.SYSTEM_ERROR.getMessage());
+//        assertNull(apiResult.getData());
     }
 }

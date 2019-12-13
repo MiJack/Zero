@@ -20,14 +20,17 @@ import static com.mijack.zero.common.exceptions.BaseBizException.createException
 
 import java.util.List;
 
-import com.mijack.zero.biz.user.command.CreateUserCommand;
-import com.mijack.zero.biz.user.command.UpdateUserCommand;
+import javax.annotation.Resource;
+
+import com.mijack.zero.biz.user.domain.cases.UserCase;
+import com.mijack.zero.biz.user.ui.command.CreateUserCommand;
+import com.mijack.zero.biz.user.ui.command.UpdateUserCommand;
 import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.ui.dto.UserDto;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.service.UserService;
+import com.mijack.zero.biz.user.ui.mapper.UserMapper;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.web.mvc.ApiController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,37 +42,39 @@ import org.springframework.web.bind.annotation.PutMapping;
  */
 @ApiController(path = "/api")
 public class UserController {
-    private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Resource
+    private UserCase.UserRegisterCase userRegisterCase;
+    @Resource
+    private UserCase.UserQueryCase userQueryCase;
+    @Resource
+    private UserCase.UserManagerCase userManagerCase;
+    @Resource
+    private  UserMapper userMapper;
 
     @PostMapping("/user/create")
-    public User createUser(CreateUserCommand createUserCommand) {
-        return userService.registerUser(createUserCommand.getName(), createUserCommand.getEmail());
+    public UserDto createUser(CreateUserCommand createUserCommand) {
+        return userMapper.transformDomain(userRegisterCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail()));
     }
 
     @GetMapping("/users/list")
-    public List<User> listUser() {
-        return userService.listUser();
+    public List<UserDto> listUser() {
+        return userMapper.transformList(userQueryCase.listUser());
     }
 
     @PutMapping("/user/update")
-    public User updateUserInfo(UpdateUserCommand updateUserCommand) {
-        return userService.updateUserInfo(updateUserCommand.getId(), updateUserCommand.getName(), updateUserCommand.getEmail());
+    public UserDto updateUserInfo(UpdateUserCommand updateUserCommand) {
+        return userMapper.transformDomain(userManagerCase.updateUserInfo(updateUserCommand.getId(), updateUserCommand.getName(), updateUserCommand.getEmail()));
     }
 
     @GetMapping("/user/{id}")
-    public User getUserInfo(@PathVariable("id") Long userId) {
-        User user = userService.getUser(userId);
+    public UserDto getUserInfo(@PathVariable("id") Long userId) {
+        User user = userQueryCase.getUser(userId);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
-        return user;
+        return userMapper.transformDomain(user);
     }
 
     @DeleteMapping("/user/{id}/delete")
     public boolean deleteUser(@PathVariable("id") Long userId) {
-        return userService.deleteUser(userId);
+        return userManagerCase.deleteUser(userId);
     }
 }

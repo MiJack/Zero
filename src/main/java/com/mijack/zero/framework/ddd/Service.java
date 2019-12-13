@@ -22,6 +22,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Mi&amp;Jack
  */
@@ -31,4 +34,7 @@ import java.lang.annotation.Target;
 @Documented
 @org.springframework.stereotype.Service
 public @interface Service {
+
+    @AliasFor(annotation = Component.class)
+    String value() default "";
 }

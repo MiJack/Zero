@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.biz.transaction.command.ActivityCreateCommand;
-import com.mijack.zero.biz.transaction.command.ActivityDeleteCommand;
-import com.mijack.zero.biz.transaction.command.ActivityListCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityCreateCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityDeleteCommand;
+import com.mijack.zero.biz.transaction.ui.command.ActivityListCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
-import com.mijack.zero.biz.transaction.service.ActivityService;
+import com.mijack.zero.biz.transaction.domain.service.ActivityService;
 import com.mijack.zero.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.RequestMapping;
 

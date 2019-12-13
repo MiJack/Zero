@@ -45,5 +45,5 @@ public class UserHolder implements DataHolder<UserDO> {
      * 更新时间
      */
     @TableField("update_time")
-    private Timestamp updateTime;
+    private Timestamp updateTime = new Timestamp(System.currentTimeMillis());
 }

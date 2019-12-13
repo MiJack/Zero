@@ -23,12 +23,14 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.framework.dao.BaseDao;
+import com.mijack.zero.framework.ddd.Dao;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
 @Mapper
+@Dao
 public interface UserAccountDao extends BaseDao<UserAccountDO> {
     /**
      * 列举一个用户下的所有账号

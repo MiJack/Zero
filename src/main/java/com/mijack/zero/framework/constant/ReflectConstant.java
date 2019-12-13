@@ -16,8 +16,6 @@
 
 package com.mijack.zero.framework.constant;
 
-import java.lang.reflect.Method;
-import java.util.Objects;
 
 import com.fasterxml.classmate.TypeResolver;
 
@@ -30,24 +28,4 @@ public class ReflectConstant {
 
     public static final TypeResolver TYPE_RESOLVER = new TypeResolver();
 
-    public static Method findMethod(Method method, Class<?> clazz) {
-        Class<?> declaringClass = method.getDeclaringClass();
-        if (!declaringClass.isAssignableFrom(clazz)) {
-            return null;
-        }
-        Method[] declaredMethods = clazz.getMethods();
-        for (Method m : declaredMethods) {
-            if (isSameSign(m, method)) {
-                return m;
-            }
-        }
-        return null;
-    }
-
-    private static boolean isSameSign(Method method1, Method method2) {
-        if (!Objects.equals(method1.getName(), method2.getName())) {
-            return false;
-        }
-        return true;
-    }
 }
