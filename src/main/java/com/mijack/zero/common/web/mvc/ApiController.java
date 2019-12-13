@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Target(ElementType.TYPE)
 @Controller
 @ApiResponse
+@RequestMapping
 public @interface ApiController {
 
     @AliasFor(value = "path", annotation = RequestMapping.class)
