@@ -18,24 +18,33 @@ package com.mijack.zero.biz.user.domain.factory;
 
 import java.sql.Timestamp;
 
+import javax.annotation.Resource;
+
 import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.framework.ddd.Factory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Mi&amp;Jack
  */
 @Factory
 public class UserFactory {
+    public static final Logger logger = LoggerFactory.getLogger(UserFactory.class);
+    @Resource
+    private UserRepository userRepository;
 
     /**
      * 创建用户
      *
-     * @param id    用户id
      * @param name  用户名
      * @param email 用户邮箱
      * @return 创建的用户
      */
-    public User createUser(Long id, String name, String email) {
+    public User createUser(String name, String email) {
+        Long id = userRepository.allocateId();
+        logger.info("allocateKey = {}", id);
         User user = new User();
         user.setId(id);
         user.setEmail(email);

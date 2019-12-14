@@ -17,7 +17,10 @@
 package com.mijack.zero.biz.user.domain;
 
 import java.sql.Timestamp;
+import java.util.regex.Pattern;
 
+import com.mijack.zero.common.Assert;
+import com.mijack.zero.common.exceptions.BaseBizException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +33,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User  {
+public class User {
+    public static final Pattern EMAIL_PATTERN = Pattern.compile("\\w+@(\\w+.)+\\w+");
     /**
      * 用户id
      */
@@ -51,4 +55,9 @@ public class User  {
      * 更新时间
      */
     private Timestamp updateTime;
+
+    public void setEmail(String email) {
+        Assert.state(EMAIL_PATTERN.matcher(email).matches(), () -> BaseBizException.createException("邮箱格式错误"));
+        this.email = email;
+    }
 }

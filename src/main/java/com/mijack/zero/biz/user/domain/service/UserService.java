@@ -17,7 +17,9 @@
 package com.mijack.zero.biz.user.domain.service;
 
 
+import com.mijack.zero.biz.user.domain.UserAuth;
 import com.mijack.zero.biz.user.domain.cases.UserCase;
+import com.mijack.zero.biz.user.domain.factory.UserAuthFactory;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.common.exceptions.SystemErrorException;
@@ -36,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.mijack.zero.common.Assert;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Mi&amp;Jack
@@ -45,11 +48,13 @@ public class UserService implements UserCase.UserRegisterCase, UserCase.UserQuer
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     final UserRepository userRepository;
     final UserFactory userFactory;
+    final UserAuthFactory userAuthFactory;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserFactory userFactory) {
+    public UserService(UserRepository userRepository, UserFactory userFactory, UserAuthFactory userAuthFactory) {
         this.userRepository = userRepository;
         this.userFactory = userFactory;
+        this.userAuthFactory = userAuthFactory;
     }
 
     @Override
@@ -58,13 +63,13 @@ public class UserService implements UserCase.UserRegisterCase, UserCase.UserQuer
     }
 
     @Override
-    public User registerUser(String name, String email) {
+    @Transactional()
+    public User registerUser(String name, String email, String password) {
         Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
         Assert.isNull(userRepository.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userRepository.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
-        Long id = userRepository.allocateId();
-        logger.info("allocateKey = {}", id);
-        User user = userFactory.createUser(id, name, email);
+        User user = userFactory.createUser(name, email);
+        UserAuth userAuth = userAuthFactory.createUserAuth(user.getId(), password);
         Assert.state(userRepository.updateUser(user) > 0, () -> createException("创建用户失败"));
         return user;
     }
@@ -76,7 +81,6 @@ public class UserService implements UserCase.UserRegisterCase, UserCase.UserQuer
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         Assert.isNull(userRepository.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userRepository.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
-        // todo 移至领域内部实现
         if (StringUtils.isNotBlank(email)) {
             user.setEmail(email);
         }

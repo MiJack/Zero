@@ -14,22 +14,17 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.ui.command;
+package com.mijack.zero.biz.user.domain.factory;
 
-import com.mijack.zero.common.web.mvc.Command;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.mijack.zero.biz.user.domain.UserAuth;
+import com.mijack.zero.framework.ddd.Factory;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateUserCommand implements Command {
-    private static final long serialVersionUID = 6042904662934731434L;
-    private String name;
-    private String email;
-    private String password;
+@Factory
+public class UserAuthFactory {
+    public UserAuth createUserAuth(Long id, String password) {
+        return null;
+    }
 }

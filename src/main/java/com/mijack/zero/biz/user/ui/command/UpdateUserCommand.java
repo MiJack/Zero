@@ -16,17 +16,18 @@
 
 package com.mijack.zero.biz.user.ui.command;
 
-import java.io.Serializable;
-
+import com.mijack.zero.common.web.mvc.Command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
 @AllArgsConstructor
-public class UpdateUserCommand implements Serializable {
+@NoArgsConstructor
+public class UpdateUserCommand implements Command {
     private static final long serialVersionUID = -4941608878036224093L;
     private Long id;
     private String name;

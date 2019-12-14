@@ -35,16 +35,33 @@ public interface UserCase extends UseCase {
     interface UserRegisterCase extends UserCase {
 
         /**
+         * 用于注册用户
+         *
          * @param name
          * @param email
+         * @param password
          * @return
          */
-        User registerUser(String name, String email);
+        User registerUser(String name, String email, String password);
     }
 
+    /**
+     * 用户查询相关用例
+     */
     interface UserQueryCase extends UserCase {
+        /**
+         * 列举用户
+         *
+         * @return
+         */
         List<User> listUser();
 
+        /**
+         * 查询用户
+         *
+         * @param userId
+         * @return
+         */
         User getUser(Long userId);
     }
 }

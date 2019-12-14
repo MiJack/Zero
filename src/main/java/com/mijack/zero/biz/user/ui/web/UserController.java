@@ -49,11 +49,11 @@ public class UserController {
     @Resource
     private UserCase.UserManagerCase userManagerCase;
     @Resource
-    private  UserMapper userMapper;
+    private UserMapper userMapper;
 
-    @PostMapping("/user/create")
+    @PostMapping("/user/register")
     public UserDto createUser(CreateUserCommand createUserCommand) {
-        return userMapper.transformDomain(userRegisterCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail()));
+        return userMapper.transformDomain(userRegisterCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail(),createUserCommand.getPassword()));
     }
 
     @GetMapping("/users/list")
@@ -66,8 +66,16 @@ public class UserController {
         return userMapper.transformDomain(userManagerCase.updateUserInfo(updateUserCommand.getId(), updateUserCommand.getName(), updateUserCommand.getEmail()));
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public UserDto getUserInfo(@PathVariable("id") Long userId) {
+        User user = userQueryCase.getUser(userId);
+        Assert.notNull(user, () -> createException(UserNotFoundException.class));
+        return userMapper.transformDomain(user);
+    }
+
+    @GetMapping("/user")
+    public UserDto getUserInfo() {
+        Long userId = 1L;
         User user = userQueryCase.getUser(userId);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         return userMapper.transformDomain(user);

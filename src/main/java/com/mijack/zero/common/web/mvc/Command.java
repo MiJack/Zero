@@ -14,22 +14,12 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.ui.command;
+package com.mijack.zero.common.web.mvc;
 
-import com.mijack.zero.common.web.mvc.Command;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateUserCommand implements Command {
-    private static final long serialVersionUID = 6042904662934731434L;
-    private String name;
-    private String email;
-    private String password;
+public interface Command extends Serializable {
 }

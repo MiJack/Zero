@@ -52,7 +52,7 @@ public class UserCaseTest {
 
     @Test
     public void registerUser() {
-        User user = userRegisterCase.registerUser(userName, userEmail);
+        User user = userRegisterCase.registerUser(userName, userEmail, createUserCommand.getPassword());
         assertThat(user).isNotNull().as("用户注册成功");
         User queryUser = userQueryCase.getUser(user.getId());
         assertThat(queryUser).isEqualToComparingFieldByFieldRecursively(user)
@@ -65,7 +65,7 @@ public class UserCaseTest {
         for (int i = 0; i < count; i++) {
             String name = i + userName;
             String password = i + userEmail;
-            userRegisterCase.registerUser(name, password);
+            userRegisterCase.registerUser(name, password, createUserCommand.getPassword());
         }
         List<User> users = userQueryCase.listUser();
         assertThat(users).hasSize(count).as("列表数目应和注册数目保持一致");
@@ -73,13 +73,13 @@ public class UserCaseTest {
 
     @Test(expected = UserRegisteredException.class)
     public void registerUserNameAgain() {
-        userRegisterCase.registerUser(userName, userEmail);
-        userRegisterCase.registerUser(UUID.randomUUID().toString(), userEmail);
+        userRegisterCase.registerUser(userName, userEmail, createUserCommand.getPassword());
+        userRegisterCase.registerUser(UUID.randomUUID().toString(), userEmail, createUserCommand.getPassword());
     }
 
     @Test(expected = UserRegisteredException.class)
     public void registerUserEmailAgain() {
-        userRegisterCase.registerUser(userName, userEmail);
-        userRegisterCase.registerUser(userName, UUID.randomUUID().toString());
+        userRegisterCase.registerUser(userName, userEmail, createUserCommand.getPassword());
+        userRegisterCase.registerUser(userName, UUID.randomUUID().toString(), createUserCommand.getPassword());
     }
 }

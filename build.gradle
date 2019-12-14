@@ -79,7 +79,8 @@ configurations {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:27.1-jre'
-//    implementation project(':dao-framework')
+    //spring security
+    compile "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-beanutils:commons-beanutils:1.9.3'

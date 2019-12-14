@@ -48,16 +48,14 @@ public class PageHandlerMethodArgumentResolver implements HandlerMethodArgumentR
         if (servletRequest == null) {
             throw new SystemErrorException();
         }
-        String offsetKey = OFFSET_KEY;
-        String limitKey = LIMIT_KEY;
-        String offset = servletRequest.getParameter(offsetKey);
-        String limit = servletRequest.getParameter(limitKey);
+        String offset = servletRequest.getParameter(OFFSET_KEY);
+        String limit = servletRequest.getParameter(LIMIT_KEY);
         if (limit == null || offset == null) {
             throw new ControllerException(400, "分页请求缺少分页参数");
         }
         QueryPage requestQueryPage = new QueryPage();
-        requestQueryPage.setLimit(Long.parseLong(servletRequest.getParameter(limitKey)));
-        requestQueryPage.setOffset(Long.parseLong(servletRequest.getParameter(offsetKey)));
+        requestQueryPage.setLimit(Long.parseLong(limit));
+        requestQueryPage.setOffset(Long.parseLong(offset));
         return requestQueryPage;
     }
 }

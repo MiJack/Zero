@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.mijack.zero.common.web.mvc.ApiHandlerExceptionResolver;
 import com.mijack.zero.common.web.mvc.ApiResponseReturnValueHandler;
+import com.mijack.zero.common.web.mvc.CommandMethodArgumentResolver;
 import com.mijack.zero.common.web.mvc.PageHandlerMethodArgumentResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -58,5 +60,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new PageHandlerMethodArgumentResolver());
+        argumentResolvers.add(new CommandMethodArgumentResolver());
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 }
