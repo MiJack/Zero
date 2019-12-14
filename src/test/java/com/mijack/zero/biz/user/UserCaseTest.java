@@ -49,10 +49,11 @@ public class UserCaseTest {
 
     String userName = "test-user";
     String userEmail = "test@test.com";
+    String password = "test@test.com";
 
     @Test
     public void registerUser() {
-        User user = userRegisterCase.registerUser(userName, userEmail, createUserCommand.getPassword());
+        User user = userRegisterCase.registerUser(userName, userEmail, password);
         assertThat(user).isNotNull().as("用户注册成功");
         User queryUser = userQueryCase.getUser(user.getId());
         assertThat(queryUser).isEqualToComparingFieldByFieldRecursively(user)
@@ -65,7 +66,7 @@ public class UserCaseTest {
         for (int i = 0; i < count; i++) {
             String name = i + userName;
             String password = i + userEmail;
-            userRegisterCase.registerUser(name, password, createUserCommand.getPassword());
+            userRegisterCase.registerUser(name, password, password);
         }
         List<User> users = userQueryCase.listUser();
         assertThat(users).hasSize(count).as("列表数目应和注册数目保持一致");
@@ -73,13 +74,13 @@ public class UserCaseTest {
 
     @Test(expected = UserRegisteredException.class)
     public void registerUserNameAgain() {
-        userRegisterCase.registerUser(userName, userEmail, createUserCommand.getPassword());
-        userRegisterCase.registerUser(UUID.randomUUID().toString(), userEmail, createUserCommand.getPassword());
+        userRegisterCase.registerUser(userName, userEmail, password);
+        userRegisterCase.registerUser(UUID.randomUUID().toString(), userEmail, password);
     }
 
     @Test(expected = UserRegisteredException.class)
     public void registerUserEmailAgain() {
-        userRegisterCase.registerUser(userName, userEmail, createUserCommand.getPassword());
-        userRegisterCase.registerUser(userName, UUID.randomUUID().toString(), createUserCommand.getPassword());
+        userRegisterCase.registerUser(userName, userEmail, password);
+        userRegisterCase.registerUser(userName, UUID.randomUUID().toString(), password);
     }
 }
