@@ -14,15 +14,25 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.config;
+package com.mijack.zero.common.web.mvc;
 
-import com.mijack.zero.common.web.WebMvcConfiguration;
-import com.mijack.zero.common.web.WebSecurityConfig;
-import org.springframework.context.annotation.Import;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author Mi&amp;Jack
  */
-@Import({WebMvcConfiguration.class, WebSecurityConfig.class})
-public class ServerConfig {
+@ApiController(path = "/api/web/csrf")
+public class WebCsrfController {
+    @Resource
+    HeadCsrfTokenRepository headCsrfTokenRepository;
+
+    @GetMapping
+    public CsrfToken webCsrf(HttpServletRequest request) {
+        return headCsrfTokenRepository.generateToken(request);
+    }
 }
