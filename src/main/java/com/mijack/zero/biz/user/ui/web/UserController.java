@@ -26,6 +26,7 @@ import com.mijack.zero.biz.user.domain.cases.UserCase;
 import com.mijack.zero.biz.user.ui.command.CreateUserCommand;
 import com.mijack.zero.biz.user.ui.command.UpdateUserCommand;
 import com.mijack.zero.biz.user.domain.User;
+import com.mijack.zero.biz.user.ui.command.UserLoginCommand;
 import com.mijack.zero.biz.user.ui.dto.UserDto;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.ui.mapper.UserMapper;
@@ -45,6 +46,8 @@ public class UserController {
     @Resource
     private UserCase.UserRegisterCase userRegisterCase;
     @Resource
+    private UserCase.UserLoginCase userLoginCase;
+    @Resource
     private UserCase.UserQueryCase userQueryCase;
     @Resource
     private UserCase.UserManagerCase userManagerCase;
@@ -53,7 +56,12 @@ public class UserController {
 
     @PostMapping("/user/register")
     public UserDto createUser(CreateUserCommand createUserCommand) {
-        return userMapper.transformDomain(userRegisterCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail(),createUserCommand.getPassword()));
+        return userMapper.transformDomain(userRegisterCase.registerUser(createUserCommand.getName(), createUserCommand.getEmail(), createUserCommand.getPassword()));
+    }
+
+    @PostMapping("/user/login")
+    public UserDto loginUser(UserLoginCommand userLoginCommand) {
+        return userMapper.transformDomain(userLoginCase.loginUser(userLoginCommand.getLoginType(), userLoginCommand.getIdentifiableValue(), userLoginCommand.getPassword()));
     }
 
     @GetMapping("/users/list")

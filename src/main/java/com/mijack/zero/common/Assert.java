@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import com.mijack.zero.utils.CollectionHelper;
 
 
@@ -147,7 +149,7 @@ public interface Assert {
      * @param target 目标值
      * @param supplier
      */
-    static void equals(Object source, Object target, Supplier<? extends RuntimeException> supplier) {
+    static void equals(@Nullable Object source,@Nullable Object target, Supplier<? extends RuntimeException> supplier) {
         state(Objects.equals(source, target), supplier);
     }
 }

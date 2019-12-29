@@ -45,6 +45,19 @@ public interface UserCase extends UseCase {
         User registerUser(String name, String email, String password);
     }
 
+    interface UserLoginCase extends UserCase {
+
+        /**
+         * 用于登录用户
+         *
+         * @param type
+         * @param email
+         * @param password
+         * @return
+         */
+        User loginUser(int type, String email, String password);
+    }
+
     /**
      * 用户查询相关用例
      */

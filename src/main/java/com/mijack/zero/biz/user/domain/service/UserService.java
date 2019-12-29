@@ -17,9 +17,12 @@
 package com.mijack.zero.biz.user.domain.service;
 
 
+import com.mijack.zero.biz.user.domain.LoginType;
 import com.mijack.zero.biz.user.domain.UserAuth;
 import com.mijack.zero.biz.user.domain.cases.UserCase;
 import com.mijack.zero.biz.user.domain.factory.UserAuthFactory;
+import com.mijack.zero.biz.user.domain.repository.UserAuthRepository;
+import com.mijack.zero.biz.user.exception.UserLoginFailException;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
 import com.mijack.zero.common.exceptions.SystemErrorException;
@@ -28,11 +31,13 @@ import com.mijack.zero.common.exceptions.WrongParamException;
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.domain.factory.UserFactory;
 import com.mijack.zero.framework.ddd.Service;
+import com.mijack.zero.utils.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,16 +49,18 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Mi&amp;Jack
  */
 @Service
-public class UserService implements UserCase.UserRegisterCase, UserCase.UserQueryCase, UserCase.UserManagerCase {
+public class UserService implements UserCase.UserRegisterCase, UserCase.UserQueryCase, UserCase.UserManagerCase, UserCase.UserLoginCase {
     public static final Logger logger = LoggerFactory.getLogger(UserService.class);
     final UserRepository userRepository;
     final UserFactory userFactory;
+    final UserAuthRepository userAuthRepository;
     final UserAuthFactory userAuthFactory;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserFactory userFactory, UserAuthFactory userAuthFactory) {
+    public UserService(UserRepository userRepository, UserFactory userFactory, UserAuthRepository userAuthRepository, UserAuthFactory userAuthFactory) {
         this.userRepository = userRepository;
         this.userFactory = userFactory;
+        this.userAuthRepository = userAuthRepository;
         this.userAuthFactory = userAuthFactory;
     }
 
@@ -69,7 +76,7 @@ public class UserService implements UserCase.UserRegisterCase, UserCase.UserQuer
         Assert.isNull(userRepository.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
         Assert.isNull(userRepository.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
         User user = userFactory.createUser(name, email);
-        UserAuth userAuth = userAuthFactory.createUserAuth(user.getId(), password);
+        userAuthFactory.createUserAuth(user.getId(), password);
         Assert.state(userRepository.updateUser(user) > 0, () -> createException("创建用户失败"));
         return user;
     }
@@ -101,5 +108,18 @@ public class UserService implements UserCase.UserRegisterCase, UserCase.UserQuer
         User user = userRepository.getUserById(userId);
         Assert.isNull(user, () -> createException("用户名不存在"));
         return userRepository.delete(user) > 0;
+    }
+
+    @Override
+    public User loginUser(int type, String email, String password) {
+        LoginType loginType = EnumUtils.idOf(type, LoginType.class);
+        Assert.equals(loginType, LoginType.EMAIL, () -> createException(WrongParamException.class, "不支持该登录方式"));
+        User user = userRepository.findOneByEmail(email);
+        Assert.notNull(user, () -> createException(UserLoginFailException.class));
+        String cryptPassword = Optional.of(user).map(userAuthRepository::findOneByUser).map(UserAuth::getCryptPassword).orElse(null);
+        Assert.notNull(cryptPassword, () -> createException(UserLoginFailException.class));
+
+        Assert.equals(password, cryptPassword, () -> createException(UserLoginFailException.class));
+        return user;
     }
 }

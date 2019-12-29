@@ -30,7 +30,11 @@ public enum UserError implements IError {
     /**
      * 用户未找到
      */
-    USER_NOT_FOUND(-200, "用户未找到");
+    USER_NOT_FOUND(-200, "用户未找到"),
+    /**
+     * 账号密码错误
+     */
+    LOGIN_FAIL(-300, "账号密码错误");
     @Getter
     private final int code;
     @Getter
