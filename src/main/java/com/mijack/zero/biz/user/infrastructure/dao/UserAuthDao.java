@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
  *     limitations under the License.
  */
 
-package  com.mijack.zero.biz.user.ui.command;
+package com.mijack.zero.biz.user.infrastructure.dao;
 
-import com.mijack.zero.common.web.mvc.Command;
-import lombok.Data;
+import com.mijack.zero.biz.user.infrastructure.dao.data.UserAuthDO;
+import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
+import com.mijack.zero.framework.dao.BaseDao;
+import com.mijack.zero.framework.ddd.Dao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserLoginCommand implements Command {
-    private static final long serialVersionUID = 8736922105638475687L;
-    private int loginType;
-    private String identifiableValue;
-    private String password;
-
+@Mapper
+@Dao
+public interface UserAuthDao extends BaseDao<UserAuthDO> {
 }

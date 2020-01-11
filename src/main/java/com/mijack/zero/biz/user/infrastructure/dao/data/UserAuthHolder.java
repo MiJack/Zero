@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,19 +14,38 @@
  *     limitations under the License.
  */
 
-package  com.mijack.zero.biz.user.ui.command;
+package com.mijack.zero.biz.user.infrastructure.dao.data;
 
-import com.mijack.zero.common.web.mvc.Command;
+import java.sql.Timestamp;
+
+import com.mijack.zero.framework.dao.idata.DataHolder;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class UserLoginCommand implements Command {
-    private static final long serialVersionUID = 8736922105638475687L;
-    private int loginType;
-    private String identifiableValue;
-    private String password;
+public class UserAuthHolder implements DataHolder<UserAuthDO> {
+
+    /**
+     * 密码对应的盐
+     */
+    private String salt;
+    /**
+     * 加密类型
+     */
+    private int type;
+    /**
+     * 加密后的密码
+     */
+    private String cryptPassword;
+    /**
+     * 创建时间
+     */
+    private Timestamp createTime;
+    /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
 
 }
