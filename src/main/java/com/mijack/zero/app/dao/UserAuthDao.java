@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,20 +14,17 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.config;
+package com.mijack.zero.app.dao;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mijack.zero.app.meta.UserAuth;
+import com.mijack.zero.framework.ddd.Dao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@Configuration
-@ComponentScan({
-        "com.mijack.zero.biz.user.ui",
-        "com.mijack.zero.biz.user.infrastructure",
-        "com.mijack.zero.biz.user.domain"})
-@MapperScan("com.mijack.zero.biz.user.infrastructure.dao")
-public class UserConfig {
+@Mapper
+@Dao
+public interface UserAuthDao extends BaseMapper<UserAuth> {
 }

@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,23 +14,15 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common.enums;
+package com.mijack.zero.app.dao.token;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mijack.zero.app.meta.ApiToken;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> extends IEnum<Integer> {
-    /**
-     * 枚举变量的id
-     *
-     * @return
-     */
-    int getId();
-
-    @Override
-    default Integer getValue() {
-        return getId();
-    }
+@Mapper
+public interface TokenDao extends BaseMapper<ApiToken> {
 }

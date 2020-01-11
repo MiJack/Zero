@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,21 +14,25 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.account.config;
+package com.mijack.zero.app.meta;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Configuration
+public enum UserAuthType {
+    /**
+     * 基于base64的加密
+     */
+    BASE64(1, "基于base64的加密");
+    @Getter
+    private final int code;
+    @Getter
+    private final String desc;
 
-@ComponentScan({
-        "com.mijack.zero.biz.account.ui",
-        "com.mijack.zero.biz.account.infrastructure",
-        "com.mijack.zero.biz.account.domain"})
-@MapperScan("com.mijack.zero.biz.account.infrastructure.dao")
-public class AccountConfig {
+    UserAuthType(int code, String desc) {
+        this.code = code;
+        this.desc = desc;
+    }
 }

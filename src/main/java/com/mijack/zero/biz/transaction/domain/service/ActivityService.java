@@ -29,7 +29,7 @@ import com.mijack.zero.biz.transaction.domain.factory.ActivityFactory;
 import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.domain.service.UserService;
+import com.mijack.zero.biz.user.domain.service.UserDomainService;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;
@@ -40,14 +40,14 @@ import com.mijack.zero.framework.ddd.Service;
 @Service
 public class ActivityService {
     @Resource
-    UserService userService;
+    UserDomainService userDomainService;
     @Resource
     ActivityRepository activityRepository;
     @Resource
     ActivityFactory activityFactory;
 
     public List<Activity> listActivity(Long userId) {
-        User user = userService.getUser(userId);
+        User user = userDomainService.getUser(userId);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         return activityRepository.listActivity(user);
     }

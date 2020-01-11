@@ -14,28 +14,25 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.dao.data;
+package com.mijack.zero.app.dao;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.framework.dao.idata.DeletableDo;
-import com.mijack.zero.framework.dao.idata.IdentifiableData;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mijack.zero.app.meta.User;
+import com.mijack.zero.framework.ddd.Dao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mi&amp;Jack
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
-@TableName( "Zero_UserAuth")
-public class UserAuthDO extends UserAuthHolder implements IdentifiableData<Long, UserAuthDO>, DeletableDo<UserAuthDO> {
-    /**
-     * 用户id
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+@Mapper
+@Dao
+public interface UserDao extends BaseMapper<User> {
+    default User findOneByEmail(String email) {
+        return selectOne(new QueryWrapper<User>().lambda().eq(User::getEmail, email));
+    }
 
-
+    default User findOneByName(String name) {
+        return selectOne(new QueryWrapper<User>().lambda().eq(User::getName, name));
+    }
 }

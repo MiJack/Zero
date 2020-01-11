@@ -18,7 +18,7 @@ package com.mijack.zero.biz.user.domain.service;
 
 
 import com.mijack.zero.biz.user.domain.LoginType;
-import com.mijack.zero.biz.user.domain.UserAuth;
+import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.biz.user.domain.cases.UserCase;
 import com.mijack.zero.biz.user.domain.factory.UserAuthFactory;
 import com.mijack.zero.biz.user.domain.repository.UserAuthRepository;
@@ -49,15 +49,15 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Mi&amp;Jack
  */
 @Service
-public class UserService implements UserCase.UserRegisterCase, UserCase.UserQueryCase, UserCase.UserManagerCase, UserCase.UserLoginCase {
-    public static final Logger logger = LoggerFactory.getLogger(UserService.class);
+public class UserDomainService implements UserCase.UserRegisterCase, UserCase.UserQueryCase, UserCase.UserManagerCase, UserCase.UserLoginCase {
+    public static final Logger logger = LoggerFactory.getLogger(UserDomainService.class);
     final UserRepository userRepository;
     final UserFactory userFactory;
     final UserAuthRepository userAuthRepository;
     final UserAuthFactory userAuthFactory;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserFactory userFactory, UserAuthRepository userAuthRepository, UserAuthFactory userAuthFactory) {
+    public UserDomainService(UserRepository userRepository, UserFactory userFactory, UserAuthRepository userAuthRepository, UserAuthFactory userAuthFactory) {
         this.userRepository = userRepository;
         this.userFactory = userFactory;
         this.userAuthRepository = userAuthRepository;

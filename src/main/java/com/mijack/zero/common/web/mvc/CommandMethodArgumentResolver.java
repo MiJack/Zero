@@ -16,19 +16,13 @@
 
 package com.mijack.zero.common.web.mvc;
 
-import java.beans.PropertyDescriptor;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mijack.zero.common.exceptions.SystemErrorException;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -42,7 +36,7 @@ public class CommandMethodArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return Command.class.isAssignableFrom(parameter.getParameterType());
+        return Command.class.isAssignableFrom(parameter.getParameterType()) || parameter.getParameterType().getSimpleName().endsWith("Command");
     }
 
     @Override
@@ -53,16 +47,6 @@ public class CommandMethodArgumentResolver implements HandlerMethodArgumentResol
         }
         Class<?> commandType = parameter.getParameterType();
         return objectMapper.readValue(servletRequest.getInputStream(), commandType);
-//        Object command = BeanUtils.instantiateClass(commandType);
-//        BeanWrapper beanWrapper = new BeanWrapperImpl(command);
-//        PropertyDescriptor[] propertyDescriptors = beanWrapper.getPropertyDescriptors();
-//        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-//            if (propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null) {
-//                String propertyDescriptorName = propertyDescriptor.getName();
-//                beanWrapper.setPropertyValue(propertyDescriptorName, servletRequest.getParameter(propertyDescriptorName));
-//            }
-//        }
-//        return command;
     }
 
 }

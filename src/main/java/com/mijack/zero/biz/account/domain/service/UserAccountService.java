@@ -27,7 +27,7 @@ import com.mijack.zero.biz.account.domain.factory.UserAccountFactory;
 import com.mijack.zero.biz.account.domain.repository.UserAccountRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.domain.service.UserService;
+import com.mijack.zero.biz.user.domain.service.UserDomainService;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;
@@ -41,12 +41,12 @@ public class UserAccountService {
     @Resource
     UserAccountRepository userAccountRepository;
     @Resource
-    UserService userService;
+    UserDomainService userDomainService;
     @Resource
     UserAccountFactory userAccountFactory;
 
     public List<UserAccount> listUserAccount(long userId) {
-        User user = userService.getUser(userId);
+        User user = userDomainService.getUser(userId);
         Assert.notNull(user, () -> createException(UserNotFoundException.class));
         return userAccountRepository.listUserAccount(userId);
     }

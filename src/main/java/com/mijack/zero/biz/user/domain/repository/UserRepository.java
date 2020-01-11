@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.infrastructure.dao.UserDao;
+import com.mijack.zero.biz.user.infrastructure.dao.OldUserDao;
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
 import com.mijack.zero.biz.user.infrastructure.dao.data.UserHolder;
 import com.mijack.zero.common.base.BaseConverter;
@@ -38,7 +38,7 @@ import com.google.common.collect.Lists;
 @Repo
 public class UserRepository extends BaseConverter<UserDO, User> {
     @Resource
-    UserDao userDao;
+    OldUserDao oldUserDao;
 
     /**
      * 根据用户名查找对应的用户
@@ -47,7 +47,7 @@ public class UserRepository extends BaseConverter<UserDO, User> {
      * @return 如果未查询到，返回null
      */
     public User findOneByName(String name) {
-        return convert(userDao.findOne(q -> q.eq(UserDO::getName, name)));
+        return convert(oldUserDao.findOne(q -> q.eq(UserDO::getName, name)));
     }
 
     /**
@@ -57,31 +57,31 @@ public class UserRepository extends BaseConverter<UserDO, User> {
      * @return 如果未查询到，返回null
      */
     public User findOneByEmail(String email) {
-        return convert(userDao.findOne(q -> q.eq(UserHolder::getEmail, email)));
+        return convert(oldUserDao.findOne(q -> q.eq(UserHolder::getEmail, email)));
     }
 
     public User getUserById(long userId) {
-        return Optional.ofNullable(userDao.selectById(userId)).map(this::convert).orElse(null);
+        return Optional.ofNullable(oldUserDao.selectById(userId)).map(this::convert).orElse(null);
     }
 
     public long addUser(@NotNull User user) {
-        return userDao.insert(reverse().convert(user));
+        return oldUserDao.insert(reverse().convert(user));
     }
 
     public long updateUser(User user) {
-        return userDao.updateById(reverse().convert(user));
+        return oldUserDao.updateById(reverse().convert(user));
     }
 
     public Long allocateId() {
-        return userDao.allocateId();
+        return oldUserDao.allocateId();
     }
 
     public List<User> list() {
-        return Lists.newArrayList(convertAll(userDao.selectList(null)));
+        return Lists.newArrayList(convertAll(oldUserDao.selectList(null)));
     }
 
     public long delete(User user) {
-        return userDao.deleteById(user.getId());
+        return oldUserDao.deleteById(user.getId());
     }
 
     @Override

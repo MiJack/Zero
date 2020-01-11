@@ -16,7 +16,7 @@
 
 package com.mijack.zero.biz.user.domain.factory;
 
-import com.mijack.zero.biz.user.domain.UserAuth;
+import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.framework.ddd.Factory;
 
 /**

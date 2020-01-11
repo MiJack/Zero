@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,33 +14,42 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.domain;
+package com.mijack.zero.app.meta;
 
 import java.sql.Timestamp;
+import java.util.regex.Pattern;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.mijack.zero.common.Assert;
+import com.mijack.zero.common.exceptions.BaseBizException;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class UserAuth {
+@NoArgsConstructor
+@TableName("Zero_User")
+@AllArgsConstructor
+public class User {
+    public static final Pattern EMAIL_PATTERN = Pattern.compile("\\w+@(\\w+.)+\\w+");
     /**
      * 用户id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 密码对应的盐
+     * 用户名
      */
-    private String salt;
+    private String name;
     /**
-     * 加密类型
+     * 用户邮箱
      */
-    private int type;
-    /**
-     * 加密后的密码
-     */
-    private String cryptPassword;
+    private String email;
     /**
      * 创建时间
      */
@@ -49,4 +58,9 @@ public class UserAuth {
      * 更新时间
      */
     private Timestamp updateTime;
+
+    public void setEmail(String email) {
+        Assert.state(EMAIL_PATTERN.matcher(email).matches(), () -> BaseBizException.createException("邮箱格式错误"));
+        this.email = email;
+    }
 }

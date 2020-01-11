@@ -16,6 +16,8 @@
 
 package com.mijack.zero.biz.user.ui.command;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.mijack.zero.common.web.mvc.Command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +31,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateUserCommand implements Command {
     private static final long serialVersionUID = 6042904662934731434L;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String email;
+    @NotEmpty
     private String password;
 }

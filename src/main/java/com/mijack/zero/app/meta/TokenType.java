@@ -14,18 +14,26 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.dao;
+package com.mijack.zero.app.meta;
 
-import com.mijack.zero.biz.user.infrastructure.dao.data.UserAuthDO;
-import com.mijack.zero.biz.user.infrastructure.dao.data.UserDO;
-import com.mijack.zero.framework.dao.BaseDao;
-import com.mijack.zero.framework.ddd.Dao;
-import org.apache.ibatis.annotations.Mapper;
+import com.mijack.zero.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Mapper
-@Dao
-public interface UserAuthDao extends BaseDao<UserAuthDO> {
+public enum TokenType implements IdentifiableEnum<TokenType> {
+    /**
+     * 用户登录
+     */
+    USER_LOGIN(1, "用户登录");
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
+
+    TokenType(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }

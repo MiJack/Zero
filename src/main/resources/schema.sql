@@ -31,4 +31,23 @@ CREATE TABLE `Zero_UserAuth`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户密码信息表'
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户密码信息表';
+
+DROP TABLE `Zero_Token`;
+
+CREATE TABLE `Zero_Token`
+(
+    `id`           bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `type`         int           NOT NULL DEFAULT 0 COMMENT 'token 类型',
+    `resource_id`  bigint        NOT NULL DEFAULT 0 COMMENT 'resourceId',
+    `token`        varchar(1024) NOT NULL DEFAULT '' COMMENT 'token内容',
+    `expire`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'token过期时间',
+    `token_status` int           NOT NULL DEFAULT 0 COMMENT 'token状态',
+    `create_time`  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`      int           NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='token信息表';

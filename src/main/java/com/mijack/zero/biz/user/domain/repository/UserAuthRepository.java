@@ -17,7 +17,7 @@
 package com.mijack.zero.biz.user.domain.repository;
 
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.domain.UserAuth;
+import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.framework.ddd.Repo;
 
 /**

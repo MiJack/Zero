@@ -15,18 +15,21 @@
  */
 package com.mijack.zero.main;
 
-import com.mijack.zero.biz.account.config.AccountConfig;
-import com.mijack.zero.biz.user.config.UserConfig;
 import com.mijack.zero.config.ServerConfig;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 /**
  * @author Mi&amp;Jack
  */
 @SpringBootApplication
-@Import({UserConfig.class, AccountConfig.class, ServerConfig.class})
+@ComponentScan("com.mijack.zero")
+@MapperScan("com.mijack.zero")
+
+@Import({ServerConfig.class})
 public class ZeroApplication {
 
     public static void main(String[] args) {

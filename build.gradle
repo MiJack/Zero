@@ -110,6 +110,10 @@ dependencies {
 
     asciidoclet 'org.asciidoctor:asciidoclet:1.+'
 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+
+
 }
 
 application {

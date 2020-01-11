@@ -28,5 +28,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @Dao
-public interface UserDao extends BaseDao<UserDO> {
+public interface OldUserDao extends BaseDao<UserDO> {
 }

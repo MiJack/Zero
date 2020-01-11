@@ -14,38 +14,35 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.biz.user.infrastructure.dao.data;
+package com.mijack.zero.app.meta;
 
-import java.sql.Timestamp;
-
-import com.mijack.zero.framework.dao.idata.DataHolder;
-import lombok.Data;
+import com.mijack.zero.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserAuthHolder implements DataHolder<UserAuthDO> {
+public enum TokenStatus implements IdentifiableEnum<TokenStatus> {
+    /**
+     * 有效
+     */
+    VALID(1, "有效"),
+    /**
+     * 过期
+     */
+    EXPIRE(-1, "过期"),
+    /**
+     * 失效
+     */
+    INVALID(-2, "失效的");
 
-    /**
-     * 密码对应的盐
-     */
-    private String salt;
-    /**
-     * 加密类型
-     */
-    private int type;
-    /**
-     * 加密后的密码
-     */
-    private String cryptPassword;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
 
+    TokenStatus(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }
