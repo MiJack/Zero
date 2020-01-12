@@ -28,15 +28,15 @@ import com.mijack.zero.biz.transaction.ui.command.TransactionAttachCommand;
 import com.mijack.zero.biz.transaction.ui.command.TransactionRemoveCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.Transaction;
-import com.mijack.zero.biz.common.TransactionType;
+import com.mijack.zero.app.common.TransactionType;
 import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
 import com.mijack.zero.biz.transaction.domain.repository.TransactionRepository;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.framework.ddd.Factory;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.app.utils.EnumUtils;
 
 /**
  * @author Mi&amp;Jack

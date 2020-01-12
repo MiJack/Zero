@@ -16,9 +16,9 @@
 
 package com.mijack.zero.web.controller;
 
-import com.mijack.zero.common.exceptions.BizCode;
-import com.mijack.zero.common.web.bo.ApiResult;
-import com.mijack.zero.common.web.mvc.view.ApiJsonView;
+import com.mijack.zero.app.exception.BizCode;
+import com.mijack.zero.app.common.web.bo.ApiResult;
+import com.mijack.zero.app.common.web.mvc.view.ApiJsonView;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Ignore;

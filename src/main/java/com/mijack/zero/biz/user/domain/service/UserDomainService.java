@@ -17,32 +17,32 @@
 package com.mijack.zero.biz.user.domain.service;
 
 
-import com.mijack.zero.biz.user.domain.LoginType;
+import com.mijack.zero.app.meta.LoginType;
 import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.biz.user.domain.cases.UserCase;
 import com.mijack.zero.biz.user.domain.factory.UserAuthFactory;
 import com.mijack.zero.biz.user.domain.repository.UserAuthRepository;
-import com.mijack.zero.biz.user.exception.UserLoginFailException;
-import com.mijack.zero.biz.user.exception.UserNotFoundException;
+import com.mijack.zero.app.exception.UserLoginFailException;
+import com.mijack.zero.app.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
-import com.mijack.zero.common.exceptions.SystemErrorException;
-import com.mijack.zero.common.exceptions.WrongParamException;
+import com.mijack.zero.app.exception.SystemErrorException;
+import com.mijack.zero.app.exception.WrongParamException;
 
-import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+import static com.mijack.zero.app.exception.BaseBizException.createException;
 
 import java.util.List;
 import java.util.Optional;
 
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.exception.UserRegisteredException;
+import com.mijack.zero.app.exception.UserRegisteredException;
 import com.mijack.zero.biz.user.domain.factory.UserFactory;
 import com.mijack.zero.framework.ddd.Service;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.app.utils.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.mijack.zero.common.Assert;
+import com.mijack.zero.app.common.Assert;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

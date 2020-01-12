@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 import com.mijack.zero.biz.user.config.UserConfig;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.domain.cases.UserCase;
-import com.mijack.zero.biz.user.exception.UserRegisteredException;
+import com.mijack.zero.app.exception.UserRegisteredException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

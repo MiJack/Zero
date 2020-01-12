@@ -19,8 +19,8 @@ package com.mijack.zero.biz.user.domain;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.exception.BaseBizException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

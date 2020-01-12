@@ -51,3 +51,20 @@ CREATE TABLE `Zero_Token`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='token信息表';
+
+DROP TABLE `Zero_AccountType`;
+
+CREATE TABLE `Zero_AccountType`
+(
+    `id`              bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `typeName`        varchar(1024) NOT NULL DEFAULT '' COMMENT '账号类型名称',
+    `accountTypeIcon` varchar(1024) NOT NULL DEFAULT '' COMMENT '账号图标',
+    `billingType`     int           NOT NULL DEFAULT '0' COMMENT '账号类型',
+    `create_time`     timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`     timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`         int           NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='token信息表';

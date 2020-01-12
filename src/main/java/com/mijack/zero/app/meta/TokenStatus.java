@@ -16,7 +16,7 @@
 
 package com.mijack.zero.app.meta;
 
-import com.mijack.zero.common.enums.IdentifiableEnum;
+import com.mijack.zero.app.common.enums.IdentifiableEnum;
 import lombok.Getter;
 
 /**

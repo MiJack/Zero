@@ -25,8 +25,8 @@ import com.mijack.zero.biz.transaction.domain.Transaction;
 import com.mijack.zero.biz.transaction.domain.factory.ActivityFactory;
 import com.mijack.zero.biz.transaction.domain.factory.TransactionFactory;
 import com.mijack.zero.biz.transaction.domain.repository.TransactionRepository;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;
 
 import com.google.common.collect.Lists;

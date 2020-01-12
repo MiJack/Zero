@@ -16,7 +16,7 @@
 
 package com.mijack.zero.biz.account.domain.factory;
 
-import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+import static com.mijack.zero.app.exception.BaseBizException.createException;
 
 import javax.annotation.Resource;
 
@@ -25,9 +25,9 @@ import com.mijack.zero.biz.account.domain.AccountType;
 import com.mijack.zero.biz.account.domain.repository.AccountTypeRepository;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.exception.UserNotFoundException;
+import com.mijack.zero.app.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
-import com.mijack.zero.common.Assert;
+import com.mijack.zero.app.common.Assert;
 import com.mijack.zero.framework.ddd.Factory;
 
 /**

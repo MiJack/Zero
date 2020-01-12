@@ -19,7 +19,7 @@ package com.mijack.zero.biz.financial.domain;
 import java.util.List;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.common.Money;
+import com.mijack.zero.app.common.Money;
 import com.mijack.zero.biz.transaction.domain.Transaction;
 import lombok.Data;
 

@@ -24,7 +24,7 @@ import com.mijack.zero.biz.account.domain.UserAccount;
 import com.mijack.zero.biz.account.infrastructure.dao.UserAccountDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.UserAccountDO;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
-import com.mijack.zero.common.base.BaseConverter;
+import com.mijack.zero.web.controller.BaseConverter;
 import com.mijack.zero.framework.ddd.Repo;
 import org.jetbrains.annotations.NotNull;
 

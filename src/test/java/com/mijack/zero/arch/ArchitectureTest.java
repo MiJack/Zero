@@ -18,7 +18,7 @@ package com.mijack.zero.arch;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-import com.mijack.zero.common.web.mvc.ApiController;
+import com.mijack.zero.app.common.web.mvc.ApiController;
 import com.mijack.zero.framework.ddd.Dao;
 import com.mijack.zero.framework.ddd.Factory;
 import com.mijack.zero.framework.ddd.Repo;

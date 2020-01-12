@@ -25,7 +25,7 @@ import com.mijack.zero.biz.transaction.ui.command.ActivityDeleteCommand;
 import com.mijack.zero.biz.transaction.ui.command.ActivityListCommand;
 import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.service.ActivityService;
-import com.mijack.zero.common.web.mvc.ApiController;
+import com.mijack.zero.app.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**

@@ -19,8 +19,8 @@ package com.mijack.zero.biz.transaction.domain;
 import java.sql.Timestamp;
 
 import com.mijack.zero.biz.account.domain.UserAccount;
-import com.mijack.zero.biz.common.Money;
-import com.mijack.zero.biz.common.TransactionType;
+import com.mijack.zero.app.common.Money;
+import com.mijack.zero.app.common.TransactionType;
 import lombok.Data;
 
 /**

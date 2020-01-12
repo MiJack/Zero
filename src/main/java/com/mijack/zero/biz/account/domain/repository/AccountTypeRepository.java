@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.mijack.zero.biz.account.domain.AccountType;
-import com.mijack.zero.biz.account.infrastructure.dao.AccountTypeDao;
+import com.mijack.zero.biz.account.infrastructure.dao.OldAccountTypeDao;
 import com.mijack.zero.biz.account.infrastructure.dao.data.AccountTypeDO;
-import com.mijack.zero.common.base.BaseConverter;
+import com.mijack.zero.web.controller.BaseConverter;
 import com.mijack.zero.framework.ddd.Repo;
 
 /**
@@ -34,7 +34,7 @@ import com.mijack.zero.framework.ddd.Repo;
 @Repo
 public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountType> {
     @Resource
-    AccountTypeDao accountTypeDao;
+    OldAccountTypeDao oldAccountTypeDao;
 
     /**
      * 添加AccountType
@@ -44,7 +44,7 @@ public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountT
      */
     public long addAccountType(AccountType accountType) {
         AccountTypeDO accountTypeDO = reverse().convert(accountType);
-        return accountTypeDao.insert(accountTypeDO);
+        return oldAccountTypeDao.insert(accountTypeDO);
     }
 
     /**
@@ -54,7 +54,7 @@ public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountT
      * @return
      */
     public AccountType getAccountTypeById(Long id) {
-        return Optional.ofNullable(accountTypeDao.selectById(id)).map(this::convert).orElse(null);
+        return Optional.ofNullable(oldAccountTypeDao.selectById(id)).map(this::convert).orElse(null);
     }
 
     /**
@@ -63,11 +63,11 @@ public class AccountTypeRepository extends BaseConverter<AccountTypeDO, AccountT
      * @return
      */
     public List<AccountType> listAccountType() {
-        List<AccountTypeDO> result = accountTypeDao.selectList(null);
+        List<AccountTypeDO> result = oldAccountTypeDao.selectList(null);
         return result.stream().map(this::convert).collect(Collectors.toList());
     }
 
     public Long allocateId() {
-        return accountTypeDao.allocateId();
+        return oldAccountTypeDao.allocateId();
     }
 }

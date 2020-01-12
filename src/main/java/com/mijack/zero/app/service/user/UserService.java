@@ -16,7 +16,7 @@
 
 package com.mijack.zero.app.service.user;
 
-import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+import static com.mijack.zero.app.exception.BaseBizException.createException;
 
 import java.util.Optional;
 
@@ -26,13 +26,13 @@ import com.mijack.zero.app.dao.UserDao;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.app.meta.UserAuthType;
-import com.mijack.zero.biz.user.domain.LoginType;
-import com.mijack.zero.biz.user.exception.UserLoginFailException;
-import com.mijack.zero.biz.user.exception.UserRegisteredException;
+import com.mijack.zero.app.meta.LoginType;
+import com.mijack.zero.app.exception.UserLoginFailException;
+import com.mijack.zero.app.exception.UserRegisteredException;
 import com.mijack.zero.app.dao.UserAuthDao;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.exceptions.WrongParamException;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.exception.WrongParamException;
+import com.mijack.zero.app.utils.EnumUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

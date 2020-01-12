@@ -16,7 +16,7 @@
 
 package com.mijack.zero.biz.transaction.domain.service;
 
-import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+import static com.mijack.zero.app.exception.BaseBizException.createException;
 
 import java.util.List;
 
@@ -28,10 +28,10 @@ import com.mijack.zero.biz.transaction.domain.Activity;
 import com.mijack.zero.biz.transaction.domain.factory.ActivityFactory;
 import com.mijack.zero.biz.transaction.domain.repository.ActivityRepository;
 import com.mijack.zero.biz.user.domain.User;
-import com.mijack.zero.biz.user.exception.UserNotFoundException;
+import com.mijack.zero.app.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.domain.service.UserDomainService;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.framework.ddd.Service;
 
 /**

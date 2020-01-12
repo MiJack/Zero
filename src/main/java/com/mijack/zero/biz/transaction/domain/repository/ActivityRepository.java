@@ -16,7 +16,7 @@
 
 package com.mijack.zero.biz.transaction.domain.repository;
 
-import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+import static com.mijack.zero.app.exception.BaseBizException.createException;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,10 +32,10 @@ import com.mijack.zero.biz.transaction.infrastructure.dao.ActivityDao;
 import com.mijack.zero.biz.transaction.infrastructure.dao.data.ActivityDO;
 import com.mijack.zero.biz.user.domain.User;
 import com.mijack.zero.biz.user.domain.repository.UserRepository;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.base.BaseConverter;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.web.controller.BaseConverter;
 import com.mijack.zero.framework.ddd.Repo;
-import com.mijack.zero.utils.CollectionHelper;
+import com.mijack.zero.app.utils.CollectionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

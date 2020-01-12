@@ -20,8 +20,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import com.mijack.zero.biz.account.ui.dto.UserAccountDto;
-import com.mijack.zero.biz.common.Money;
-import com.mijack.zero.biz.common.TransactionType;
+import com.mijack.zero.app.common.Money;
+import com.mijack.zero.app.common.TransactionType;
 import lombok.Data;
 
 /**

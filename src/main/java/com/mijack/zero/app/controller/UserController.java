@@ -17,7 +17,7 @@
 package com.mijack.zero.app.controller;
 
 
-import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+import static com.mijack.zero.app.exception.BaseBizException.createException;
 
 import java.util.Map;
 
@@ -28,12 +28,12 @@ import com.mijack.zero.app.meta.ApiToken;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.service.user.UserService;
 import com.mijack.zero.app.service.user.UserTokenService;
-import com.mijack.zero.biz.user.exception.UserNotFoundException;
-import com.mijack.zero.biz.user.ui.command.CreateUserCommand;
-import com.mijack.zero.biz.user.ui.command.UserLoginCommand;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.common.web.bo.ApiResult;
-import com.mijack.zero.common.web.mvc.ApiController;
+import com.mijack.zero.app.exception.UserNotFoundException;
+import com.mijack.zero.app.command.CreateUserCommand;
+import com.mijack.zero.app.command.UserLoginCommand;
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.common.web.bo.ApiResult;
+import com.mijack.zero.app.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

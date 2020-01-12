@@ -15,7 +15,7 @@
  */
 package com.mijack.zero.main;
 
-import com.mijack.zero.config.ServerConfig;
+import com.mijack.zero.app.config.ServerConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

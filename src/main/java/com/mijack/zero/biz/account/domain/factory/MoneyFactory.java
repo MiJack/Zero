@@ -18,11 +18,11 @@ package com.mijack.zero.biz.account.domain.factory;
 
 import java.util.Collection;
 
-import com.mijack.zero.biz.common.Currency;
-import com.mijack.zero.biz.common.Money;
-import com.mijack.zero.common.exceptions.BaseBizException;
+import com.mijack.zero.app.common.Currency;
+import com.mijack.zero.app.common.Money;
+import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.framework.ddd.Factory;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.app.utils.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**

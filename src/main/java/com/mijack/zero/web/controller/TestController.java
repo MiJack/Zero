@@ -16,9 +16,9 @@
 
 package com.mijack.zero.web.controller;
 
-import com.mijack.zero.common.exceptions.SystemErrorException;
-import com.mijack.zero.common.web.bo.ApiResult;
-import com.mijack.zero.common.web.mvc.ApiController;
+import com.mijack.zero.app.exception.SystemErrorException;
+import com.mijack.zero.app.common.web.bo.ApiResult;
+import com.mijack.zero.app.common.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
