@@ -19,14 +19,14 @@ package com.mijack.zero.app.dao;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mijack.zero.app.meta.User;
-import com.mijack.zero.framework.ddd.Dao;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Mi&amp;Jack
  */
 @Mapper
-@Dao
+@Repository
 public interface UserDao extends BaseMapper<User> {
     default User findOneByEmail(String email) {
         return selectOne(new QueryWrapper<User>().lambda().eq(User::getEmail, email));
