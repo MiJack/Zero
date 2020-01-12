@@ -22,6 +22,8 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Function;
 
+import com.mijack.zero.common.EnumDto;
+import com.mijack.zero.common.IDescEnum;
 import com.mijack.zero.common.IdentifiableEnum;
 
 /**
@@ -96,5 +98,13 @@ public interface EnumUtils {
      */
     static <E extends Enum<E>> Collection<E> listEnums(Class<E> clazz) {
         return EnumSet.allOf(clazz);
+    }
+
+    static <R extends Enum<R> & IdentifiableEnum<R> & IDescEnum<R>> EnumDto toEnumDto(R item) {
+        EnumDto enumDto = new EnumDto();
+        enumDto.setCode(item.getValue());
+        enumDto.setDesc(item.getDesc());
+        enumDto.setName(item.name());
+        return enumDto;
     }
 }

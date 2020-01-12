@@ -16,13 +16,14 @@
 
 package com.mijack.zero.app.enums;
 
+import com.mijack.zero.common.IDescEnum;
 import com.mijack.zero.common.IdentifiableEnum;
 import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-public enum BillingType implements IdentifiableEnum<BillingType> {
+public enum BillingType implements IdentifiableEnum<BillingType>, IDescEnum<BillingType> {
     /**
      * 余额类型
      */

@@ -16,13 +16,16 @@
 
 package com.mijack.zero.app.controller;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.mijack.zero.app.enums.BillingType;
+import com.mijack.zero.framework.web.bo.ApiResult;
 import com.mijack.zero.framework.web.mvc.ApiController;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.mijack.zero.utils.EnumUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -30,10 +33,10 @@ import com.google.common.collect.Maps;
  */
 @ApiController(path = "/api")
 public class ConstantController {
-    @GetMapping("/constant/info")
-    public Map<String, Object> constant() {
+    @RequestMapping("/constant/info")
+    public ApiResult<Map<String, Object>> constant() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("billingType", Lists.newArrayList(BillingType.values()));
-        return map;
+        map.put("billingType", Arrays.stream(BillingType.values()).map(EnumUtils::toEnumDto).collect(Collectors.toList()));
+        return ApiResult.success(map);
     }
 }
