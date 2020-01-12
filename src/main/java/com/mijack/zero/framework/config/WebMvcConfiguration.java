@@ -35,7 +35,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Mi&amp;Jack
  */
 @Configuration
-@ComponentScan("com.mijack.zero.framework.web.mvc.view")
 public class WebMvcConfiguration implements WebMvcConfigurer {
     @Bean
     public ApiResponseReturnValueHandler apiResponseReturnValueHandler() {

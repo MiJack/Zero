@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `Zero_AccountType`;
 CREATE TABLE `Zero_AccountType`
 (
     `id`                bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `typeName`          varchar(1024) NOT NULL COMMENT '账号类型名称',
+    `type_name`          varchar(1024) NOT NULL COMMENT '账号类型名称',
     `account_type_icon` varchar(1024) NOT NULL COMMENT '账号图标',
     `billing_type`      int           NOT NULL COMMENT '账号类型',
     `create_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
