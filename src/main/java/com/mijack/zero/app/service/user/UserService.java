@@ -19,7 +19,6 @@ package com.mijack.zero.app.service.user;
 import static com.mijack.zero.common.exceptions.BaseBizException.createException;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 import javax.annotation.Resource;
 
@@ -76,5 +75,9 @@ public class UserService {
         String cryptPasswordInDb = Optional.ofNullable(user).map(User::getId).map(userAuthDao::selectById).map(UserAuth::getCryptPassword).orElse(null);
         Assert.equals(cryptPassword, cryptPasswordInDb, () -> createException(UserLoginFailException.class));
         return user;
+    }
+
+    public User getUser(Long userId) {
+        return Optional.ofNullable(userId).map(userDao::selectById).orElse(null);
     }
 }

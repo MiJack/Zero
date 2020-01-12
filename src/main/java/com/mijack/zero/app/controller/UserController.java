@@ -17,18 +17,25 @@
 package com.mijack.zero.app.controller;
 
 
+import static com.mijack.zero.common.exceptions.BaseBizException.createException;
+
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.mijack.zero.app.context.UserContext;
 import com.mijack.zero.app.meta.ApiToken;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.service.user.UserService;
 import com.mijack.zero.app.service.user.UserTokenService;
+import com.mijack.zero.biz.user.exception.UserNotFoundException;
 import com.mijack.zero.biz.user.ui.command.CreateUserCommand;
 import com.mijack.zero.biz.user.ui.command.UserLoginCommand;
+import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.web.bo.ApiResult;
 import com.mijack.zero.common.web.mvc.ApiController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -60,4 +67,16 @@ public class UserController {
                 .build());
     }
 
+    @GetMapping("/user/info")
+    public User getLoginUserInfo() {
+        Long userId = UserContext.getCurrentUserId();
+        return getUserInfo(userId);
+    }
+
+    @GetMapping("/user/{id}")
+    public User getUserInfo(@PathVariable("id") Long userId) {
+        User user = userService.getUser(userId);
+        Assert.notNull(user, () -> createException(UserNotFoundException.class));
+        return user;
+    }
 }

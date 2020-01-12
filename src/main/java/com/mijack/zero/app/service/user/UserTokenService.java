@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mijack.zero.app.dao.token.TokenDao;
 import com.mijack.zero.app.meta.ApiToken;
 import com.mijack.zero.app.meta.TokenStatus;
@@ -52,10 +53,18 @@ public class UserTokenService {
         apiToken.setType(TokenType.USER_LOGIN);
         long expireTime = System.currentTimeMillis() + DateUtils.MILLIS_PER_DAY;
         apiToken.setExpire(new Timestamp(expireTime));
+        // todo 检查token的唯一性
         apiToken.setTokenStatus(TokenStatus.VALID);
         apiToken.setToken(Base64.encodeBase64String((userId + "" + expireTime).getBytes()));
         tokenDao.insert(apiToken);
         Assert.state(apiToken.getId() > 0, () -> BaseBizException.createException("创建token失败"));
         return apiToken;
+    }
+
+    public ApiToken findToken(TokenType tokenType, String token) {
+        return tokenDao.selectList(new QueryWrapper<ApiToken>().lambda()
+                .eq(ApiToken::getTokenStatus, TokenStatus.VALID)
+                .eq(ApiToken::getType, tokenType)
+                .eq(ApiToken::getToken, token)).stream().findFirst().orElse(null);
     }
 }
