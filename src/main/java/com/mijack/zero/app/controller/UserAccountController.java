@@ -26,31 +26,34 @@ import com.mijack.zero.app.service.UserAccountService;
 import com.mijack.zero.app.command.AccountCreateCommand;
 import com.mijack.zero.app.command.AccountDisableCommand;
 import com.mijack.zero.app.command.AccountListCommand;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * todo 支持分页查询
+ *
  * @author Mi&amp;Jack
  */
-@ApiController(path = "/api")
+@ApiController(path = "/api/user/account")
 public class UserAccountController {
     @Resource
     UserAccountService userAccountService;
 
-    @GetMapping(value = "/account/list")
+    @GetMapping(value = "/list")
     public List<UserAccount> listUserAccount(@RequestParam AccountListCommand accountListCommand) {
         return userAccountService.listUserAccount(accountListCommand.getUserId());
     }
 
-    @PutMapping("/account/create")
-    public UserAccount createAccount(@RequestParam AccountCreateCommand accountCreateCommand) {
+    @PutMapping("/create")
+    public UserAccount createUserAccount(@RequestParam AccountCreateCommand accountCreateCommand) {
         return userAccountService.createAccount(accountCreateCommand.getUserId(), accountCreateCommand.getAccountName(), accountCreateCommand.getAccountType());
     }
 
-    @PutMapping("/account/disable")
-    public UserAccount disableAccount(@RequestParam AccountDisableCommand accountDisableCommand) {
-        return userAccountService.disableAccount(accountDisableCommand.getUserId(), accountDisableCommand.getAccountId());
+    @DeleteMapping("/delete")
+    public UserAccount deleteUserAccount(@RequestParam AccountDisableCommand accountDisableCommand) {
+        return userAccountService.deleteAccount(accountDisableCommand.getUserId(), accountDisableCommand.getAccountId());
     }
 }
 

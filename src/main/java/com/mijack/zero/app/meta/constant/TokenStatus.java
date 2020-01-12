@@ -14,32 +14,35 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.constant;
 
-import java.io.Serializable;
-
-import lombok.Data;
+import com.mijack.zero.app.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
+public enum TokenStatus implements IdentifiableEnum<TokenStatus> {
     /**
-     * 主键
+     * 有效
      */
-    Long id;
+    VALID(1, "有效"),
     /**
-     * 用户信息
+     * 过期
      */
-    Long userId;
+    EXPIRE(-1, "过期"),
     /**
-     * 账号类型
+     * 失效
      */
-    private Long accountTypeId;
-    /**
-     * 账号名称
-     */
-    private String name;
+    INVALID(-2, "失效的");
+
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
+
+    TokenStatus(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }

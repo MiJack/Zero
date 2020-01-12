@@ -16,42 +16,31 @@
 
 package com.mijack.zero.app.meta;
 
-import java.io.Serializable;
+
 import java.sql.Timestamp;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.meta.constant.BillingType;
+import com.mijack.zero.app.meta.constant.TransactionType;
 import lombok.Data;
 
 /**
+ * 交易，往往会引起多个账户的余额变动，这里只关注余额的变动，不关心具体的数值<br/>
+ * 例如
+ * <ol>
+ *     <li>购买商品</li>
+ *     <li>股票收益</li>
+ *     <li>分期付款</li>
+ *     <li>转账</li>
+ * </ol>
+ *
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_AccountType")
-public class AccountType implements Serializable {
-    private static final long serialVersionUID = 3625866287984147619L;
-    /**
-     * id
-     */
+public class Transaction {
     private Long id;
-    /**
-     * 账号类型名称
-     */
-    private String typeName;
-    /**
-     * 账号类型图标
-     */
-    private String accountTypeIcon;
-    /**
-     * 类型
-     */
-    private BillingType billingType;
-    /**
-     * 创建时间
-     */
+    private Long activityId;
+    private Long userAccountId;
+    private Money money;
+    private TransactionType transactionType;
     private Timestamp createTime;
-    /**
-     * 更新时间
-     */
     private Timestamp updateTime;
 }

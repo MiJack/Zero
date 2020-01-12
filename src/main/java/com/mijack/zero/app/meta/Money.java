@@ -16,42 +16,23 @@
 
 package com.mijack.zero.app.meta;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.meta.constant.BillingType;
+import com.mijack.zero.app.meta.constant.Currency;
 import lombok.Data;
 
 /**
+ * 用于表示货币单位
+ *
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_AccountType")
-public class AccountType implements Serializable {
-    private static final long serialVersionUID = 3625866287984147619L;
+public class Money {
     /**
-     * id
+     * 货币单位
      */
-    private Long id;
+    private Currency currency;
     /**
-     * 账号类型名称
+     * 具体数值
      */
-    private String typeName;
-    /**
-     * 账号类型图标
-     */
-    private String accountTypeIcon;
-    /**
-     * 类型
-     */
-    private BillingType billingType;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+    private Float money;
+
 }

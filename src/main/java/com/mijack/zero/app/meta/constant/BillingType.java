@@ -14,44 +14,35 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.constant;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.meta.constant.BillingType;
-import lombok.Data;
+import com.mijack.zero.app.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-@TableName("Zero_AccountType")
-public class AccountType implements Serializable {
-    private static final long serialVersionUID = 3625866287984147619L;
+public enum BillingType implements IdentifiableEnum<BillingType> {
     /**
-     * id
+     * 余额类型
      */
-    private Long id;
+    BALANCE(1),
     /**
-     * 账号类型名称
+     * 理财型
      */
-    private String typeName;
+    FINANCIAL(2),
     /**
-     * 账号类型图标
+     * 理财余额类型
      */
-    private String accountTypeIcon;
+    FINANCIAL_BALANCE(3),
     /**
-     * 类型
+     * 预支型
      */
-    private BillingType billingType;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+    PREPAYMENT(4);
+    @Getter
+    private final int id;
+
+    BillingType(int id) {
+        this.id = id;
+    }
 }

@@ -14,9 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
-
-import java.io.Serializable;
+package com.mijack.zero.app.command;
 
 import lombok.Data;
 
@@ -24,22 +22,6 @@ import lombok.Data;
  * @author Mi&amp;Jack
  */
 @Data
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
-    /**
-     * 主键
-     */
-    Long id;
-    /**
-     * 用户信息
-     */
-    Long userId;
-    /**
-     * 账号类型
-     */
-    private Long accountTypeId;
-    /**
-     * 账号名称
-     */
-    private String name;
+public class ActivityListCommand {
+    private Long userId;
 }

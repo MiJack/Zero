@@ -14,44 +14,24 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.command;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.meta.constant.BillingType;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_AccountType")
-public class AccountType implements Serializable {
-    private static final long serialVersionUID = 3625866287984147619L;
+public class TransactionRemoveCommand {
+
     /**
-     * id
+     * 产生事项的用户
      */
-    private Long id;
+    private Long userId;
+    private Long activityId;
     /**
-     * 账号类型名称
+     * 对应账户的资金的变动
      */
-    private String typeName;
-    /**
-     * 账号类型图标
-     */
-    private String accountTypeIcon;
-    /**
-     * 类型
-     */
-    private BillingType billingType;
-    /**
-     * 创建时间
-     */
-    private Timestamp createTime;
-    /**
-     * 更新时间
-     */
-    private Timestamp updateTime;
+    private Long userAccountId;
+    private Long transactionId;
 }

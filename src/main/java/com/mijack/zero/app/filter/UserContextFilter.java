@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.mijack.zero.app.context.UserContext;
 import com.mijack.zero.app.meta.ApiToken;
-import com.mijack.zero.app.meta.TokenType;
+import com.mijack.zero.app.meta.constant.TokenType;
 import com.mijack.zero.app.service.user.UserTokenService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

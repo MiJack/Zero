@@ -26,7 +26,7 @@ import com.mijack.zero.app.dao.UserDao;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.app.meta.UserAuthType;
-import com.mijack.zero.app.meta.LoginType;
+import com.mijack.zero.app.meta.constant.LoginType;
 import com.mijack.zero.app.exception.UserLoginFailException;
 import com.mijack.zero.app.exception.UserRegisteredException;
 import com.mijack.zero.app.dao.UserAuthDao;

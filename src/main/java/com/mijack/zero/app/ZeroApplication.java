@@ -13,33 +13,27 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+package com.mijack.zero.app;
 
-package com.mijack.zero.app.meta;
-
-import java.io.Serializable;
-
-import lombok.Data;
+import com.mijack.zero.app.config.ServerConfig;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
-    /**
-     * 主键
-     */
-    Long id;
-    /**
-     * 用户信息
-     */
-    Long userId;
-    /**
-     * 账号类型
-     */
-    private Long accountTypeId;
-    /**
-     * 账号名称
-     */
-    private String name;
+@SpringBootApplication
+@ComponentScan("com.mijack.zero")
+@MapperScan("com.mijack.zero")
+
+@Import({ServerConfig.class})
+public class ZeroApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ZeroApplication.class, args);
+    }
+
 }

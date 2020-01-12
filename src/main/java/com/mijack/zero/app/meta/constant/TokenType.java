@@ -14,32 +14,26 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.constant;
 
-import java.io.Serializable;
-
-import lombok.Data;
+import com.mijack.zero.app.common.enums.IdentifiableEnum;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
+public enum TokenType implements IdentifiableEnum<TokenType> {
     /**
-     * 主键
+     * 用户登录
      */
-    Long id;
-    /**
-     * 用户信息
-     */
-    Long userId;
-    /**
-     * 账号类型
-     */
-    private Long accountTypeId;
-    /**
-     * 账号名称
-     */
-    private String name;
+    USER_LOGIN(1, "用户登录");
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
+
+    TokenType(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }

@@ -14,32 +14,27 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.controller;
 
-import java.io.Serializable;
-
-import lombok.Data;
+import com.mijack.zero.app.exception.SystemErrorException;
+import com.mijack.zero.app.common.web.bo.ApiResult;
+import com.mijack.zero.app.common.web.mvc.ApiController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
-    /**
-     * 主键
-     */
-    Long id;
-    /**
-     * 用户信息
-     */
-    Long userId;
-    /**
-     * 账号类型
-     */
-    private Long accountTypeId;
-    /**
-     * 账号名称
-     */
-    private String name;
+@ApiController(path = "/api/test")
+public class TestController {
+
+    @GetMapping(value = "/hello")
+    public ApiResult<String> hello() {
+        return ApiResult.success("Hello world");
+    }
+
+    @GetMapping(value = "/error")
+    public void error() {
+        throw new SystemErrorException();
+    }
+
 }

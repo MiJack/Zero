@@ -16,6 +16,7 @@
 
 package com.mijack.zero.web.controller;
 
+import com.mijack.zero.app.controller.TestController;
 import com.mijack.zero.app.exception.BizCode;
 import com.mijack.zero.app.common.web.bo.ApiResult;
 import com.mijack.zero.app.common.web.mvc.view.ApiJsonView;

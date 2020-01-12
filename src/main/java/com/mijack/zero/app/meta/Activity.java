@@ -16,49 +16,41 @@
 
 package com.mijack.zero.app.meta;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.meta.constant.TokenStatus;
-import com.mijack.zero.app.meta.constant.TokenType;
 import lombok.Data;
 
 /**
+ * 资金活动的事项
+ *
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_Token")
-public class ApiToken implements Serializable {
-    private static final long serialVersionUID = -2617788946172473353L;
+public class Activity {
     /**
-     * 主键
+     * 事项id
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * token 类型
+     * 产生事项的用户
      */
-    private TokenType type;
+    private Long userId;
     /**
-     * 资源类型
+     * 事项的名称
      */
-    private Long resourceId;
+    private String name;
     /**
-     * token内容
+     * 事项的备注
      */
-    private String token;
+    private String mark;
     /**
-     * token过期时间
+     * 标签
      */
-    private Timestamp expire;
+    private String tags;
     /**
-     * token状态
+     * 事项最早一笔资金产生的时间
      */
-    private TokenStatus tokenStatus;
-
+    private Timestamp happenTime;
     /**
      * 创建时间
      */
@@ -67,5 +59,4 @@ public class ApiToken implements Serializable {
      * 更新时间
      */
     private Timestamp updateTime;
-
 }

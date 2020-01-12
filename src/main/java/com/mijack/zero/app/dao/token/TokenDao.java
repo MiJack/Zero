@@ -23,8 +23,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mijack.zero.app.meta.ApiToken;
-import com.mijack.zero.app.meta.TokenStatus;
-import com.mijack.zero.app.meta.TokenType;
+import com.mijack.zero.app.meta.constant.TokenStatus;
+import com.mijack.zero.app.meta.constant.TokenType;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

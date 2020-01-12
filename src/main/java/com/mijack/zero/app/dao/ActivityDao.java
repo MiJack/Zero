@@ -14,32 +14,24 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.dao;
 
-import java.io.Serializable;
+import java.util.List;
 
-import lombok.Data;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mijack.zero.app.meta.Activity;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Mi&amp;Jack
  */
-@Data
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
-    /**
-     * 主键
-     */
-    Long id;
-    /**
-     * 用户信息
-     */
-    Long userId;
-    /**
-     * 账号类型
-     */
-    private Long accountTypeId;
-    /**
-     * 账号名称
-     */
-    private String name;
+@Mapper
+@Repository
+public interface ActivityDao extends BaseMapper<Activity> {
+    default List<Activity> selectActivityByUserId(Long userId) {
+        //  todo 支持分页查询
+        return selectList(new QueryWrapper<Activity>().lambda().eq(Activity::getUserId, userId));
+    }
 }

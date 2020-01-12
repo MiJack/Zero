@@ -18,7 +18,15 @@ package com.mijack.zero.app.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.dao.AccountTypeDao;
+import com.mijack.zero.app.dao.UserAccountDao;
+import com.mijack.zero.app.exception.BaseBizException;
+import com.mijack.zero.app.meta.AccountType;
 import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.app.utils.EnumUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,15 +34,34 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserAccountService {
+    @Resource
+    UserAccountDao userAccountDao;
+    @Resource
+    AccountTypeDao accountTypeDao;
+
     public List<UserAccount> listUserAccount(long userId) {
-        return null;
+        return userAccountDao.selectByUserAccount(userId);
     }
 
     public UserAccount createAccount(long userId, String accountName, Long accountType) {
-        return null;
+        Assert.notNull(accountTypeDao.selectById(accountType), () -> BaseBizException.createException("账户类型不存在"));
+        UserAccount userAccount = new UserAccount();
+        userAccount.setName(accountName);
+        userAccount.setUserId(userId);
+        userAccount.setAccountTypeId(accountType);
+        Assert.state(userAccountDao.insert(userAccount) > 0, () -> BaseBizException.createException("创建账户失败"));
+        return userAccount;
     }
 
-    public UserAccount disableAccount(long userId, long accountId) {
+    public UserAccount deleteAccount(long userId, long accountId) {
+        UserAccount userAccount = userAccountDao.selectById(accountId);
+        Assert.notNull(userAccount, () -> BaseBizException.createException("账户不存在"));
+        Assert.equals(userAccount.getUserId(), userId, () -> BaseBizException.createException("账户不存在"));
+        Assert.state(userAccountDao.deleteById(accountId) > 0, () -> BaseBizException.createException("删除账号失败"));
+        return userAccount;
+    }
+
+    public UserAccount findUserAccountById(Long userAccountId) {
         return null;
     }
 }

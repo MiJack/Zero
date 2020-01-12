@@ -26,7 +26,7 @@ import com.mijack.zero.app.dao.AccountTypeDao;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.AccountType;
 import com.mijack.zero.app.utils.EnumUtils;
-import com.mijack.zero.biz.account.domain.BillingType;
+import com.mijack.zero.app.meta.constant.BillingType;
 import com.mijack.zero.framework.ddd.Service;
 
 /**
