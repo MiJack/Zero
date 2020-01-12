@@ -1,7 +1,7 @@
 # ----------------------
 # 用户信息表
 # ----------------------
-DROP table `Zero_User`;
+DROP TABLE IF EXISTS `Zero_User`;
 CREATE TABLE `Zero_User`
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -16,7 +16,7 @@ CREATE TABLE `Zero_User`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户信息表';
 
-DROP table `Zero_UserAuth`;
+DROP TABLE IF EXISTS `Zero_UserAuth`;
 
 CREATE TABLE `Zero_UserAuth`
 (
@@ -33,7 +33,7 @@ CREATE TABLE `Zero_UserAuth`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户密码信息表';
 
-DROP TABLE `Zero_Token`;
+DROP TABLE IF EXISTS `Zero_Token`;
 
 CREATE TABLE `Zero_Token`
 (
@@ -52,19 +52,80 @@ CREATE TABLE `Zero_Token`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='token信息表';
 
-DROP TABLE `Zero_AccountType`;
+DROP TABLE IF EXISTS `Zero_AccountType`;
 
 CREATE TABLE `Zero_AccountType`
 (
-    `id`              bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `typeName`        varchar(1024) NOT NULL DEFAULT '' COMMENT '账号类型名称',
-    `accountTypeIcon` varchar(1024) NOT NULL DEFAULT '' COMMENT '账号图标',
-    `billingType`     int           NOT NULL DEFAULT '0' COMMENT '账号类型',
-    `create_time`     timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`     timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `deleted`         int           NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    `id`                bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `typeName`          varchar(1024) NOT NULL DEFAULT '' COMMENT '账号类型名称',
+    `account_type_icon` varchar(1024) NOT NULL DEFAULT '' COMMENT '账号图标',
+    `billing_type`      int           NOT NULL DEFAULT '0' COMMENT '账号类型',
+    `create_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`           int           NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='token信息表';
+
+DROP TABLE IF EXISTS `Zero_UserAccount`;
+
+
+CREATE TABLE `Zero_UserAccount`
+(
+    `id`              bigint       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `user_id`         bigint       NOT NULL DEFAULT '0' COMMENT '用户id',
+    `account_type_id` bigint       NOT NULL DEFAULT '0' COMMENT '账号类型id',
+    `title`           varchar(200) NOT NULL DEFAULT '0' COMMENT '账号名称',
+    `create_time`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`         int          NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户账户表';
+
+
+
+DROP TABLE IF EXISTS `Zero_UserActivity`;
+
+CREATE TABLE `Zero_UserActivity`
+(
+    `id`            bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `user_id`       bigint        NOT NULL DEFAULT '0' COMMENT '用户id',
+    `name`          varchar(200)  NOT NULL DEFAULT '' COMMENT '事项名称',
+    `mark`          varchar(2000) NOT NULL DEFAULT '' COMMENT '事项备注',
+    `tags`          varchar(2000) NOT NULL DEFAULT '' COMMENT '事项标签',
+    `activity_time` timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '活动时间',
+    `create_time`   timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`   timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`       int           NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户活动记录表';
+
+DROP TABLE IF EXISTS `Zero_UserTransaction`;
+
+CREATE TABLE `Zero_UserTransaction`
+(
+    `id`               bigint       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `activity_id`      bigint       NOT NULL DEFAULT '0' COMMENT '活动id',
+    `user_account_id`  bigint       NOT NULL DEFAULT '0' COMMENT '用户账号id',
+    `currency`         int          NOT NULL DEFAULT '0' COMMENT '货币类型',
+    `amount`            float        NOT NULL DEFAULT '0' COMMENT '交易金额',
+    `transaction_type` int          NOT NULL COMMENT '资金变动类型',
+    `name`             varchar(200) NOT NULL DEFAULT '' COMMENT '事项名称',
+    `transaction_time` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '交易类型时间',
+    `create_time`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`          int          NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户交易记录表';
+

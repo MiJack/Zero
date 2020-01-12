@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.service.user.UserService;
 import com.mijack.zero.app.exception.UserRegisteredException;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

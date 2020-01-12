@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.app.command.TransactionAttachCommand;
 import com.mijack.zero.app.command.TransactionRemoveCommand;
+import com.mijack.zero.app.component.Money;
 import com.mijack.zero.app.service.account.UserAccountService;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.TransactionDao;
@@ -75,7 +76,9 @@ public class TransactionService {
         Transaction transaction = new Transaction();
         transaction.setActivityId(command.getActivityId());
         transaction.setTransactionType(EnumUtils.idOf(command.getTransactionType(), TransactionType.class));
-        transaction.setMoney(moneyFactory.parse(command.getMoney()));
+        Money money = moneyFactory.parse(command.getAmountMoney());
+        transaction.setCurrency(money.getCurrency());
+        transaction.setAmount(money.getMoney());
         transaction.setUserAccountId(command.getUserAccountId());
         transaction.setUpdateTime(now);
         return transaction;

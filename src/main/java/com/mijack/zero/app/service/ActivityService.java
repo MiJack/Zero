@@ -75,7 +75,7 @@ public class ActivityService {
         transactionAttachCommand.setActivityId(activity.getId());
         transactionAttachCommand.setUserId(command.getUserId());
         transactionAttachCommand.setUserAccountId(command.getUserAccountId());
-        transactionAttachCommand.setMoney(command.getMoney());
+        transactionAttachCommand.setAmountMoney(command.getAmountMoney());
         transactionAttachCommand.setTransactionType(command.getTransactionType());
         transactionAttachCommand.setCreateTime(happenTime);
         Assert.state(transactionService.createTransaction(transactionAttachCommand) != null, () -> createException("创建交易失败"));

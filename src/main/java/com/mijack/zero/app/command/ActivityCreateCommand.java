@@ -52,7 +52,7 @@ public class ActivityCreateCommand {
     /**
      * 对应的格式为CNY 111.22
      */
-    private String money;
+    private String amountMoney;
     /**
      * @see TransactionType#getId()
      */

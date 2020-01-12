@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mijack.zero.app.component.Money;
+import com.mijack.zero.app.enums.Currency;
 import com.mijack.zero.app.enums.TransactionType;
 import lombok.Data;
 
@@ -43,13 +44,27 @@ import lombok.Data;
 public class Transaction {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long activityId;
-    private Long userAccountId;
-    private Money money;
     /**
-     *
+     * 活动id
+     */
+    private Long activityId;
+    /**
+     * 用户账号id
+     */
+    private Long userAccountId;
+    /**
+     * 交易金额
+     */
+    private Float amount;
+    private Currency currency;
+    /**
+     * 资金流动类型
      */
     private TransactionType transactionType;
+    /**
+     * 交易时间
+     */
+    private Timestamp transactionTime;
     /**
      * 创建时间
      */
