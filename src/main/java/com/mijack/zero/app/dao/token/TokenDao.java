@@ -16,8 +16,15 @@
 
 package com.mijack.zero.app.dao.token;
 
+import java.util.List;
+import java.util.Optional;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mijack.zero.app.meta.ApiToken;
+import com.mijack.zero.app.meta.TokenStatus;
+import com.mijack.zero.app.meta.TokenType;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -25,4 +32,16 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TokenDao extends BaseMapper<ApiToken> {
+    default List<ApiToken> findLoginTokenByUserId(Long userId) {
+        return selectList(
+                new QueryWrapper<ApiToken>().lambda().eq(ApiToken::getResourceId, userId)
+                        .eq(ApiToken::getType, TokenType.USER_LOGIN)
+                        .eq(ApiToken::getTokenStatus, TokenStatus.VALID));
+    }
+
+    default int markApiTokenStatus(Long id, TokenStatus status) {
+        return Optional.ofNullable(id)
+                .map(this::selectById)
+                .map(apiToken -> update(apiToken, new UpdateWrapper<ApiToken>().lambda().set(ApiToken::getTokenStatus, status))).orElse(0);
+    }
 }

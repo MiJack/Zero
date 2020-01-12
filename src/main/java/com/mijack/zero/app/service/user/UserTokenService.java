@@ -17,6 +17,7 @@
 package com.mijack.zero.app.service.user;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -27,6 +28,7 @@ import com.mijack.zero.app.meta.TokenType;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.exceptions.BaseBizException;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,12 @@ public class UserTokenService {
     TokenDao tokenDao;
 
     public ApiToken generationUserApiToken(Long userId) {
+        List<ApiToken> existApiTokens = tokenDao.findLoginTokenByUserId(userId);
+        if (CollectionUtils.isNotEmpty(existApiTokens)) {
+            for (ApiToken apiToken : existApiTokens) {
+                tokenDao.markApiTokenStatus(apiToken.getId(), TokenStatus.INVALID);
+            }
+        }
         ApiToken apiToken = new ApiToken();
         apiToken.setResourceId(userId);
         apiToken.setType(TokenType.USER_LOGIN);
