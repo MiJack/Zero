@@ -22,11 +22,11 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.mijack.zero.app.dao.token.TokenDao;
+import com.mijack.zero.app.dao.TokenDao;
 import com.mijack.zero.app.meta.ApiToken;
-import com.mijack.zero.app.meta.constant.TokenStatus;
-import com.mijack.zero.app.meta.constant.TokenType;
-import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.enums.TokenStatus;
+import com.mijack.zero.app.enums.TokenType;
+import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.exception.BaseBizException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.CollectionUtils;

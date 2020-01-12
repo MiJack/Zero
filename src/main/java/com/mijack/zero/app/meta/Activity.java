@@ -18,6 +18,9 @@ package com.mijack.zero.app.meta;
 
 import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -26,10 +29,12 @@ import lombok.Data;
  * @author Mi&amp;Jack
  */
 @Data
+@TableName("Zero_UserActivity")
 public class Activity {
     /**
      * 事项id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 产生事项的用户
@@ -48,9 +53,9 @@ public class Activity {
      */
     private String tags;
     /**
-     * 事项最早一笔资金产生的时间
+     * 事项产生的时间
      */
-    private Timestamp happenTime;
+    private Timestamp activityTime;
     /**
      * 创建时间
      */

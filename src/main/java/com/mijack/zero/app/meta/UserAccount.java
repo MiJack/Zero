@@ -17,18 +17,24 @@
 package com.mijack.zero.app.meta;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
+@TableName("Zero_UserAccount")
 public class UserAccount implements Serializable {
     private static final long serialVersionUID = 7201792836522277833L;
     /**
      * 主键
      */
+    @TableId(type = IdType.AUTO)
     Long id;
     /**
      * 用户信息
@@ -41,5 +47,13 @@ public class UserAccount implements Serializable {
     /**
      * 账号名称
      */
-    private String name;
+    private String title;
+    /**
+     * 创建时间
+     */
+    private Timestamp createTime;
+    /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
 }

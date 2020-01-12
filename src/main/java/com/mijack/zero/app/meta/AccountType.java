@@ -19,8 +19,10 @@ package com.mijack.zero.app.meta;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.meta.constant.BillingType;
+import com.mijack.zero.app.enums.BillingType;
 import lombok.Data;
 
 /**
@@ -33,6 +35,7 @@ public class AccountType implements Serializable {
     /**
      * id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 账号类型名称

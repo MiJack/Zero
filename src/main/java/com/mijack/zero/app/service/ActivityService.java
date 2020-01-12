@@ -26,19 +26,14 @@ import java.util.Optional;
 import javax.annotation.Resource;
 
 import com.mijack.zero.app.command.ActivityCreateCommand;
-import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.command.TransactionAttachCommand;
+import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.ActivityDao;
-import com.mijack.zero.app.dao.TransactionDao;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.exception.UserNotFoundException;
 import com.mijack.zero.app.meta.Activity;
-import com.mijack.zero.app.meta.MoneyFactory;
-import com.mijack.zero.app.meta.Transaction;
 import com.mijack.zero.app.meta.User;
-import com.mijack.zero.app.meta.UserAccount;
-import com.mijack.zero.app.meta.constant.TransactionType;
 import com.mijack.zero.app.service.user.UserService;
-import com.mijack.zero.app.utils.EnumUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,11 +46,7 @@ public class ActivityService {
     @Resource
     private UserService userService;
     @Resource
-    private UserAccountService userAccountService;
-    @Resource
-    private MoneyFactory moneyFactory;
-    @Resource
-    private TransactionDao transactionDao;
+    private TransactionService transactionService;
 
     public List<Activity> listActivity(Long userId) {
         User user = userService.getUser(userId);
@@ -68,35 +59,30 @@ public class ActivityService {
         Assert.state(user != null, () -> createException("用户不存在"));
         Timestamp happenTime = Optional.ofNullable(command.getHappenTime())
                 .orElseGet(() -> new Timestamp(System.currentTimeMillis()));
-        // 创建交易
-        Transaction transaction = createTransaction(command);
-        Assert.state(transactionDao.insert(transaction) > 0, () -> createException("创建交易失败"));
-
         // 创建
         Activity activity = new Activity();
         activity.setMark(command.getMark());
         activity.setName(command.getName());
         activity.setUserId(command.getUserId());
         activity.setTags(command.getTags());
-        activity.setHappenTime(happenTime);
+        activity.setActivityTime(happenTime);
 
         Assert.state(activityDao.insert(activity) > 0, () -> createException(BaseBizException.class, "创建活动失败"));
+        Assert.state(activity.getId() > 0, () -> createException(BaseBizException.class, "创建活动失败"));
+
+        // 创建交易
+        TransactionAttachCommand transactionAttachCommand = new TransactionAttachCommand();
+        transactionAttachCommand.setActivityId(activity.getId());
+        transactionAttachCommand.setUserId(command.getUserId());
+        transactionAttachCommand.setUserAccountId(command.getUserAccountId());
+        transactionAttachCommand.setMoney(command.getMoney());
+        transactionAttachCommand.setTransactionType(command.getTransactionType());
+        transactionAttachCommand.setCreateTime(happenTime);
+        Assert.state(transactionService.createTransaction(transactionAttachCommand) != null, () -> createException("创建交易失败"));
+
         return activity;
     }
 
-
-    public Transaction createTransaction(ActivityCreateCommand command) {
-        Timestamp now = command.getHappenTime() != null ? command.getHappenTime() :
-                new Timestamp(System.currentTimeMillis());
-        UserAccount userAccount = userAccountService.findUserAccountById(command.getUserAccountId());
-        Assert.state(userAccount != null, () -> createException("用户账号不存在"));
-        Transaction transaction = new Transaction();
-        transaction.setMoney(moneyFactory.parse(command.getMoney()));
-        transaction.setTransactionType(EnumUtils.idOf(command.getTransactionType(), TransactionType.class));
-        transaction.setUserAccountId(command.getUserAccountId());
-        transaction.setUpdateTime(now);
-        return transaction;
-    }
 
     public Activity findActivityByActivityId(Long activityId) {
         return activityDao.selectById(activityId);

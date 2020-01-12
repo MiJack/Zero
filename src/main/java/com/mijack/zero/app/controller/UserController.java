@@ -23,7 +23,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.context.UserContext;
+import com.mijack.zero.framework.context.UserContext;
 import com.mijack.zero.app.meta.ApiToken;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.service.user.UserService;
@@ -31,9 +31,9 @@ import com.mijack.zero.app.service.user.UserTokenService;
 import com.mijack.zero.app.exception.UserNotFoundException;
 import com.mijack.zero.app.command.CreateUserCommand;
 import com.mijack.zero.app.command.UserLoginCommand;
-import com.mijack.zero.app.common.Assert;
-import com.mijack.zero.app.common.web.bo.ApiResult;
-import com.mijack.zero.app.common.web.mvc.ApiController;
+import com.mijack.zero.common.Assert;
+import com.mijack.zero.framework.web.bo.ApiResult;
+import com.mijack.zero.framework.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

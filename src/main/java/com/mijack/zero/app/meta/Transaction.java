@@ -19,7 +19,11 @@ package com.mijack.zero.app.meta;
 
 import java.sql.Timestamp;
 
-import com.mijack.zero.app.meta.constant.TransactionType;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.mijack.zero.app.component.Money;
+import com.mijack.zero.app.enums.TransactionType;
 import lombok.Data;
 
 /**
@@ -35,12 +39,23 @@ import lombok.Data;
  * @author Mi&amp;Jack
  */
 @Data
+@TableName("Zero_UserTransaction")
 public class Transaction {
+    @TableId(type = IdType.AUTO)
     private Long id;
     private Long activityId;
     private Long userAccountId;
     private Money money;
+    /**
+     *
+     */
     private TransactionType transactionType;
+    /**
+     * 创建时间
+     */
     private Timestamp createTime;
+    /**
+     * 更新时间
+     */
     private Timestamp updateTime;
 }

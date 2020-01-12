@@ -16,7 +16,7 @@
 
 package com.mijack.zero.app.command;
 
-import com.mijack.zero.app.common.web.mvc.Command;
+import com.mijack.zero.framework.web.mvc.Command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

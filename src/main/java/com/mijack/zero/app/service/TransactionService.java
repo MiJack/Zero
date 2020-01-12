@@ -22,15 +22,16 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.app.command.TransactionAttachCommand;
 import com.mijack.zero.app.command.TransactionRemoveCommand;
-import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.app.service.account.UserAccountService;
+import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.TransactionDao;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.Activity;
-import com.mijack.zero.app.meta.MoneyFactory;
+import com.mijack.zero.app.component.MoneyFactory;
 import com.mijack.zero.app.meta.Transaction;
 import com.mijack.zero.app.meta.UserAccount;
-import com.mijack.zero.app.meta.constant.TransactionType;
-import com.mijack.zero.app.utils.EnumUtils;
+import com.mijack.zero.app.enums.TransactionType;
+import com.mijack.zero.utils.EnumUtils;
 import org.springframework.stereotype.Service;
 
 /**

@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.common.web.mvc.ApiController;
+import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.command.ActivityCreateCommand;
 import com.mijack.zero.app.command.ActivityListCommand;
 import com.mijack.zero.app.meta.Activity;

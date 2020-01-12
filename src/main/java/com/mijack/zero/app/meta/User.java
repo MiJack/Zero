@@ -22,19 +22,15 @@ import java.util.regex.Pattern;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.common.Assert;
+import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.exception.BaseBizException;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-@NoArgsConstructor
 @TableName("Zero_User")
-@AllArgsConstructor
 public class User {
     public static final Pattern EMAIL_PATTERN = Pattern.compile("\\w+@(\\w+.)+\\w+");
     /**

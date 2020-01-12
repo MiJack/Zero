@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.app.command.TransactionAttachCommand;
 import com.mijack.zero.app.command.TransactionRemoveCommand;
-import com.mijack.zero.app.common.web.mvc.ApiController;
+import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.meta.Transaction;
 import com.mijack.zero.app.service.TransactionService;
 import org.springframework.web.bind.annotation.RequestMapping;

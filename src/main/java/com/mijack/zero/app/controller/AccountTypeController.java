@@ -19,9 +19,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.common.web.mvc.ApiController;
+import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.meta.AccountType;
-import com.mijack.zero.app.service.user.AccountTypeService;
+import com.mijack.zero.app.service.account.AccountTypeService;
 import com.mijack.zero.app.command.AccountTypeCreateCommand;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;

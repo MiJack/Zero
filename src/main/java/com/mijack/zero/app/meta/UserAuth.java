@@ -34,6 +34,7 @@ public class UserAuth implements Serializable {
     /**
      * 用户id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 密码对应的盐

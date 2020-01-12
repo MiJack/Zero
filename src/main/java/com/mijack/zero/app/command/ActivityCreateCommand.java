@@ -18,7 +18,7 @@ package com.mijack.zero.app.command;
 
 import java.sql.Timestamp;
 
-import com.mijack.zero.app.meta.constant.TransactionType;
+import com.mijack.zero.app.enums.TransactionType;
 import lombok.Data;
 
 /**

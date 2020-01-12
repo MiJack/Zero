@@ -20,9 +20,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.common.web.mvc.ApiController;
+import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.meta.UserAccount;
-import com.mijack.zero.app.service.UserAccountService;
+import com.mijack.zero.app.service.account.UserAccountService;
 import com.mijack.zero.app.command.AccountCreateCommand;
 import com.mijack.zero.app.command.AccountDisableCommand;
 import com.mijack.zero.app.command.AccountListCommand;
