@@ -67,7 +67,7 @@ public class UserService {
     }
 
     public User loginUser(int type, String identifiableValue, String password) {
-        LoginType loginType = EnumUtils.idOf(type, LoginType.class);
+        LoginType loginType = EnumUtils.idOfEnum(type, LoginType.class);
         Assert.equals(loginType, LoginType.EMAIL, () -> createException(BizCode.WRONG_PARAM, "不支持该登录方式"));
         String cryptPassword = Base64.encodeBase64String(password.getBytes());
         User user = userDao.findOneByEmail(identifiableValue);

@@ -19,6 +19,8 @@ package com.mijack.zero.app.meta;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -31,7 +33,7 @@ public class ZResource implements Serializable {
     private static final long serialVersionUID = -7368045744884416175L;
     /**
      * 主键
-     */
+     */@TableId(type = IdType.AUTO )
     private Long id;
     /**
      * 储存类型
@@ -40,7 +42,7 @@ public class ZResource implements Serializable {
     /**
      * 内容类型
      */
-    private Integer contentType;
+    private String contentType;
     /**
      * 资源内容
      */

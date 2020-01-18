@@ -14,29 +14,32 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common;
+package com.mijack.zero.app.command;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> extends IEnum<Integer> {
+@Data
+public class ResourceCreateCommand implements Serializable {
+    private static final long serialVersionUID = 7253232303965875028L;
     /**
-     * 枚举变量的id
-     *
-     * @return
+     * 储存类型
      */
-    int getId();
-
-    @Override
-    default Integer getValue() {
-        return getId();
-    }
-
-    default boolean isThisValue(Integer target) {
-        return Objects.equals(target, getValue());
-    }
+    private Integer storageType;
+    /**
+     * 内容类型
+     */
+    private String contentType;
+    /**
+     * 资源内容
+     */
+    private String content;
+    /**
+     * md5
+     */
+    private String md5;
 }

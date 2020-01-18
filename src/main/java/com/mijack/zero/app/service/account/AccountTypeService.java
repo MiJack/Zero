@@ -39,7 +39,7 @@ public class AccountTypeService {
 
     public AccountType createAccountType(String typeName, Long accountTypeIcon, int billingType) {
         AccountType accountType = new AccountType();
-        accountType.setBillingType(EnumUtils.idOf(billingType, BillingType.class));
+        accountType.setBillingType(EnumUtils.idOfEnum(billingType, BillingType.class));
         accountType.setAccountTypeIcon(accountTypeIcon);
         accountType.setTypeName(typeName);
         accountTypeDao.insert(accountType);

@@ -75,7 +75,7 @@ public class TransactionService {
         Assert.state(userAccount != null, () -> BaseBizException.createException("用户账号不存在"));
         Transaction transaction = new Transaction();
         transaction.setActivityId(command.getActivityId());
-        transaction.setTransactionType(EnumUtils.idOf(command.getTransactionType(), TransactionType.class));
+        transaction.setTransactionType(EnumUtils.idOfEnum(command.getTransactionType(), TransactionType.class));
         Money money = moneyFactory.parse(command.getAmountMoney());
         transaction.setCurrency(money.getCurrency());
         transaction.setAmount(money.getMoney());

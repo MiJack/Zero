@@ -35,8 +35,8 @@ public interface EnumUtils {
      * @param <E>
      * @return
      */
-    static <E extends Enum<E> & IdentifiableEnum<E>> E idOf(int id, Class<E> clazz) {
-        return idOf(id, clazz, null);
+    static <E extends Enum<E> & IdentifiableEnum<E>> E idOfEnum(int id, Class<E> clazz) {
+        return idOfEnum(id, clazz, null);
     }
 
     /**
@@ -48,8 +48,8 @@ public interface EnumUtils {
      * @param <E>
      * @return
      */
-    static <E extends Enum<E> & IdentifiableEnum<E>> E idOf(int id, Class<E> clazz, E defaultValue) {
-        return keyOf(id, IdentifiableEnum::getId, clazz, defaultValue);
+    static <E extends Enum<E> & IdentifiableEnum<E>> E idOfEnum(int id, Class<E> clazz, E defaultValue) {
+        return keyOfEnum(id, IdentifiableEnum::getId, clazz, defaultValue);
     }
 
     /**
@@ -62,8 +62,8 @@ public interface EnumUtils {
      * @param <E>
      * @return
      */
-    static <K, E extends Enum<E>> E keyOf(K k, Function<E, K> keyMapper, Class<E> clazz) {
-        return keyOf(k, keyMapper, clazz, null);
+    static <K, E extends Enum<E>> E keyOfEnum(K k, Function<E, K> keyMapper, Class<E> clazz) {
+        return keyOfEnum(k, keyMapper, clazz, null);
     }
 
     /**
@@ -77,7 +77,7 @@ public interface EnumUtils {
      * @param <K>
      * @return
      */
-    static <E extends Enum<E>, K> E keyOf(K k, Function<E, K> keyMapper, Class<E> clazz, E defaultValue) {
+    static <E extends Enum<E>, K> E keyOfEnum(K k, Function<E, K> keyMapper, Class<E> clazz, E defaultValue) {
         for (E e : EnumSet.allOf(clazz)) {
             if (Objects.equals(k, keyMapper.apply(e))) {
                 return e;

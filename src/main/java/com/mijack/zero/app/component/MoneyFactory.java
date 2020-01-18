@@ -32,7 +32,7 @@ public class MoneyFactory {
     public Money create(Float money, Integer currency) {
         Money result = new Money();
         result.setMoney(money);
-        result.setCurrency(EnumUtils.idOf(currency, Currency.class));
+        result.setCurrency(EnumUtils.idOfEnum(currency, Currency.class));
         return result;
     }
 

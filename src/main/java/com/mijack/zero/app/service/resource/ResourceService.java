@@ -19,7 +19,6 @@ package com.mijack.zero.app.service.resource;
 import static com.mijack.zero.framework.config.ServerConfig.DEFAULT_BUCKET;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -65,14 +64,19 @@ public class ResourceService {
         if (zResource == null) {
             return null;
         }
-        StorageType storageType = EnumUtils.idOf(zResource.getStorageType(), StorageType.class);
+        StorageType storageType = EnumUtils.idOfEnum(zResource.getStorageType(), StorageType.class);
         Assert.notNull(storageType, () -> BaseBizException.createException("不支持当前储存方式"));
         try {
+            String content = zResource.getContent();
             switch (storageType) {
                 case LOCAL:
-                    return uriBuilder.path(zResource.getContent()).build();
+                    // todo 避免硬编码
+                    if (content.startsWith("static/")) {
+                        content = content.substring("static".length());
+                    }
+                    return uriBuilder.path(content).build();
                 case ALIYUN:
-                    return aliYunOssClient.generatePresignedUrl(DEFAULT_BUCKET, zResource.getContent(), new Date(System.currentTimeMillis() + DEFAULT_OSS_EXPIRATION_TIME))
+                    return aliYunOssClient.generatePresignedUrl(DEFAULT_BUCKET, content, new Date(System.currentTimeMillis() + DEFAULT_OSS_EXPIRATION_TIME))
                             .toURI();
                 default:
                     return null;
@@ -83,4 +87,18 @@ public class ResourceService {
         }
     }
 
+    public ZResource createResource(Integer storageType, String contentType, String content, String md5) {
+        Assert.notNull(EnumUtils.idOfEnum(storageType, StorageType.class), () -> BaseBizException.createException("储存方式不支持"));
+        ZResource zResource = new ZResource();
+        zResource.setContent(content);
+        zResource.setStorageType(storageType);
+        zResource.setContentType(contentType);
+        zResource.setMd5(md5);
+        Assert.state(resourceDao.insert(zResource) > 0, () -> BaseBizException.createException("创建资源失败"));
+        return zResource;
+    }
+
+    public ZResource getResource(Long id) {
+        return Optional.ofNullable(id).map(resourceDao::selectById).orElse(null);
+    }
 }

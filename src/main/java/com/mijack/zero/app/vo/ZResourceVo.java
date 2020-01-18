@@ -14,29 +14,41 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.common;
+package com.mijack.zero.app.vo;
 
-import java.util.Objects;
+import java.io.Serializable;
+import java.net.URI;
+import java.sql.Timestamp;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
- */
-public interface IdentifiableEnum<E extends Enum<E> & IdentifiableEnum<E>> extends IEnum<Integer> {
+ */@Data
+public class ZResourceVo implements Serializable {
+    private static final long serialVersionUID = -1101024737782224673L;
     /**
-     * 枚举变量的id
-     *
-     * @return
+     * 主键
      */
-    int getId();
-
-    @Override
-    default Integer getValue() {
-        return getId();
-    }
-
-    default boolean isThisValue(Integer target) {
-        return Objects.equals(target, getValue());
-    }
+    private Long id;
+    /**
+     * 内容类型
+     */
+    private String contentType;
+    /**
+     * 资源内容
+     */
+    private URI uri;
+    /**
+     * md5
+     */
+    private String md5;
+    /**
+     * 创建时间
+     */
+    private Timestamp createTime;
+    /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
 }
