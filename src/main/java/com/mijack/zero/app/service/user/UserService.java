@@ -23,15 +23,14 @@ import java.util.Optional;
 import javax.annotation.Resource;
 
 import com.mijack.zero.app.dao.UserDao;
+import com.mijack.zero.app.exception.BizCode;
+import com.mijack.zero.app.exception.UserError;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.meta.UserAuth;
 import com.mijack.zero.app.enums.UserAuthType;
 import com.mijack.zero.app.enums.LoginType;
-import com.mijack.zero.app.exception.UserLoginFailException;
-import com.mijack.zero.app.exception.UserRegisteredException;
 import com.mijack.zero.app.dao.UserAuthDao;
 import com.mijack.zero.common.Assert;
-import com.mijack.zero.app.exception.WrongParamException;
 import com.mijack.zero.common.EnumUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -48,9 +47,9 @@ public class UserService {
     UserAuthDao userAuthDao;
 
     public User registerUser(String name, String email, String password) {
-        Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(WrongParamException.class));
-        Assert.isNull(userDao.findOneByName(name), () -> createException(UserRegisteredException.class, "用户名已注册"));
-        Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserRegisteredException.class, "用户邮箱已注册"));
+        Assert.state(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(email), () -> createException(BizCode.WRONG_PARAM));
+        Assert.isNull(userDao.findOneByName(name), () -> createException(UserError.USER_REGISTERED, "用户名已注册"));
+        Assert.isNull(userDao.findOneByEmail(email), () -> createException(UserError.USER_REGISTERED, "用户邮箱已注册"));
         // todo 邮箱合理性检查
         User user = new User();
         user.setEmail(email);
@@ -69,11 +68,11 @@ public class UserService {
 
     public User loginUser(int type, String identifiableValue, String password) {
         LoginType loginType = EnumUtils.idOf(type, LoginType.class);
-        Assert.equals(loginType, LoginType.EMAIL, () -> createException(WrongParamException.class, "不支持该登录方式"));
+        Assert.equals(loginType, LoginType.EMAIL, () -> createException(BizCode.WRONG_PARAM, "不支持该登录方式"));
         String cryptPassword = Base64.encodeBase64String(password.getBytes());
         User user = userDao.findOneByEmail(identifiableValue);
         String cryptPasswordInDb = Optional.ofNullable(user).map(User::getId).map(userAuthDao::selectById).map(UserAuth::getCryptPassword).orElse(null);
-        Assert.equals(cryptPassword, cryptPasswordInDb, () -> createException(UserLoginFailException.class));
+        Assert.equals(cryptPassword, cryptPasswordInDb, () -> createException(UserError.LOGIN_FAIL));
         return user;
     }
 

@@ -55,12 +55,21 @@ public class BaseBizException extends RuntimeException {
         return BeanUtils.instantiateClass(clazz);
     }
 
+    public static BaseBizException createException(IError error) {
+        return new BaseBizException(error.getCode(), error.getMessage());
+    }
+
+    public static BaseBizException createException(IError error, String message) {
+        return new BaseBizException(error.getCode(), message);
+    }
+
     public static <T extends BaseBizException> T createException(Class<T> clazz, String message) {
         T exception = createException(clazz);
         exception.setMessage(message);
         return exception;
     }
+
     public static BaseBizException createException(String message) {
-        return createException(BaseBizException.class,message);
+        return createException(BaseBizException.class, message);
     }
 }

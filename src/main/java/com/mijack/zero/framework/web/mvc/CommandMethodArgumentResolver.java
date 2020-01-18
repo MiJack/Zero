@@ -21,7 +21,8 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mijack.zero.app.exception.SystemErrorException;
+import com.mijack.zero.app.exception.BaseBizException;
+import com.mijack.zero.app.exception.BizCode;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -43,7 +44,7 @@ public class CommandMethodArgumentResolver implements HandlerMethodArgumentResol
     public Object resolveArgument(@Nonnull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest servletRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
         if (servletRequest == null) {
-            throw new SystemErrorException();
+            throw BaseBizException.createException(BizCode.SYSTEM_ERROR);
         }
         Class<?> commandType = parameter.getParameterType();
         return objectMapper.readValue(servletRequest.getInputStream(), commandType);

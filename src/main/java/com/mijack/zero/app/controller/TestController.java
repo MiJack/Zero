@@ -16,7 +16,8 @@
 
 package com.mijack.zero.app.controller;
 
-import com.mijack.zero.app.exception.SystemErrorException;
+import com.mijack.zero.app.exception.BaseBizException;
+import com.mijack.zero.app.exception.BizCode;
 import com.mijack.zero.framework.web.bo.ApiResult;
 import com.mijack.zero.framework.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class TestController {
 
     @GetMapping(value = "/error")
     public void error() {
-        throw new SystemErrorException();
+        throw BaseBizException.createException(BizCode.SYSTEM_ERROR);
     }
 
 }

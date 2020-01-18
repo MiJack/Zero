@@ -27,10 +27,10 @@ import javax.annotation.Resource;
 
 import com.mijack.zero.app.command.ActivityCreateCommand;
 import com.mijack.zero.app.command.TransactionAttachCommand;
+import com.mijack.zero.app.exception.UserError;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.ActivityDao;
 import com.mijack.zero.app.exception.BaseBizException;
-import com.mijack.zero.app.exception.UserNotFoundException;
 import com.mijack.zero.app.meta.Activity;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.service.user.UserService;
@@ -50,7 +50,7 @@ public class ActivityService {
 
     public List<Activity> listActivity(Long userId) {
         User user = userService.getUser(userId);
-        Assert.notNull(user, () -> createException(UserNotFoundException.class));
+        Assert.notNull(user, () -> createException(UserError.USER_NOT_FOUND));
         return activityDao.selectActivityByUserId(userId);
     }
 

@@ -18,8 +18,8 @@ package com.mijack.zero.framework.web.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.mijack.zero.app.exception.ControllerException;
-import com.mijack.zero.app.exception.SystemErrorException;
+import com.mijack.zero.app.exception.BaseBizException;
+import com.mijack.zero.app.exception.BizCode;
 import com.mijack.zero.framework.web.bo.QueryPage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
@@ -46,12 +46,12 @@ public class PageHandlerMethodArgumentResolver implements HandlerMethodArgumentR
     public Object resolveArgument(@NotNull MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) {
         HttpServletRequest servletRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
         if (servletRequest == null) {
-            throw new SystemErrorException();
+            throw BaseBizException.createException(BizCode.SYSTEM_ERROR);
         }
         String offset = servletRequest.getParameter(OFFSET_KEY);
         String limit = servletRequest.getParameter(LIMIT_KEY);
         if (limit == null || offset == null) {
-            throw new ControllerException(400, "分页请求缺少分页参数");
+            throw BaseBizException.createException(BizCode.WRONG_PARAM, "分页请求缺少分页参数");
         }
         QueryPage requestQueryPage = new QueryPage();
         requestQueryPage.setLimit(Long.parseLong(limit));

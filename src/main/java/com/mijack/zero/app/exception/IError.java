@@ -33,4 +33,8 @@ public interface IError {
      * @return 异常信息
      */
     String getMessage();
+
+    static BaseBizException createBaseBizException(IError error) {
+        return new BaseBizException(error.getCode(), error.getMessage());
+    }
 }

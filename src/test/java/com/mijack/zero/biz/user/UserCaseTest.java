@@ -22,10 +22,9 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.User;
 import com.mijack.zero.app.service.user.UserService;
-import com.mijack.zero.app.exception.UserRegisteredException;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,13 +56,13 @@ public class UserCaseTest {
                 .as("查询得到的用户信息用于注册时返回的信息保持一致");
     }
 
-    @Test(expected = UserRegisteredException.class)
+    @Test(expected = BaseBizException.class)
     public void registerUserNameAgain() {
         userService.registerUser(userName, userEmail, password);
         userService.registerUser(UUID.randomUUID().toString(), userEmail, password);
     }
 
-    @Test(expected = UserRegisteredException.class)
+    @Test(expected = BaseBizException.class)
     public void registerUserEmailAgain() {
         userService.registerUser(userName, userEmail, password);
         userService.registerUser(userName, UUID.randomUUID().toString(), password);
