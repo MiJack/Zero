@@ -16,20 +16,27 @@
 
 package com.mijack.zero.framework.config;
 
+import java.util.Objects;
+
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 /**
  * @author Mi&amp;Jack
  */
 @Import({WebMvcConfiguration.class, WebSecurityConfig.class})
-@ImportResource("classpath:/config/server.yaml")
+@PropertySource(value = "classpath:config/server.properties")
 public class ServerConfig {
-    public static final String DEFAULT_BUCKET="mijack-aliyun";
+    public static final String DEFAULT_BUCKET = "mijack-aliyun";
+    @Autowired
+    Environment environment;
+
     /**
      * aliyun oss 配置
      * todo 后续支持多bucket环境
@@ -39,12 +46,12 @@ public class ServerConfig {
      * @param secretAccessKey
      * @return
      */
-    @Bean(name = "aliYunOssClient",destroyMethod = "shutdown")
+    @Bean(name = "aliYunOssClient", destroyMethod = "shutdown")
     OSS ossClient(
             @Value("${storage.aliyun-oss.endpoint}") String endpoint,
             @Value("${storage.aliyun-oss.accessKeyId}") String accessKeyId,
             @Value("${storage.aliyun-oss.secretAccessKey}") String secretAccessKey) {
-        return new OSSClientBuilder().build(endpoint, accessKeyId, secretAccessKey);
+        return new OSSClientBuilder().build(endpoint,accessKeyId,secretAccessKey);
     }
 
 }

@@ -34,6 +34,8 @@ import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.ZResource;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.EnumUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriBuilder;
 
@@ -42,6 +44,7 @@ import org.springframework.web.util.UriBuilder;
  */
 @Service
 public class ResourceService {
+    public static final Logger logger = LoggerFactory.getLogger(ResourceService.class);
     @Resource
     private ResourceDao resourceDao;
 
@@ -56,7 +59,7 @@ public class ResourceService {
     public static final Long DEFAULT_OSS_EXPIRATION_TIME = TimeUnit.HOURS.toMillis(1);
 
     @Nullable
-    public URI loadResourceUrl(Long resourceId) throws URISyntaxException {
+    public URI loadResourceUrl(Long resourceId) {
         ZResource zResource = Optional.ofNullable(resourceId).map(resourceDao::selectById)
                 .orElse(null);
         if (zResource == null) {
@@ -64,15 +67,20 @@ public class ResourceService {
         }
         StorageType storageType = EnumUtils.idOf(zResource.getStorageType(), StorageType.class);
         Assert.notNull(storageType, () -> BaseBizException.createException("不支持当前储存方式"));
-        switch (storageType) {
-            case LOCAL:
-                return uriBuilder.path(zResource.getContent()).build();
-            case ALIYUN:
-                return aliYunOssClient.generatePresignedUrl(DEFAULT_BUCKET, zResource.getContent(), new Date(System.currentTimeMillis() + DEFAULT_OSS_EXPIRATION_TIME))
-                        .toURI();
-            default:
-                throw BaseBizException.createException("不支持当前储存方式");
+        try {
+            switch (storageType) {
+                case LOCAL:
+                    return uriBuilder.path(zResource.getContent()).build();
+                case ALIYUN:
+                    return aliYunOssClient.generatePresignedUrl(DEFAULT_BUCKET, zResource.getContent(), new Date(System.currentTimeMillis() + DEFAULT_OSS_EXPIRATION_TIME))
+                            .toURI();
+                default:
+                    return null;
+            }
+        } catch (Exception e) {
+            logger.error("loadResourceUrl error: resourceId = {}", resourceId, e);
+            return null;
         }
-
     }
+
 }

@@ -1,6 +1,0 @@
-storage:
-  aliyun-oss:
-    bucket: <your bucket>
-    endpoint: <your endpoint>
-    accessKeyId: <your accessKeyId>
-    accessKeySecret: <your accessKeySecret>

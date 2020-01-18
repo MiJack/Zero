@@ -15,8 +15,9 @@
  */
 package com.mijack.zero.app.controller;
 
+import java.net.URI;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -49,16 +50,16 @@ public class AccountTypeController {
     @GetMapping("/account/type/list")
     public List<AccountTypeVo> listAccountType() {
         List<AccountType> accountTypes = accountTypeService.listAccountType();
-        return accountTypes.stream().map(new Function<AccountType, AccountTypeVo>() {
-            @Override
-            public AccountTypeVo apply(AccountType accountType) {
-                AccountTypeVo accountTypeVo = new AccountTypeVo();
-                accountTypeVo.setBillingType(accountType.getBillingType());
-                accountTypeVo.setId(accountType.getId());
-                accountTypeVo.setTypeName(accountType.getTypeName());
-                accountTypeVo.setAccountTypeIconUrl(resourceService.loadResourceUrl(accountType.getAccountTypeIcon()));
-                return accountTypeVo;
-            }
-        }).collect(Collectors.toList());
+        return accountTypes.stream()
+                .map(accountType -> {
+                    AccountTypeVo accountTypeVo = new AccountTypeVo();
+                    accountTypeVo.setBillingType(accountType.getBillingType());
+                    accountTypeVo.setId(accountType.getId());
+                    accountTypeVo.setTypeName(accountType.getTypeName());
+                    accountTypeVo.setAccountTypeIconUrl(Optional.ofNullable(resourceService.loadResourceUrl(accountType.getAccountTypeIcon()))
+                            .map(URI::toString).orElse(null));
+                    return accountTypeVo;
+                })
+                .collect(Collectors.toList());
     }
 }
