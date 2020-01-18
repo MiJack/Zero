@@ -1,5 +1,5 @@
 /*
- *     Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.utils;
+package com.mijack.zero.common;
 
 
 import java.util.Collection;
@@ -22,9 +22,6 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Function;
 
-import com.mijack.zero.common.EnumDto;
-import com.mijack.zero.common.IDescEnum;
-import com.mijack.zero.common.IdentifiableEnum;
 
 /**
  * @author Mi&amp;Jack

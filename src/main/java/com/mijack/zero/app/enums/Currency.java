@@ -16,7 +16,7 @@
 
 package com.mijack.zero.app.enums;
 
-import com.mijack.zero.common.IdentifiableEnum;
+import com.mijack.zero.common.IBaseEnum;
 import lombok.Getter;
 
 /**
@@ -24,7 +24,7 @@ import lombok.Getter;
  *
  * @author yuanyujie
  */
-public enum Currency implements IdentifiableEnum<Currency> {
+public enum Currency implements IBaseEnum<Currency> {
     /**
      * 人民币
      */

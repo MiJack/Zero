@@ -11,3 +11,6 @@ mybatis-plus:
     default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
 server:
   port: 9092
+application:
+  storage:
+    server-host: http://localhost:9092

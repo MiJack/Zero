@@ -109,7 +109,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     asciidoclet 'org.asciidoctor:asciidoclet:1.+'
-
+    compile 'com.aliyun.oss:aliyun-sdk-oss:3.8.0'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
 

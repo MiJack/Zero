@@ -52,13 +52,31 @@ CREATE TABLE `Zero_Token`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='token信息表';
 
+DROP TABLE IF EXISTS `Zero_Resource`;
+
+CREATE TABLE `Zero_Resource`
+(
+    `id`           bigint       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `storage_type` int          NOT NULL COMMENT '储存类型',
+    `content_type` int          NOT NULL COMMENT '内容类型',
+    `content`      bigint       NOT NULL COMMENT '资源内容',
+    `md5`          varchar(100) NOT NULL COMMENT 'md5',
+    `create_time`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `deleted`      int          NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='资源信息表';
+
 DROP TABLE IF EXISTS `Zero_AccountType`;
 
 CREATE TABLE `Zero_AccountType`
 (
     `id`                bigint        NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `type_name`          varchar(1024) NOT NULL COMMENT '账号类型名称',
-    `account_type_icon` varchar(1024) NOT NULL COMMENT '账号图标',
+    `type_name`         varchar(1024) NOT NULL COMMENT '账号类型名称',
+    `account_type_icon` bigint        NOT NULL COMMENT '账号图标',
     `billing_type`      int           NOT NULL COMMENT '账号类型',
     `create_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

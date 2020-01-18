@@ -20,33 +20,23 @@ import com.mijack.zero.common.IBaseEnum;
 import lombok.Getter;
 
 /**
- * 资金变动的类型
- *
  * @author Mi&amp;Jack
  */
-public enum TransactionType implements IBaseEnum<TransactionType> {
+public enum StorageType implements IBaseEnum<StorageType> {
     /**
-     * 支出
+     * 本地路径储存
      */
-    EXPENDITURE(1, "支出"),
+    LOCAL(1, "本地路径储存"),
     /**
-     * 收入
+     * 阿里云储存
      */
-    INCOME(2, "收入"),
-    /**
-     * 预支
-     */
-    ADVANCE(3, "预支"),
-    /**
-     * 还款
-     */
-    REPAYMENT(4, "还款");
+    ALIYUN(2, "阿里云储存（对应的桶为mijack-aliyun）");
     @Getter
     private final int id;
     @Getter
     private final String desc;
 
-    TransactionType(int id, String desc) {
+    StorageType(int id, String desc) {
         this.id = id;
         this.desc = desc;
     }

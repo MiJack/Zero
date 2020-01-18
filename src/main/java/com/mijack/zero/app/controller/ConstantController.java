@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import com.mijack.zero.app.enums.BillingType;
 import com.mijack.zero.framework.web.bo.ApiResult;
 import com.mijack.zero.framework.web.mvc.ApiController;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.common.EnumUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Maps;

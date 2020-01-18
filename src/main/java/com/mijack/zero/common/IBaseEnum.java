@@ -14,40 +14,11 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.enums;
-
-import com.mijack.zero.common.IBaseEnum;
-import lombok.Getter;
+package com.mijack.zero.common;
 
 /**
- * 资金变动的类型
- *
  * @author Mi&amp;Jack
  */
-public enum TransactionType implements IBaseEnum<TransactionType> {
-    /**
-     * 支出
-     */
-    EXPENDITURE(1, "支出"),
-    /**
-     * 收入
-     */
-    INCOME(2, "收入"),
-    /**
-     * 预支
-     */
-    ADVANCE(3, "预支"),
-    /**
-     * 还款
-     */
-    REPAYMENT(4, "还款");
-    @Getter
-    private final int id;
-    @Getter
-    private final String desc;
-
-    TransactionType(int id, String desc) {
-        this.id = id;
-        this.desc = desc;
-    }
+public interface IBaseEnum<E extends Enum<E> & IdentifiableEnum<E> & IDescEnum<E>>
+        extends IDescEnum<E>, IdentifiableEnum<E> {
 }

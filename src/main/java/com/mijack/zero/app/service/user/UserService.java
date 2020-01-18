@@ -32,7 +32,7 @@ import com.mijack.zero.app.exception.UserRegisteredException;
 import com.mijack.zero.app.dao.UserAuthDao;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.exception.WrongParamException;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.common.EnumUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

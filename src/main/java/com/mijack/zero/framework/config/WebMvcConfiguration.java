@@ -22,20 +22,30 @@ import com.mijack.zero.framework.web.mvc.ApiHandlerExceptionResolver;
 import com.mijack.zero.framework.web.mvc.ApiResponseReturnValueHandler;
 import com.mijack.zero.framework.web.mvc.CommandMethodArgumentResolver;
 import com.mijack.zero.framework.web.mvc.PageHandlerMethodArgumentResolver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriBuilder;
 
 /**
  * @author Mi&amp;Jack
  */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
+
+    private final DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
+
+    @Bean(name = "localUriBuilder")
+    public UriBuilder localUriBuilder(@Value("${application.storage.server-host}") String storageServerHost) {
+        return defaultUriBuilderFactory.uriString(storageServerHost);
+    }
+
     @Bean
     public ApiResponseReturnValueHandler apiResponseReturnValueHandler() {
         return new ApiResponseReturnValueHandler();

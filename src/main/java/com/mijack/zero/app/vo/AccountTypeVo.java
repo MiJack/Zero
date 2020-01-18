@@ -14,40 +14,36 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.enums;
+package com.mijack.zero.app.vo;
 
-import com.mijack.zero.common.IBaseEnum;
-import lombok.Getter;
+import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.mijack.zero.app.enums.BillingType;
+import lombok.Data;
 
 /**
- * 资金变动的类型
- *
  * @author Mi&amp;Jack
  */
-public enum TransactionType implements IBaseEnum<TransactionType> {
+@Data
+public class AccountTypeVo implements Serializable {
+    private static final long serialVersionUID = 543253087482214851L;
     /**
-     * 支出
+     * id
      */
-    EXPENDITURE(1, "支出"),
+    @TableId(type = IdType.AUTO)
+    private Long id;
     /**
-     * 收入
+     * 账号类型名称
      */
-    INCOME(2, "收入"),
+    private String typeName;
     /**
-     * 预支
+     * 账号类型图标
      */
-    ADVANCE(3, "预支"),
+    private String accountTypeIconUrl;
     /**
-     * 还款
+     * 类型
      */
-    REPAYMENT(4, "还款");
-    @Getter
-    private final int id;
-    @Getter
-    private final String desc;
-
-    TransactionType(int id, String desc) {
-        this.id = id;
-        this.desc = desc;
-    }
+    private BillingType billingType;
 }

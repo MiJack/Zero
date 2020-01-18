@@ -16,13 +16,13 @@
 
 package com.mijack.zero.app.enums;
 
-import com.mijack.zero.common.IdentifiableEnum;
+import com.mijack.zero.common.IBaseEnum;
 import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-public enum TokenType implements IdentifiableEnum<TokenType> {
+public enum TokenType implements IBaseEnum<TokenType> {
     /**
      * 用户登录
      */

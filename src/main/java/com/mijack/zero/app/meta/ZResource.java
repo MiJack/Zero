@@ -14,40 +14,47 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.enums;
+package com.mijack.zero.app.meta;
 
-import com.mijack.zero.common.IBaseEnum;
-import lombok.Getter;
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 /**
- * 资金变动的类型
- *
  * @author Mi&amp;Jack
  */
-public enum TransactionType implements IBaseEnum<TransactionType> {
+@Data
+@TableName("Zero_Resource")
+public class ZResource implements Serializable {
+    private static final long serialVersionUID = -7368045744884416175L;
     /**
-     * 支出
+     * 主键
      */
-    EXPENDITURE(1, "支出"),
+    private Long id;
     /**
-     * 收入
+     * 储存类型
      */
-    INCOME(2, "收入"),
+    private Integer storageType;
     /**
-     * 预支
+     * 内容类型
      */
-    ADVANCE(3, "预支"),
+    private Integer contentType;
     /**
-     * 还款
+     * 资源内容
      */
-    REPAYMENT(4, "还款");
-    @Getter
-    private final int id;
-    @Getter
-    private final String desc;
-
-    TransactionType(int id, String desc) {
-        this.id = id;
-        this.desc = desc;
-    }
+    private String content;
+    /**
+     * md5
+     */
+    private String md5;
+    /**
+     * 创建时间
+     */
+    private Timestamp createTime;
+    /**
+     * 更新时间
+     */
+    private Timestamp updateTime;
 }

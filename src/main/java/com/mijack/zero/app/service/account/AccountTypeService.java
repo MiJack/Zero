@@ -25,7 +25,7 @@ import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.AccountTypeDao;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.AccountType;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.common.EnumUtils;
 import com.mijack.zero.app.enums.BillingType;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class AccountTypeService {
     @Resource
     AccountTypeDao accountTypeDao;
 
-    public AccountType createAccountType(String typeName, String accountTypeIcon, int billingType) {
+    public AccountType createAccountType(String typeName, Long accountTypeIcon, int billingType) {
         AccountType accountType = new AccountType();
         accountType.setBillingType(EnumUtils.idOf(billingType, BillingType.class));
         accountType.setAccountTypeIcon(accountTypeIcon);

@@ -20,7 +20,7 @@ import java.util.Collection;
 
 import com.mijack.zero.app.enums.Currency;
 import com.mijack.zero.app.exception.BaseBizException;
-import com.mijack.zero.utils.EnumUtils;
+import com.mijack.zero.common.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 

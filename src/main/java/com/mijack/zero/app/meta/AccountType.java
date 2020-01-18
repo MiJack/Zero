@@ -44,7 +44,7 @@ public class AccountType implements Serializable {
     /**
      * 账号类型图标
      */
-    private String accountTypeIcon;
+    private Long accountTypeIcon;
     /**
      * 类型
      */

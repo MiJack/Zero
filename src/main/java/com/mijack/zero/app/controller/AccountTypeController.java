@@ -16,9 +16,13 @@
 package com.mijack.zero.app.controller;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.mijack.zero.app.service.resource.ResourceService;
+import com.mijack.zero.app.vo.AccountTypeVo;
 import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.meta.AccountType;
 import com.mijack.zero.app.service.account.AccountTypeService;
@@ -34,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AccountTypeController {
     @Resource
     AccountTypeService accountTypeService;
+    @Resource
+    ResourceService resourceService;
 
     @PutMapping("/account/type/create")
     public AccountType createAccountType(@RequestParam AccountTypeCreateCommand command) {
@@ -41,7 +47,18 @@ public class AccountTypeController {
     }
 
     @GetMapping("/account/type/list")
-    public List<AccountType> listAccountType() {
-        return accountTypeService.listAccountType();
+    public List<AccountTypeVo> listAccountType() {
+        List<AccountType> accountTypes = accountTypeService.listAccountType();
+        return accountTypes.stream().map(new Function<AccountType, AccountTypeVo>() {
+            @Override
+            public AccountTypeVo apply(AccountType accountType) {
+                AccountTypeVo accountTypeVo = new AccountTypeVo();
+                accountTypeVo.setBillingType(accountType.getBillingType());
+                accountTypeVo.setId(accountType.getId());
+                accountTypeVo.setTypeName(accountType.getTypeName());
+                accountTypeVo.setAccountTypeIconUrl(resourceService.loadResourceUrl(accountType.getAccountTypeIcon()));
+                return accountTypeVo;
+            }
+        }).collect(Collectors.toList());
     }
 }
