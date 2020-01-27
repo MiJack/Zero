@@ -96,6 +96,7 @@ CREATE TABLE `Zero_UserAccount`
     `user_id`         bigint       NOT NULL COMMENT '用户id',
     `account_type_id` bigint       NOT NULL COMMENT '账号类型id',
     `title`           varchar(200) NOT NULL COMMENT '账号名称',
+    `number`           varchar(200) NOT NULL COMMENT '账号编号',
     `create_time`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`         int          NOT NULL DEFAULT '0' COMMENT '是否删除，1表示删除，0表示未删除',

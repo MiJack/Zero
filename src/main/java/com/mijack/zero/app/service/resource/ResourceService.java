@@ -23,11 +23,13 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.Resource;
 
 import com.aliyun.oss.OSS;
 import com.mijack.zero.app.dao.ResourceDao;
+import com.mijack.zero.app.enums.AccountTypeEnums;
 import com.mijack.zero.app.enums.StorageType;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.ZResource;
@@ -36,7 +38,7 @@ import com.mijack.zero.common.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 /**
  * @author Mi&amp;Jack
@@ -47,8 +49,8 @@ public class ResourceService {
     @Resource
     private ResourceDao resourceDao;
 
-    @Resource(name = "localUriBuilder")
-    UriBuilder uriBuilder;
+    @Resource(name = "localUriBuilderFactory")
+    DefaultUriBuilderFactory uriBuilderFactory;
 
     @Resource(name = "aliYunOssClient")
     OSS aliYunOssClient;
@@ -59,7 +61,16 @@ public class ResourceService {
 
     @Nullable
     public URI loadResourceUrl(Long resourceId) {
-        ZResource zResource = Optional.ofNullable(resourceId).map(resourceDao::selectById)
+        if (resourceId == null) {
+            return null;
+        }
+        if (resourceId < 0) {
+            AccountTypeEnums accountTypeEnums = EnumUtils.keyOfEnum(-resourceId, AccountTypeEnums::getId, AccountTypeEnums.class);
+            if (accountTypeEnums != null) {
+                return pathToUrl(accountTypeEnums.getImagePath());
+            }
+        }
+        ZResource zResource = Optional.of(resourceId).map(resourceDao::selectById)
                 .orElse(null);
         if (zResource == null) {
             return null;
@@ -71,10 +82,7 @@ public class ResourceService {
             switch (storageType) {
                 case LOCAL:
                     // todo 避免硬编码
-                    if (content.startsWith("static/")) {
-                        content = content.substring("static".length());
-                    }
-                    return uriBuilder.path(content).build();
+                    return pathToUrl(content);
                 case ALIYUN:
                     return aliYunOssClient.generatePresignedUrl(DEFAULT_BUCKET, content, new Date(System.currentTimeMillis() + DEFAULT_OSS_EXPIRATION_TIME))
                             .toURI();
@@ -85,6 +93,14 @@ public class ResourceService {
             logger.error("loadResourceUrl error: resourceId = {}", resourceId, e);
             return null;
         }
+    }
+
+    @Nonnull
+    protected URI pathToUrl(String content) {
+        if (content.startsWith("static/")) {
+            content = content.substring("static".length());
+        }
+        return uriBuilderFactory.builder().path(content).build();
     }
 
     public ZResource createResource(Integer storageType, String contentType, String content, String md5) {

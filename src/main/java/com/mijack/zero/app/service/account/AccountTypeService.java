@@ -16,17 +16,12 @@
 
 package com.mijack.zero.app.service.account;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.app.dao.AccountTypeDao;
-import com.mijack.zero.app.exception.BaseBizException;
+import com.mijack.zero.app.enums.AccountTypeEnums;
 import com.mijack.zero.app.meta.AccountType;
-import com.mijack.zero.common.EnumUtils;
-import com.mijack.zero.app.enums.BillingType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,20 +29,43 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountTypeService {
-    @Resource
-    AccountTypeDao accountTypeDao;
-
-    public AccountType createAccountType(String typeName, Long accountTypeIcon, int billingType) {
-        AccountType accountType = new AccountType();
-        accountType.setBillingType(EnumUtils.idOfEnum(billingType, BillingType.class));
-        accountType.setAccountTypeIcon(accountTypeIcon);
-        accountType.setTypeName(typeName);
-        accountTypeDao.insert(accountType);
-        Assert.state(accountType.getId() > 0, () -> BaseBizException.createException("创建账户类型失败"));
-        return accountType;
-    }
 
     public List<AccountType> listAccountType() {
-        return accountTypeDao.selectList(new QueryWrapper<AccountType>().lambda());
+        return Arrays.stream(AccountTypeEnums.values())
+                .map(accountTypeEnum -> {
+                    AccountType accountType = new AccountType();
+                    accountType.setId(accountTypeEnum.getId());
+                    accountType.setName(accountTypeEnum.getName());
+                    accountType.setBillingType(accountTypeEnum.getBillingType());
+                    accountType.setIconId(-accountTypeEnum.getId());
+                    return accountType;
+                }).collect(Collectors.toList());
+    }
+
+    public AccountType findAccountTypeById(Long accountTypeId) {
+        return Arrays.stream(AccountTypeEnums.values())
+                .filter(accountTypeEnums -> accountTypeEnums.getId() == accountTypeId)
+                .map(accountTypeEnum -> {
+                    AccountType accountType = new AccountType();
+                    accountType.setId(accountTypeEnum.getId());
+                    accountType.setName(accountTypeEnum.getName());
+                    accountType.setBillingType(accountTypeEnum.getBillingType());
+                    accountType.setIconId(-accountTypeEnum.getId());
+                    return accountType;
+                }).findFirst().orElse(null);
+    }
+
+    public List<AccountType> findAccountTypeByIds(List<Long> accountTypeIds) {
+        return Arrays.stream(AccountTypeEnums.values())
+                .filter(accountTypeEnums -> accountTypeIds.contains(accountTypeEnums.getId()))
+                .map(accountTypeEnum -> {
+                    AccountType accountType = new AccountType();
+                    accountType.setId(accountTypeEnum.getId());
+                    accountType.setName(accountTypeEnum.getName());
+                    accountType.setBillingType(accountTypeEnum.getBillingType());
+                    accountType.setIconId(-accountTypeEnum.getId());
+                    return accountType;
+                }).collect(Collectors.toList());
+
     }
 }

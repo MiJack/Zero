@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.AccountTypeDao;
 import com.mijack.zero.app.dao.UserAccountDao;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.common.Assert;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,17 +35,18 @@ public class UserAccountService {
     @Resource
     UserAccountDao userAccountDao;
     @Resource
-    AccountTypeDao accountTypeDao;
+    AccountTypeService accountTypeService;
 
     public List<UserAccount> listUserAccount(long userId) {
         return userAccountDao.selectByUserAccount(userId);
     }
 
-    public UserAccount createAccount(long userId, String accountName, Long accountType) {
-        Assert.notNull(accountTypeDao.selectById(accountType), () -> BaseBizException.createException("账户类型不存在"));
+    public UserAccount createAccount(long userId, String accountName, String accountNumber, Long accountType) {
+        Assert.notNull(accountTypeService.findAccountTypeById(accountType), () -> BaseBizException.createException("账户类型不存在"));
         UserAccount userAccount = new UserAccount();
         userAccount.setTitle(accountName);
         userAccount.setUserId(userId);
+        userAccount.setNumber(accountNumber);
         userAccount.setAccountTypeId(accountType);
         Assert.state(userAccountDao.insert(userAccount) > 0, () -> BaseBizException.createException("创建账户失败"));
         return userAccount;

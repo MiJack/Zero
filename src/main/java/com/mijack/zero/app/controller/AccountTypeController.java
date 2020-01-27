@@ -27,36 +27,28 @@ import com.mijack.zero.app.vo.AccountTypeVo;
 import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.meta.AccountType;
 import com.mijack.zero.app.service.account.AccountTypeService;
-import com.mijack.zero.app.command.AccountTypeCreateCommand;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Mi&amp;Jack
  */
-@ApiController(path = "/api")
+@ApiController(path = "/api/account/type")
 public class AccountTypeController {
     @Resource
     AccountTypeService accountTypeService;
     @Resource
     ResourceService resourceService;
 
-    @PutMapping("/account/type/create")
-    public AccountType createAccountType(@RequestParam AccountTypeCreateCommand command) {
-        return accountTypeService.createAccountType(command.getTypeName(), command.getAccountTypeIcon(), command.getBillingType());
-    }
-
-    @GetMapping("/account/type/list")
+    @GetMapping("/list")
     public List<AccountTypeVo> listAccountType() {
         List<AccountType> accountTypes = accountTypeService.listAccountType();
         return accountTypes.stream()
                 .map(accountType -> {
                     AccountTypeVo accountTypeVo = new AccountTypeVo();
-                    accountTypeVo.setBillingType(accountType.getBillingType());
+                    accountTypeVo.setBillingType(accountType.getBillingType().getDesc());
                     accountTypeVo.setId(accountType.getId());
-                    accountTypeVo.setTypeName(accountType.getTypeName());
-                    accountTypeVo.setAccountTypeIconUrl(Optional.ofNullable(resourceService.loadResourceUrl(accountType.getAccountTypeIcon()))
+                    accountTypeVo.setName(accountType.getName());
+                    accountTypeVo.setIconUrl(Optional.ofNullable(resourceService.loadResourceUrl(accountType.getIconId()))
                             .map(URI::toString).orElse(null));
                     return accountTypeVo;
                 })

@@ -39,11 +39,10 @@ import org.springframework.web.util.UriBuilder;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    private final DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
-
-    @Bean(name = "localUriBuilder")
-    public UriBuilder localUriBuilder(@Value("${application.storage.server-host}") String storageServerHost) {
-        return defaultUriBuilderFactory.uriString(storageServerHost);
+    @Bean(name = "localUriBuilderFactory")
+    public DefaultUriBuilderFactory localUriBuilderFactory(@Value("${application.storage.server-host}") String storageServerHost) {
+        DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory(storageServerHost);
+        return defaultUriBuilderFactory;
     }
 
     @Bean

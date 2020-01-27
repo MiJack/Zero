@@ -37,13 +37,13 @@ public class AccountTypeVo implements Serializable {
     /**
      * 账号类型名称
      */
-    private String typeName;
+    private String name;
     /**
      * 账号类型图标
      */
-    private String accountTypeIconUrl;
+    private String iconUrl;
     /**
      * 类型
      */
-    private BillingType billingType;
+    private String billingType;
 }

@@ -16,6 +16,8 @@
 
 package com.mijack.zero.app.dao;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mijack.zero.app.meta.AccountType;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,4 +29,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface AccountTypeDao extends BaseMapper<AccountType> {
+    @Override
+    AccountType selectById(Serializable id);
 }

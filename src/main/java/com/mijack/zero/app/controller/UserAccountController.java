@@ -16,20 +16,33 @@
 
 package com.mijack.zero.app.controller;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.framework.web.mvc.ApiController;
-import com.mijack.zero.app.meta.UserAccount;
-import com.mijack.zero.app.service.account.UserAccountService;
 import com.mijack.zero.app.command.AccountCreateCommand;
 import com.mijack.zero.app.command.AccountDisableCommand;
 import com.mijack.zero.app.command.AccountListCommand;
+import com.mijack.zero.app.meta.AccountType;
+import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.app.service.account.AccountTypeService;
+import com.mijack.zero.app.service.account.UserAccountService;
+import com.mijack.zero.app.service.resource.ResourceService;
+import com.mijack.zero.app.vo.AccountTypeVo;
+import com.mijack.zero.app.vo.UserAccountVo;
+import com.mijack.zero.framework.context.UserContext;
+import com.mijack.zero.framework.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * todo 支持分页查询
@@ -40,15 +53,50 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserAccountController {
     @Resource
     UserAccountService userAccountService;
+    @Resource
+    AccountTypeService accountTypeService;
+    @Resource
+    ResourceService resourceService;
 
     @GetMapping(value = "/list")
-    public List<UserAccount> listUserAccount(@RequestParam AccountListCommand accountListCommand) {
-        return userAccountService.listUserAccount(accountListCommand.getUserId());
+    public List<UserAccountVo> listUserAccount(AccountListCommand accountListCommand) {
+        long userId = accountListCommand.getUserId();
+        if (userId <= 0) {
+            userId = UserContext.getCurrentUserId();
+        }
+        List<UserAccount> userAccounts = userAccountService.listUserAccount(userId);
+        List<Long> accountTypeIds = userAccounts.stream().map(UserAccount::getAccountTypeId).distinct()
+                .collect(Collectors.toList());
+        List<AccountType> accountTypes = accountTypeService.findAccountTypeByIds(accountTypeIds);
+        Map<Long, AccountTypeVo> accountTypeMap = Maps.newHashMap();
+        for (AccountType accountType : accountTypes) {
+            AccountTypeVo accountTypeVo = new AccountTypeVo();
+            accountTypeVo.setId(accountType.getId());
+            accountTypeVo.setName(accountType.getName());
+            accountTypeVo.setBillingType(accountType.getBillingType().getDesc());
+            accountTypeVo.setIconUrl(Optional.ofNullable(resourceService.loadResourceUrl(accountType.getIconId())).map(URI::toString).orElse(null));
+            accountTypeMap.put(accountType.getId(), accountTypeVo);
+        }
+        List<UserAccountVo> list = Lists.newArrayList();
+        for (UserAccount userAccount : userAccounts) {
+            UserAccountVo accountVo = new UserAccountVo();
+            accountVo.setId(userAccount.getId());
+            accountVo.setUserId(userAccount.getUserId());
+            accountVo.setNumber(userAccount.getNumber());
+            accountVo.setTitle(userAccount.getTitle());
+            accountVo.setAccountType(accountTypeMap.get(userAccount.getAccountTypeId()));
+            list.add(accountVo);
+        }
+        return list;
     }
 
-    @PutMapping("/create")
-    public UserAccount createUserAccount(@RequestParam AccountCreateCommand accountCreateCommand) {
-        return userAccountService.createAccount(accountCreateCommand.getUserId(), accountCreateCommand.getAccountName(), accountCreateCommand.getAccountType());
+    @PostMapping("/create")
+    public UserAccount createUserAccount(AccountCreateCommand accountCreateCommand) {
+        long userId = accountCreateCommand.getUserId();
+        if (userId <= 0) {
+            userId = UserContext.getCurrentUserId();
+        }
+        return userAccountService.createAccount(userId, accountCreateCommand.getAccountName(), accountCreateCommand.getAccountNumber(), accountCreateCommand.getAccountType());
     }
 
     @DeleteMapping("/delete")

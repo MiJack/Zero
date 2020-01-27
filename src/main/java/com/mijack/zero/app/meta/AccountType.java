@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mijack.zero.app.enums.BillingType;
@@ -40,11 +41,13 @@ public class AccountType implements Serializable {
     /**
      * 账号类型名称
      */
-    private String typeName;
+    @TableField("type_name")
+    private String name;
     /**
      * 账号类型图标
      */
-    private Long accountTypeIcon;
+    @TableField("account_type_icon")
+    private Long iconId;
     /**
      * 类型
      */

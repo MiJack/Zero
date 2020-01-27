@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.exception.BizCode;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -47,7 +48,11 @@ public class CommandMethodArgumentResolver implements HandlerMethodArgumentResol
             throw BaseBizException.createException(BizCode.SYSTEM_ERROR);
         }
         Class<?> commandType = parameter.getParameterType();
-        return objectMapper.readValue(servletRequest.getInputStream(), commandType);
+        try {
+            return objectMapper.readValue(servletRequest.getInputStream(), commandType);
+        } catch (Exception e) {
+            return BeanUtils.instantiateClass(commandType);
+        }
     }
 
 }

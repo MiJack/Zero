@@ -36,5 +36,6 @@ public class AccountCreateCommand implements Serializable {
     private static final long serialVersionUID = 7779638347881635153L;
     private long userId;
     private String accountName;
+    private String accountNumber;
     private Long accountType;
 }

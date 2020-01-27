@@ -49,6 +49,10 @@ public class UserAccount implements Serializable {
      */
     private String title;
     /**
+     * 账号编号
+     */
+    private String number;
+    /**
      * 创建时间
      */
     private Timestamp createTime;

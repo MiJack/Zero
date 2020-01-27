@@ -14,36 +14,38 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.command;
+package com.mijack.zero.app.vo;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @author Mi&amp;Jack
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@EqualsAndHashCode
-public class AccountTypeCreateCommand implements Serializable {
-    private static final long serialVersionUID = 5230655270272541371L;
+ */@Data
+public class UserAccountVo implements Serializable {
+    private static final long serialVersionUID = -929169650255130183L;
     /**
-     * 账号类型名称
+     * 主键
      */
-    private String typeName;
+    @TableId(type = IdType.AUTO)
+    Long id;
     /**
-     * 账号类型图标
+     * 用户信息
      */
-    private Long accountTypeIcon;
+    Long userId;
     /**
-     * 类型
+     * 账号类型
      */
-    private int billingType;
+    private AccountTypeVo accountType;
+    /**
+     * 账号名称
+     */
+    private String title;
+    /**
+     * 账号编号
+     */
+    private String number;
 }
