@@ -20,9 +20,12 @@ package com.mijack.zero.framework.web.mvc;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.exception.BizCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -35,6 +38,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 public class CommandMethodArgumentResolver implements HandlerMethodArgumentResolver {
     ObjectMapper objectMapper = new ObjectMapper();
+    public static final Logger logger = LoggerFactory.getLogger(CommandMethodArgumentResolver.class);
+
+    {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -51,6 +59,7 @@ public class CommandMethodArgumentResolver implements HandlerMethodArgumentResol
         try {
             return objectMapper.readValue(servletRequest.getInputStream(), commandType);
         } catch (Exception e) {
+            logger.error("resolveArgument error: parameter = {}, mavContainer = {}, nativeWebRequest = {}, binderFactory = {}", parameter, mavContainer, nativeWebRequest, binderFactory, e);
             return BeanUtils.instantiateClass(commandType);
         }
     }
