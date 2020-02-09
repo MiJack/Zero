@@ -27,17 +27,20 @@ import javax.annotation.Resource;
 import com.mijack.zero.app.command.AccountCreateCommand;
 import com.mijack.zero.app.command.AccountDisableCommand;
 import com.mijack.zero.app.command.AccountListCommand;
+import com.mijack.zero.app.facade.account.UserAccountFacadeService;
 import com.mijack.zero.app.meta.AccountType;
 import com.mijack.zero.app.meta.UserAccount;
 import com.mijack.zero.app.service.account.AccountTypeService;
 import com.mijack.zero.app.service.account.UserAccountService;
 import com.mijack.zero.app.service.resource.ResourceService;
 import com.mijack.zero.app.vo.AccountTypeVo;
+import com.mijack.zero.app.vo.UserAccountDetailVo;
 import com.mijack.zero.app.vo.UserAccountVo;
 import com.mijack.zero.framework.context.UserContext;
 import com.mijack.zero.framework.web.mvc.ApiController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -56,7 +59,7 @@ public class UserAccountController {
     @Resource
     AccountTypeService accountTypeService;
     @Resource
-    ResourceService resourceService;
+    UserAccountFacadeService userAccountFacadeService;
 
     @GetMapping(value = "/list")
     public List<UserAccountVo> listUserAccount(AccountListCommand accountListCommand) {
@@ -70,12 +73,7 @@ public class UserAccountController {
         List<AccountType> accountTypes = accountTypeService.findAccountTypeByIds(accountTypeIds);
         Map<Long, AccountTypeVo> accountTypeMap = Maps.newHashMap();
         for (AccountType accountType : accountTypes) {
-            AccountTypeVo accountTypeVo = new AccountTypeVo();
-            accountTypeVo.setId(accountType.getId());
-            accountTypeVo.setName(accountType.getName());
-            accountTypeVo.setBillingType(accountType.getBillingType().getDesc());
-            accountTypeVo.setIconUrl(Optional.ofNullable(resourceService.loadResourceUrl(accountType.getIconId())).map(URI::toString).orElse(null));
-            accountTypeMap.put(accountType.getId(), accountTypeVo);
+            accountTypeMap.put(accountType.getId(), userAccountFacadeService.transformAccountTypeVo(accountType));
         }
         List<UserAccountVo> list = Lists.newArrayList();
         for (UserAccount userAccount : userAccounts) {
@@ -102,6 +100,12 @@ public class UserAccountController {
     @DeleteMapping("/delete")
     public UserAccount deleteUserAccount(@RequestParam AccountDisableCommand accountDisableCommand) {
         return userAccountService.deleteAccount(accountDisableCommand.getUserId(), accountDisableCommand.getAccountId());
+    }
+
+    @GetMapping("/info/{id}")
+    public UserAccountDetailVo getUserAccountInfo(@PathVariable("id") Long accountId) {
+        Long userId = UserContext.getCurrentUserId();
+        return userAccountFacadeService.getUserAccountDetail(userId, accountId);
     }
 }
 

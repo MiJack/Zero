@@ -63,4 +63,8 @@ public class UserAccountService {
     public UserAccount findUserAccountById(Long userAccountId) {
         return userAccountDao.selectById(userAccountId);
     }
+
+    public UserAccount getUserAccountInfo(Long userId, Long accountId) {
+        return null;
+    }
 }

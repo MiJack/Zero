@@ -15,14 +15,12 @@
  */
 package com.mijack.zero.app.controller;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.service.resource.ResourceService;
+import com.mijack.zero.app.facade.account.UserAccountFacadeService;
 import com.mijack.zero.app.vo.AccountTypeVo;
 import com.mijack.zero.framework.web.mvc.ApiController;
 import com.mijack.zero.app.meta.AccountType;
@@ -37,21 +35,13 @@ public class AccountTypeController {
     @Resource
     AccountTypeService accountTypeService;
     @Resource
-    ResourceService resourceService;
+    UserAccountFacadeService userAccountFacadeService;
 
     @GetMapping("/list")
     public List<AccountTypeVo> listAccountType() {
         List<AccountType> accountTypes = accountTypeService.listAccountType();
         return accountTypes.stream()
-                .map(accountType -> {
-                    AccountTypeVo accountTypeVo = new AccountTypeVo();
-                    accountTypeVo.setBillingType(accountType.getBillingType().getDesc());
-                    accountTypeVo.setId(accountType.getId());
-                    accountTypeVo.setName(accountType.getName());
-                    accountTypeVo.setIconUrl(Optional.ofNullable(resourceService.loadResourceUrl(accountType.getIconId()))
-                            .map(URI::toString).orElse(null));
-                    return accountTypeVo;
-                })
+                .map(accountType -> userAccountFacadeService.transformAccountTypeVo(accountType))
                 .collect(Collectors.toList());
     }
 }

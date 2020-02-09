@@ -18,31 +18,12 @@ package com.mijack.zero.app.vo;
 
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class AccountTypeVo implements Serializable {
-    private static final long serialVersionUID = 543253087482214851L;
-    /**
-     * id
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
-    /**
-     * 账号类型名称
-     */
-    private String name;
-    /**
-     * 账号类型图标
-     */
-    private String iconUrl;
-    /**
-     * 类型
-     */
-    private String billingType;
+public class UserAccountDetailVo extends UserAccountVo implements Serializable {
+    private static final long serialVersionUID = -7809233613146068091L;
 }
