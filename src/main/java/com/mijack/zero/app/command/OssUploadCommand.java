@@ -14,23 +14,18 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.dao;
+package com.mijack.zero.app.command;
 
-import java.util.List;
+import java.io.Serializable;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mijack.zero.app.meta.account.UserAccount;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-@Mapper
-@Component
-public interface UserAccountDao extends BaseMapper<UserAccount> {
-    default List<UserAccount> selectByUserAccount(long userId){
-        return selectList(new QueryWrapper<UserAccount>().lambda().eq(UserAccount::getUserId,userId));
-    }
+@Data
+public class OssUploadCommand implements Serializable {
+    private static final long serialVersionUID = 8652178703370821606L;
+    private Long resourceId;
+    private byte[] content;
 }

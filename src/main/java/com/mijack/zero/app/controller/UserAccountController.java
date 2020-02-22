@@ -16,10 +16,8 @@
 
 package com.mijack.zero.app.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -28,11 +26,10 @@ import com.mijack.zero.app.command.AccountCreateCommand;
 import com.mijack.zero.app.command.AccountDisableCommand;
 import com.mijack.zero.app.command.AccountListCommand;
 import com.mijack.zero.app.facade.account.UserAccountFacadeService;
-import com.mijack.zero.app.meta.AccountType;
-import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.app.meta.account.AccountType;
+import com.mijack.zero.app.meta.account.UserAccount;
 import com.mijack.zero.app.service.account.AccountTypeService;
 import com.mijack.zero.app.service.account.UserAccountService;
-import com.mijack.zero.app.service.resource.ResourceService;
 import com.mijack.zero.app.vo.AccountTypeVo;
 import com.mijack.zero.app.vo.UserAccountDetailVo;
 import com.mijack.zero.app.vo.UserAccountVo;

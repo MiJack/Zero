@@ -14,23 +14,43 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.dao;
+package com.mijack.zero.app.enums;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mijack.zero.app.meta.account.UserAccount;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
+import com.mijack.zero.common.IdentifiableEnum;
+import lombok.Getter;
 
 /**
  * @author Mi&amp;Jack
  */
-@Mapper
-@Component
-public interface UserAccountDao extends BaseMapper<UserAccount> {
-    default List<UserAccount> selectByUserAccount(long userId){
-        return selectList(new QueryWrapper<UserAccount>().lambda().eq(UserAccount::getUserId,userId));
+public enum ZResourceStatus implements IdentifiableEnum<ZResourceStatus> {
+    /**
+     * 初始化
+     */
+    INIT(0, "初始化"),
+    /**
+     * 初始化
+     */
+    UPLOADING(1, "初始化"),
+    /**
+     * 校验中
+     */
+    CHECKING(2, "校验中"),
+    /**
+     * 已完成
+     */
+    OK(2, "已完成"),
+    /**
+     * 失效
+     */
+    INVALID(-1, "失效");
+    @Getter
+    private final int id;
+    @Getter
+    private final String desc;
+
+    ZResourceStatus(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
     }
+
 }

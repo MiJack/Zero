@@ -16,8 +16,6 @@
 
 package com.mijack.zero.framework.config;
 
-import java.util.Objects;
-
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

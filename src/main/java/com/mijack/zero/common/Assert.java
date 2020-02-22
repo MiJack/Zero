@@ -143,11 +143,24 @@ public interface Assert {
     /**
      * 给定的两个值相同
      *
-     * @param source 比较值
-     * @param target 目标值
+     * @param source   比较值
+     * @param target   目标值
      * @param supplier
      */
-    static void equals(@Nullable Object source,@Nullable Object target, Supplier<? extends RuntimeException> supplier) {
+    static void equals(@Nullable Object source, @Nullable Object target, Supplier<? extends RuntimeException> supplier) {
         state(Objects.equals(source, target), supplier);
+    }
+
+    /**
+     * 比较是否等于枚举值
+     *
+     * @param enumCode
+     * @param enumValue
+     * @param msg
+     * @param <E>
+     */
+    static <E extends IdentifiableEnum<?>> void enumEquals(Integer enumCode, E enumValue, String msg) {
+        notNull(enumValue, () -> createIllegalArgumentException("enumValue = null"));
+        equals(enumCode, enumValue.getId(), () -> createIllegalArgumentException(msg));
     }
 }

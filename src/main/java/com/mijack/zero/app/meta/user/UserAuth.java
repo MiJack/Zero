@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.user;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -28,30 +28,26 @@ import lombok.Data;
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_UserAccount")
-public class UserAccount implements Serializable {
-    private static final long serialVersionUID = 7201792836522277833L;
+@TableName("Zero_UserAuth")
+public class UserAuth implements Serializable {
+    private static final long serialVersionUID = 4899074795483788012L;
     /**
-     * 主键
+     * 用户id
      */
     @TableId(type = IdType.AUTO)
-    Long id;
+    private Long id;
     /**
-     * 用户信息
+     * 密码对应的盐
      */
-    Long userId;
+    private String salt;
     /**
-     * 账号类型
+     * 加密类型
      */
-    private Long accountTypeId;
+    private int type;
     /**
-     * 账号名称
+     * 加密后的密码
      */
-    private String title;
-    /**
-     * 账号编号
-     */
-    private String number;
+    private String cryptPassword;
     /**
      * 创建时间
      */

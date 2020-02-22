@@ -30,7 +30,7 @@ import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.Activity;
 import com.mijack.zero.app.component.MoneyFactory;
 import com.mijack.zero.app.meta.Transaction;
-import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.app.meta.account.UserAccount;
 import com.mijack.zero.app.enums.TransactionType;
 import com.mijack.zero.common.EnumUtils;
 import org.springframework.stereotype.Service;

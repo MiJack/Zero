@@ -16,10 +16,8 @@
 
 package com.mijack.zero.app.service.resource;
 
-import static com.mijack.zero.framework.config.ServerConfig.DEFAULT_BUCKET;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -27,14 +25,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.Resource;
 
-import com.aliyun.oss.OSS;
 import com.mijack.zero.app.dao.ResourceDao;
 import com.mijack.zero.app.enums.AccountTypeEnums;
+import com.mijack.zero.app.enums.OssOverwriteStrategy;
 import com.mijack.zero.app.enums.StorageType;
+import com.mijack.zero.app.enums.ZResourceStatus;
 import com.mijack.zero.app.exception.BaseBizException;
-import com.mijack.zero.app.meta.ZResource;
+import com.mijack.zero.app.meta.resource.ZResource;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.EnumUtils;
+import com.mijack.zero.framework.oss.OssManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -46,14 +46,15 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Service
 public class ResourceService {
     public static final Logger logger = LoggerFactory.getLogger(ResourceService.class);
+    private static final String OSS_KEY_PREFIX = "Zero/Resources/";
     @Resource
     private ResourceDao resourceDao;
 
     @Resource(name = "localUriBuilderFactory")
     DefaultUriBuilderFactory uriBuilderFactory;
 
-    @Resource(name = "aliYunOssClient")
-    OSS aliYunOssClient;
+    @Resource
+    OssManager ossManager;
     /**
      * 设置URL过期时间为1小时
      */
@@ -78,14 +79,13 @@ public class ResourceService {
         StorageType storageType = EnumUtils.idOfEnum(zResource.getStorageType(), StorageType.class);
         Assert.notNull(storageType, () -> BaseBizException.createException("不支持当前储存方式"));
         try {
-            String content = zResource.getContent();
+            String storageValue = zResource.getStorageValue();
             switch (storageType) {
                 case LOCAL:
                     // todo 避免硬编码
-                    return pathToUrl(content);
+                    return pathToUrl(storageValue);
                 case ALIYUN:
-                    return aliYunOssClient.generatePresignedUrl(DEFAULT_BUCKET, content, new Date(System.currentTimeMillis() + DEFAULT_OSS_EXPIRATION_TIME))
-                            .toURI();
+                    return ossManager.generatePresignedUrl(storageValue, DEFAULT_OSS_EXPIRATION_TIME);
                 default:
                     return null;
             }
@@ -103,18 +103,44 @@ public class ResourceService {
         return uriBuilderFactory.builder().path(content).build();
     }
 
-    public ZResource createResource(Integer storageType, String contentType, String content, String md5) {
-        Assert.notNull(EnumUtils.idOfEnum(storageType, StorageType.class), () -> BaseBizException.createException("储存方式不支持"));
+    public ZResource createResource(StorageType storageType, String contentType, String content, String md5,
+                                    Long size, ZResourceStatus resourceStatus) {
         ZResource zResource = new ZResource();
-        zResource.setContent(content);
-        zResource.setStorageType(storageType);
+        zResource.setStorageValue(content);
+        zResource.setStorageType(storageType.getId());
         zResource.setContentType(contentType);
+        zResource.setSize(size);
         zResource.setMd5(md5);
+        zResource.setStatus(resourceStatus.getId());
         Assert.state(resourceDao.insert(zResource) > 0, () -> BaseBizException.createException("创建资源失败"));
         return zResource;
     }
 
     public ZResource getResource(Long id) {
         return Optional.ofNullable(id).map(resourceDao::selectById).orElse(null);
+    }
+
+    public ZResource getResourceAtStorageType(StorageType storageType, String storageValue) {
+        return resourceDao.getResourceAtStorageType(storageType, storageValue);
+    }
+
+    public String decideOssKey(String ossKey, Integer overwriteStrategy) {
+        ZResource resource = getResourceAtStorageType(StorageType.ALIYUN, ossKey);
+        OssOverwriteStrategy ossOverwriteStrategy = EnumUtils.idOfEnum(overwriteStrategy, OssOverwriteStrategy.class, OssOverwriteStrategy.REJECT);
+        if (resource == null) {
+            return OSS_KEY_PREFIX + ossKey;
+        }
+
+        if (ossOverwriteStrategy.equals(OssOverwriteStrategy.REJECT)) {
+            throw new BaseBizException(400, OssOverwriteStrategy.REJECT.getDesc());
+        }
+        throw new BaseBizException(400, "该上传策略暂不支持");
+    }
+
+    public boolean uploadAliYunOss(Long resourceId, byte[] content) {
+        ZResource resource = getResource(resourceId);
+        Assert.enumEquals(resource.getStorageType(), StorageType.ALIYUN, ("不支持当前存储类型"));
+        ossManager.uploadAliYunOss(resource.getStorageValue(), content);
+        return resourceDao.updateResoueceStatus(resourceId, ZResourceStatus.OK) > 0;
     }
 }

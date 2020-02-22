@@ -23,7 +23,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import com.mijack.zero.app.exception.BaseBizException;
-import com.mijack.zero.app.meta.User;
+import com.mijack.zero.app.meta.user.User;
 import com.mijack.zero.app.service.user.UserService;
 import org.junit.Ignore;
 import org.junit.Test;

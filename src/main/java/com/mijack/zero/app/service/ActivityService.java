@@ -32,7 +32,7 @@ import com.mijack.zero.common.Assert;
 import com.mijack.zero.app.dao.ActivityDao;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.Activity;
-import com.mijack.zero.app.meta.User;
+import com.mijack.zero.app.meta.user.User;
 import com.mijack.zero.app.service.user.UserService;
 import org.springframework.stereotype.Service;
 

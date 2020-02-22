@@ -16,11 +16,15 @@
 
 package com.mijack.zero.app.dao;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mijack.zero.app.meta.ZResource;
+import com.mijack.zero.app.enums.StorageType;
+import com.mijack.zero.app.enums.ZResourceStatus;
+import com.mijack.zero.app.meta.resource.ZResource;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +34,16 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component
 public interface ResourceDao extends BaseMapper<ZResource> {
-    default List<ZResource> selectActivityByUserId(Long userId) {
-        //  todo 支持分页查询
-        return selectList(new QueryWrapper<ZResource>().lambda());
+    default ZResource getResourceAtStorageType(StorageType storageType, String storageValue) {
+        return selectOne(new QueryWrapper<ZResource>().lambda()
+                .eq(ZResource::getStorageType, storageType.getId())
+                .eq(ZResource::getStorageValue, storageValue)
+        );
+    }
+
+    default int updateResoueceStatus(Long resourceId, ZResourceStatus status) {
+        return Optional.ofNullable(selectById(resourceId))
+                .map(zResource -> update(zResource, new UpdateWrapper<ZResource>().lambda().set(ZResource::getStatus, status.getId())))
+                .orElse(0);
     }
 }

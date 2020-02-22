@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.mijack.zero.app.enums.AccountTypeEnums;
-import com.mijack.zero.app.meta.AccountType;
+import com.mijack.zero.app.meta.account.AccountType;
 import org.springframework.stereotype.Service;
 
 /**

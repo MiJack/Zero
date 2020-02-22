@@ -20,10 +20,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.dao.AccountTypeDao;
 import com.mijack.zero.app.dao.UserAccountDao;
 import com.mijack.zero.app.exception.BaseBizException;
-import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.app.meta.account.UserAccount;
 import com.mijack.zero.common.Assert;
 import org.springframework.stereotype.Service;
 

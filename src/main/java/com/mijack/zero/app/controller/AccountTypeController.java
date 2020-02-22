@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 import com.mijack.zero.app.facade.account.UserAccountFacadeService;
 import com.mijack.zero.app.vo.AccountTypeVo;
 import com.mijack.zero.framework.web.mvc.ApiController;
-import com.mijack.zero.app.meta.AccountType;
+import com.mijack.zero.app.meta.account.AccountType;
 import com.mijack.zero.app.service.account.AccountTypeService;
 import org.springframework.web.bind.annotation.GetMapping;
 

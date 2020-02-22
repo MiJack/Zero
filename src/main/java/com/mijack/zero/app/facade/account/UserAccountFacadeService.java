@@ -21,8 +21,8 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.meta.AccountType;
-import com.mijack.zero.app.meta.UserAccount;
+import com.mijack.zero.app.meta.account.AccountType;
+import com.mijack.zero.app.meta.account.UserAccount;
 import com.mijack.zero.app.service.account.AccountTypeService;
 import com.mijack.zero.app.service.account.UserAccountService;
 import com.mijack.zero.app.service.resource.ResourceService;

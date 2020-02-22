@@ -14,44 +14,39 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.resource;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.app.enums.BillingType;
 import lombok.Data;
 
 /**
+ * 资源文件的内容签名
+ *
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_AccountType")
-public class AccountType implements Serializable {
-    private static final long serialVersionUID = 3625866287984147619L;
+@TableName("Zero_ResourceSign")
+public class ZResourceSign implements Serializable {
+    private static final long serialVersionUID = 1791513604444033963L;
     /**
-     * id
+     * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    private long id;
     /**
-     * 账号类型名称
+     * 资源id
      */
-    @TableField("type_name")
-    private String name;
+    private long resourceId;
     /**
-     * 账号类型图标
+     * 签名类型
      */
-    @TableField("account_type_icon")
-    private Long iconId;
+    private long signType;
     /**
-     * 类型
+     * 签名内容
      */
-    private BillingType billingType;
+    private String signContent;
     /**
      * 创建时间
      */

@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.resource;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -33,7 +33,8 @@ public class ZResource implements Serializable {
     private static final long serialVersionUID = -7368045744884416175L;
     /**
      * 主键
-     */@TableId(type = IdType.AUTO )
+     */
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 储存类型
@@ -46,11 +47,19 @@ public class ZResource implements Serializable {
     /**
      * 资源内容
      */
-    private String content;
+    private String storageValue;
     /**
-     * md5
+     * 资源文件大小
+     */
+    private Long size;
+    /**
+     * 文件md5
      */
     private String md5;
+    /**
+     * 资源状态
+     */
+    private Integer status;
     /**
      * 创建时间
      */

@@ -14,40 +14,38 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.user;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.regex.Pattern;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.mijack.zero.common.Assert;
+import com.mijack.zero.app.exception.BaseBizException;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_UserAuth")
-public class UserAuth implements Serializable {
-    private static final long serialVersionUID = 4899074795483788012L;
+@TableName("Zero_User")
+public class User {
+    public static final Pattern EMAIL_PATTERN = Pattern.compile("\\w+@(\\w+.)+\\w+");
     /**
      * 用户id
      */
     @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 密码对应的盐
+     * 用户名
      */
-    private String salt;
+    private String name;
     /**
-     * 加密类型
+     * 用户邮箱
      */
-    private int type;
-    /**
-     * 加密后的密码
-     */
-    private String cryptPassword;
+    private String email;
     /**
      * 创建时间
      */
@@ -56,4 +54,9 @@ public class UserAuth implements Serializable {
      * 更新时间
      */
     private Timestamp updateTime;
+
+    public void setEmail(String email) {
+        Assert.state(EMAIL_PATTERN.matcher(email).matches(), () -> BaseBizException.createException("邮箱格式错误"));
+        this.email = email;
+    }
 }

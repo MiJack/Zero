@@ -14,32 +14,39 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.vo;
+package com.mijack.zero.app.meta.account;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-public class ZResourceVo implements Serializable {
-    private static final long serialVersionUID = -1101024737782224673L;
+@TableName("Zero_AccountIssuer")
+public class AccountIssuer implements Serializable {
+    private static final long serialVersionUID = 3625866287984147619L;
     /**
-     * 主键
+     * id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 内容类型
+     * 账号颁发机构名称
      */
-    private String contentType;
+    @TableField("name")
+    private String name;
     /**
-     * 资源内容
+     * 账号颁发机构图标
      */
-    private URI uri;
+    @TableField("iconId")
+    private Long iconId;
     /**
      * 创建时间
      */

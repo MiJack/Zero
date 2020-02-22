@@ -18,7 +18,7 @@ package com.mijack.zero.app.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mijack.zero.app.meta.User;
+import com.mijack.zero.app.meta.user.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

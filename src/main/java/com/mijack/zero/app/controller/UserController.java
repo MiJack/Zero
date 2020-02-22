@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 import com.mijack.zero.app.exception.UserError;
 import com.mijack.zero.framework.context.UserContext;
 import com.mijack.zero.app.meta.ApiToken;
-import com.mijack.zero.app.meta.User;
+import com.mijack.zero.app.meta.user.User;
 import com.mijack.zero.app.service.user.UserService;
 import com.mijack.zero.app.service.user.UserTokenService;
 import com.mijack.zero.app.command.CreateUserCommand;

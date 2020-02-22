@@ -14,38 +14,44 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.meta;
+package com.mijack.zero.app.meta.account;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.regex.Pattern;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.mijack.zero.common.Assert;
-import com.mijack.zero.app.exception.BaseBizException;
 import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
 @Data
-@TableName("Zero_User")
-public class User {
-    public static final Pattern EMAIL_PATTERN = Pattern.compile("\\w+@(\\w+.)+\\w+");
+@TableName("Zero_UserAccount")
+public class UserAccount implements Serializable {
+    private static final long serialVersionUID = 7201792836522277833L;
     /**
-     * 用户id
+     * 主键
      */
     @TableId(type = IdType.AUTO)
-    private Long id;
+    Long id;
     /**
-     * 用户名
+     * 用户信息
      */
-    private String name;
+    Long userId;
     /**
-     * 用户邮箱
+     * 账号类型
      */
-    private String email;
+    private Long accountTypeId;
+    /**
+     * 账号名称
+     */
+    private String title;
+    /**
+     * 账号编号
+     */
+    private String number;
     /**
      * 创建时间
      */
@@ -54,9 +60,4 @@ public class User {
      * 更新时间
      */
     private Timestamp updateTime;
-
-    public void setEmail(String email) {
-        Assert.state(EMAIL_PATTERN.matcher(email).matches(), () -> BaseBizException.createException("邮箱格式错误"));
-        this.email = email;
-    }
 }
