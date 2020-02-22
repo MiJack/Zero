@@ -79,7 +79,8 @@ configurations {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:27.1-jre'
-//    implementation project(':dao-framework')
+    //spring security
+    compile "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-beanutils:commons-beanutils:1.9.3'
@@ -108,6 +109,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     asciidoclet 'org.asciidoctor:asciidoclet:1.+'
+    compile 'com.aliyun.oss:aliyun-sdk-oss:3.8.0'
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+
 
 }
 

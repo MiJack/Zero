@@ -1,17 +1,17 @@
 /*
- *    Copyright 2019 Mi&Jack
+ *     Copyright 2020 Mi&Jack
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
  */
 
 package com.mijack.zero.common;
@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import com.mijack.zero.utils.CollectionHelper;
+import javax.annotation.Nullable;
 
 
 /**
@@ -143,11 +143,24 @@ public interface Assert {
     /**
      * 给定的两个值相同
      *
-     * @param source 比较值
-     * @param target 目标值
+     * @param source   比较值
+     * @param target   目标值
      * @param supplier
      */
-    static void equals(Object source, Object target, Supplier<? extends RuntimeException> supplier) {
+    static void equals(@Nullable Object source, @Nullable Object target, Supplier<? extends RuntimeException> supplier) {
         state(Objects.equals(source, target), supplier);
+    }
+
+    /**
+     * 比较是否等于枚举值
+     *
+     * @param enumCode
+     * @param enumValue
+     * @param msg
+     * @param <E>
+     */
+    static <E extends IdentifiableEnum<?>> void enumEquals(Integer enumCode, E enumValue, String msg) {
+        notNull(enumValue, () -> createIllegalArgumentException("enumValue = null"));
+        equals(enumCode, enumValue.getId(), () -> createIllegalArgumentException(msg));
     }
 }
