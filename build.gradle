@@ -79,15 +79,13 @@ configurations {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:27.1-jre'
-    //spring security
-    compile "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-beanutils:commons-beanutils:1.9.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
-    // graphql
-    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
-    implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+//    // graphql
+//    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+//    implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
@@ -99,7 +97,6 @@ dependencies {
     // mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     implementation 'org.springframework:spring-jdbc'
-    testImplementation 'com.h2database:h2:1.4.194'
     // mybatis
     compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.1.2'
 
@@ -108,10 +105,13 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    asciidoclet 'org.asciidoctor:asciidoclet:1.+'
     compile 'com.aliyun.oss:aliyun-sdk-oss:3.8.0'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+// https://mvnrepository.com/artifact/org.apache.tika/tika-core
+    compile group: 'org.apache.tika', name: 'tika-core', version: '1.23'
+// https://mvnrepository.com/artifact/org.jetbrains/annotations
+    compile group: 'org.jetbrains', name: 'annotations', version: '16.0.1'
 
 
 }

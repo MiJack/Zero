@@ -26,8 +26,6 @@ import org.springframework.context.annotation.Import;
  * @author Mi&amp;Jack
  */
 @SpringBootApplication
-@ComponentScan("com.mijack.zero")
-@MapperScan("com.mijack.zero")
 
 @Import({ServerConfig.class})
 public class ZeroApplication {

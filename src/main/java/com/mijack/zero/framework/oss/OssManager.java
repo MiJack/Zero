@@ -27,7 +27,15 @@ import javax.annotation.Nullable;
 import javax.annotation.Resource;
 
 import com.aliyun.oss.OSS;
+import com.aliyun.oss.common.utils.BinaryUtil;
+import com.aliyun.oss.internal.OSSHeaders;
+import com.aliyun.oss.model.CannedAccessControlList;
+import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
+import com.aliyun.oss.model.StorageClass;
+import com.mijack.zero.app.exception.BaseBizException;
+import com.mijack.zero.app.meta.resource.ZResource;
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -61,8 +69,27 @@ public class OssManager implements DisposableBean {
         oss.shutdown();
     }
 
-    public void uploadAliYunOss(String ossKey, byte[] content) {
-        PutObjectRequest putObjectRequest = new PutObjectRequest(DEFAULT_BUCKET, ossKey, new ByteArrayInputStream(content));
-        oss.putObject(putObjectRequest);
+    public void uploadAliYunOss(ZResource resource, byte[] content) {
+        try {
+            PutObjectRequest putObjectRequest = new PutObjectRequest(DEFAULT_BUCKET, resource.getStorageLocation(), new ByteArrayInputStream(content));
+
+            //BinaryUtil.calculateMd5
+            String resourceMd5 = resource.getMd5();
+            String contentMD5 = BinaryUtil.toBase64String(Hex.decodeHex(resourceMd5.toCharArray()));
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentMD5(contentMD5);
+            logger.info("upload resource: id = {} ,md5 = {}, contentMD5 = {}", resource.getId(), resourceMd5, contentMD5);
+
+            objectMetadata.setContentLength(resource.getContentLength());
+            objectMetadata.setContentType(resource.getContentType());
+            objectMetadata.setHeader(OSSHeaders.OSS_STORAGE_CLASS, StorageClass.Standard.toString());
+            objectMetadata.setObjectAcl(CannedAccessControlList.Private);
+
+            putObjectRequest.setMetadata(objectMetadata);
+            oss.putObject(putObjectRequest);
+        } catch (Exception e) {
+            logger.error("uploadAliYunOss error: resource = {}, content = {}", resource, content, e);
+            throw new BaseBizException(444, "上传文件失败");
+        }
     }
 }

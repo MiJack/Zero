@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.mijack.zero.app.enums.ZResourceStatus;
 import lombok.Data;
 
 /**
@@ -45,19 +46,25 @@ public class ZResource implements Serializable {
      */
     private String contentType;
     /**
+     * 内容名称
+     */
+    private String contentName;
+    /**
      * 资源内容
      */
-    private String storageValue;
+    private String storageLocation;
     /**
      * 资源文件大小
      */
-    private Long size;
+    private Long contentLength;
     /**
      * 文件md5
      */
     private String md5;
     /**
      * 资源状态
+     *
+     * @see ZResourceStatus#getId()
      */
     private Integer status;
     /**

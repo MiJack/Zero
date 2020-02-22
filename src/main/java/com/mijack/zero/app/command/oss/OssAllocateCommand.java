@@ -14,24 +14,22 @@
  *     limitations under the License.
  */
 
-package com.mijack.zero.app.dao;
+package com.mijack.zero.app.command.oss;
 
-import java.util.List;
+import java.io.Serializable;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mijack.zero.app.meta.Activity;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import lombok.Data;
 
 /**
  * @author Mi&amp;Jack
  */
-@Mapper
-@Repository
-public interface ActivityDao extends BaseMapper<Activity> {
-    default List<Activity> selectActivityByUserId(Long userId) {
-        //  todo 支持分页查询
-        return selectList(new QueryWrapper<Activity>().lambda().eq(Activity::getUserId, userId));
-    }
+@Data
+public class OssAllocateCommand implements Serializable {
+    private static final long serialVersionUID = 8888871808078032567L;
+    private String ossKey;
+    private String contentType;
+    private String contentMD5;
+    private String contentName;
+    private Long contentLength;
+    private Integer overwriteStrategy;
 }

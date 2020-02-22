@@ -18,9 +18,11 @@ package com.mijack.zero.framework.config;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -28,8 +30,11 @@ import org.springframework.core.env.Environment;
 /**
  * @author Mi&amp;Jack
  */
-@Import({WebMvcConfiguration.class, WebSecurityConfig.class})
+@Import({WebMvcConfiguration.class})
+@ComponentScan("com.mijack.zero")
+@MapperScan("com.mijack.zero")
 @PropertySource(value = "classpath:config/server.properties")
+//@PropertySource(value = "classpath:application.yaml")
 public class ServerConfig {
     public static final String DEFAULT_BUCKET = "mijack-aliyun";
     @Autowired

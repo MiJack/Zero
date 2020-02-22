@@ -21,15 +21,14 @@ import java.net.URI;
 import javax.annotation.Nullable;
 import javax.annotation.Resource;
 
-import com.mijack.zero.app.command.OssAllocateCommand;
-import com.mijack.zero.app.command.OssUploadCommand;
-import com.mijack.zero.app.enums.StorageType;
-import com.mijack.zero.app.enums.ZResourceStatus;
+import com.mijack.zero.app.command.oss.OssAllocateCommand;
+import com.mijack.zero.app.command.oss.OssUploadCommand;
+import com.mijack.zero.app.enums.OssOverwriteStrategy;
 import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.resource.ZResource;
 import com.mijack.zero.app.service.resource.ResourceService;
 import com.mijack.zero.app.vo.ZResourceVo;
-import com.mijack.zero.framework.oss.OssManager;
+import com.mijack.zero.common.EnumUtils;
 import com.mijack.zero.framework.web.mvc.ApiController;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,10 +50,14 @@ public class AliYunOssController {
         if (ossAllocateCommand.getContentLength() >= DEFAULT_SIMPLE_UPLOAD_SIZE_LIMIT.toBytes()) {
             throw new BaseBizException(400, "上传文件过大");
         }
-        String ossKey = resourceService.decideOssKey(ossAllocateCommand.getOssKey(), ossAllocateCommand.getOverwriteStrategy());
-        return resourceService.createResource(StorageType.ALIYUN, ossKey, ossAllocateCommand.getContentType(),
-                ossAllocateCommand.getContentMD5(), ossAllocateCommand.getContentLength(), ZResourceStatus.INIT);
+        return resourceService.allocateAliYunOss(ossAllocateCommand.getOssKey(),
+                ossAllocateCommand.getContentType(),
+                ossAllocateCommand.getContentLength(),
+                ossAllocateCommand.getContentMD5(),
+                ossAllocateCommand.getContentName(),
+                EnumUtils.idOfEnum(ossAllocateCommand.getOverwriteStrategy(), OssOverwriteStrategy.class, OssOverwriteStrategy.REJECT));
     }
+
 
     @PostMapping("/upload")
     public ZResourceVo uploadAliYunOss(@RequestBody OssUploadCommand ossUploadCommand) {
@@ -62,12 +65,11 @@ public class AliYunOssController {
             throw new BaseBizException(400, "上传文件过大");
         }
         boolean uploadAliYunOss = resourceService.uploadAliYunOss(ossUploadCommand.getResourceId(), ossUploadCommand.getContent());
-        if (!uploadAliYunOss){
+        if (!uploadAliYunOss) {
             throw new BaseBizException(500, "上传文件失败");
         }
         return getResourceInfo(ossUploadCommand.getResourceId());
     }
-
 
 
     @Nullable

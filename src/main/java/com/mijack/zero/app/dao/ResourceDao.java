@@ -16,8 +16,8 @@
 
 package com.mijack.zero.app.dao;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -34,10 +34,10 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component
 public interface ResourceDao extends BaseMapper<ZResource> {
-    default ZResource getResourceAtStorageType(StorageType storageType, String storageValue) {
-        return selectOne(new QueryWrapper<ZResource>().lambda()
+    default List<ZResource> getResourceAtStorageType(StorageType storageType, String storageValue) {
+        return selectList(new QueryWrapper<ZResource>().lambda()
                 .eq(ZResource::getStorageType, storageType.getId())
-                .eq(ZResource::getStorageValue, storageValue)
+                .eq(ZResource::getStorageLocation, storageValue)
         );
     }
 
