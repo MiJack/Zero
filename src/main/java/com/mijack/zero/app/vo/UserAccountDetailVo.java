@@ -19,10 +19,12 @@ package com.mijack.zero.app.vo;
 import java.io.Serializable;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Mi&amp;Jack
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class UserAccountDetailVo extends UserAccountVo implements Serializable {
     private static final long serialVersionUID = -7809233613146068091L;
