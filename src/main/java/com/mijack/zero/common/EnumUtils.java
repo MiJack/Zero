@@ -49,7 +49,12 @@ public interface EnumUtils {
      * @return
      */
     static <E extends Enum<E> & IdentifiableEnum<E>> E idOfEnum(int id, Class<E> clazz, E defaultValue) {
-        return keyOfEnum(id, IdentifiableEnum::getId, clazz, defaultValue);
+        for (E e : EnumSet.allOf(clazz)) {
+            if (Objects.equals(id, e.getId())) {
+                return e;
+            }
+        }
+        return defaultValue;
     }
 
     /**
