@@ -17,6 +17,7 @@
 package com.mijack.zero.app.service.resource;
 
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +36,10 @@ import com.mijack.zero.app.exception.BaseBizException;
 import com.mijack.zero.app.meta.resource.ZResource;
 import com.mijack.zero.common.Assert;
 import com.mijack.zero.common.EnumUtils;
+import com.mijack.zero.common.FileUtils;
 import com.mijack.zero.framework.oss.OssManager;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -57,7 +60,7 @@ public class ResourceService {
 
     @Resource(name = "localUriBuilderFactory")
     private DefaultUriBuilderFactory uriBuilderFactory;
-
+    ThreadLocal<Tika> tikaThreadLocal = ThreadLocal.withInitial(Tika::new);
     @Resource
     private OssManager ossManager;
 
@@ -136,7 +139,7 @@ public class ResourceService {
         }
 
         if (ossOverwriteStrategy.equals(OssOverwriteStrategy.REJECT)) {
-            logger.error("oss对象已存在：ossKey  = {} ",ossKey);
+            logger.error("oss对象已存在：ossKey  = {} ", ossKey);
             throw new BaseBizException(400, OssOverwriteStrategy.REJECT.getDesc());
         }
         throw new BaseBizException(400, "该上传策略暂不支持");
@@ -157,4 +160,21 @@ public class ResourceService {
                 Optional.ofNullable(contentName).orElse("未命名文件"), contentLength, contentMD5);
 
     }
+
+    public ZResource allocateAliYunOssFromLocalFile(File file, String contentName, String ossKey) {
+        try {
+            ZResource zResource = allocateAliYunOss(ossKey, tikaThreadLocal.get().detect(file), file.length(), FileUtils.md5(file),
+                    contentName, OssOverwriteStrategy.REJECT);
+            boolean uploadAliYunOss = uploadAliYunOss(zResource.getId(), FileUtils.fileBytes(file));
+            if (!uploadAliYunOss) {
+                throw new BaseBizException(500, "上传文件失败");
+            }
+            return zResource;
+        } catch (Exception e) {
+            logger.error("allocateAliYunOssFromLocalFile error: file = {}, contentName = {}, ossKey = {}", file,
+                    contentName, ossKey, e);
+            throw new BaseBizException(500, "上传失败");
+        }
+    }
+
 }

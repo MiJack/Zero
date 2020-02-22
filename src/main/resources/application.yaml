@@ -14,3 +14,7 @@ server:
 application:
   storage:
     server-host: http://localhost:9092
+  config:
+    avatar:
+      classpath: static/imgs/avatars/default-avatar.png
+      oss-location: zero/config/avatars/default-avatar.png
